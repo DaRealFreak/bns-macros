@@ -1,4 +1,4 @@
-﻿#NoEnv
+#NoEnv
 #KeyHistory 0
 #InstallMouseHook
 #SingleInstance force
