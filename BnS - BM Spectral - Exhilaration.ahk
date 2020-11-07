@@ -1,4 +1,4 @@
-﻿#NoEnv
+#NoEnv
 #KeyHistory 0
 #InstallMouseHook
 #SingleInstance force
@@ -11,16 +11,16 @@ SetBatchLines, -1
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 F1::
-	MouseGetPos, mouseX, mouseY
-	PixelGetColor, color, %mouseX%, %mouseY%, RGB
-	StringRight color,color,10 ;
-	Clipboard = %mouseX%, %OmouseY% %color%
-	tooltip, Coordinate:%mouseX%，%mouseY% `nHexColor：%color%
-	SetTimer, RemoveToolTip, -5000
-	return
+    MouseGetPos, mouseX, mouseY
+    PixelGetColor, color, %mouseX%, %mouseY%, RGB
+    StringRight color,color,10 ;
+    Clipboard = %mouseX%, %OmouseY% %color%
+    tooltip, Coordinate:%mouseX%，%mouseY% `nHexColor：%color%
+    SetTimer, RemoveToolTip, -5000
+    return
 
 RemoveToolTip:
-	ToolTip
+    ToolTip
 Return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
@@ -32,27 +32,27 @@ Return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $F23::
-	While (Utility.GameActive() && GetKeyState("F23","p"))
-	{
-		Rotations.FullRotation(true)
-	}
-	return
+    While (Utility.GameActive() && GetKeyState("F23","p"))
+    {
+        Rotations.FullRotation(true)
+    }
+    return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $XButton2::
-	While (Utility.GameActive() && GetKeyState("XButton2","p"))
-	{
-		Rotations.FullRotation(false)
-	}
-	return
-	
+    While (Utility.GameActive() && GetKeyState("XButton2","p"))
+    {
+        Rotations.FullRotation(false)
+    }
+    return
+    
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $XButton1::
-	While (Utility.GameActive() && GetKeyState("XButton1","p"))
-	{
-		Rotations.Default()
-	}
-	return
+    While (Utility.GameActive() && GetKeyState("XButton1","p"))
+    {
+        Rotations.Default()
+    }
+    return
 
 ; everything related to checking availability of skills or procs
 class Availability
@@ -65,17 +65,17 @@ class Availability
 
     IsSwordFallAvailable()
     {
-		; check for color of Swordfall skill icon
+        ; check for color of Swordfall skill icon
         return Utility.GetColor(1107,912) == "0x130B41"
     }
 
     IsSpiritVortexAvailable()
     {
-		; check for color of Spirit Vortex skill icon
+        ; check for color of Spirit Vortex skill icon
         return Utility.GetColor(1036,963) == "0x2828C9"
     }
-	
-	IsLmbAvailable()
+    
+    IsLmbAvailable()
     {
         lmbColor := Utility.GetColor(1103,906)
         return lmbColor == "0x9FA6B1" || lmbColor == "0x1D4DB8"
@@ -86,60 +86,60 @@ class Availability
         return Utility.GetColor(1036,895) != "0x2B1A80"
     }
 
-	IsBraceletCloseToExpiration()
-	{
-		return Utility.GetColor(596,921) != "0x01C1FF"
-	}
+    IsBraceletCloseToExpiration()
+    {
+        return Utility.GetColor(596,921) != "0x01C1FF"
+    }
 
-	IsBraceletActive()
-	{
-		return !Availability.IsBraceletCloseToExpiration()
-	}
+    IsBraceletActive()
+    {
+        return !Availability.IsBraceletCloseToExpiration()
+    }
 
-	IsWeaponResetClose()
-	{
-		; check for weapon reset cooldown (slightly above and below to see if the reset is close)
-		return Utility.GetColor(558,921) == "0xFFBA01" && Utility.GetColor(557,918) != "0xFFBA01"
-	}
+    IsWeaponResetClose()
+    {
+        ; check for weapon reset cooldown (slightly above and below to see if the reset is close)
+        return Utility.GetColor(558,921) == "0xFFBA01" && Utility.GetColor(557,918) != "0xFFBA01"
+    }
 
     IsSoulProced()
     {
-		; check for soul duration progress bar
+        ; check for soul duration progress bar
         return Utility.GetColor(543,915) == "0x01C1FF"
     }
 
     IsTalismanAvailable()
     {
-		; check for talisman cooldown border
-		return Utility.GetColor(559,635) != "0xE46B14"
+        ; check for talisman cooldown border
+        return Utility.GetColor(559,635) != "0xE46B14"
     }
 }
 
 ; skill bindings
 class Skills {
-	LMB() {
-		send r
-	}
+    LMB() {
+        send r
+    }
 
-	RMB() {
-		send t
-	}
+    RMB() {
+        send t
+    }
 
-	SpiritVortex() {
-		send v
-	}
+    SpiritVortex() {
+        send v
+    }
 
-	Starstrike() {
-		send y
-	}
+    Starstrike() {
+        send y
+    }
 
-	LightningDraw() {
-		send 4
-	}
+    LightningDraw() {
+        send 4
+    }
 
-	Talisman() {
-		send 9
-	}
+    Talisman() {
+        send 9
+    }
 }
 
 ; everything rotation related
@@ -148,15 +148,15 @@ class Rotations
     ; default rotation without any logic for max counts
     Default()
     {
-		Skills.RMB()
+        Skills.RMB()
         sleep 5
 
-		if (Availability.IsLightningDrawAvailable()) {
-			Skills.LightningDraw()
-			sleep 5
-		}
+        if (Availability.IsLightningDrawAvailable()) {
+            Skills.LightningDraw()
+            sleep 5
+        }
 
-		Skills.RMB()
+        Skills.RMB()
         sleep 5
 
         return
@@ -182,10 +182,10 @@ class Rotations
 
         Rotations.Default()
 
-		; wait until Spirit Vortex went through without blocking (would lose FS/Slice counts) or use it if we still have bracelet uptime
+        ; wait until Spirit Vortex went through without blocking (would lose FS/Slice counts) or use it if we still have bracelet uptime
         if (Availability.IsLmbAvailable() && (!(Availability.IsSwordFallAvailable() && Availability.IsSpiritVortexAvailable()) || Availability.IsBraceletActive())) {
             Skills.LMB()
-            sleep 5	
+            sleep 5    
         }
 
         return
@@ -195,7 +195,8 @@ class Rotations
     DpsPhase()
     {
         ; use spirit vortex before activating dps phase for exhilaration badge
-        if (Utility.GameActive() && Availability.IsStarstrikeAvailable()) {
+        While (Utility.GameActive() && Availability.IsSpiritVortexAvailable() && (GetKeyState("F23","p") || GetKeyState("Y","p")))
+        {
             Skills.SpiritVortex()
             sleep 5
         }
@@ -211,30 +212,30 @@ class Rotations
         ; while in stance and stance off cooldown send stance key
         While (Utility.GameActive() && Availability.IsStarstrikeAvailable() && (GetKeyState("F23","p") || GetKeyState("Y","p")))
         {
-			; use LMB if not used before activating the DPS phase to avoid LMB as first action after FS are available which caused some weird animation delays in my tests
-			if (Availability.IsLmbAvailable() && !Availability.IsSwordFallAvailable()) {
-				Skills.LMB()
-				sleep 5	
-			}
-		
+            ; use LMB if not used before activating the DPS phase to avoid LMB as first action after FS are available which caused some weird animation delays in my tests
+            if (Availability.IsLmbAvailable() && !Availability.IsSwordFallAvailable()) {
+                Skills.LMB()
+                sleep 5    
+            }
+        
             Skills.Starstrike()
             sleep 5
         }
-		
-		; try to use FS as the very first action
-		Skills.RMB()
-		sleep 5
+        
+        ; try to use FS as the very first action
+        Skills.RMB()
+        sleep 5
 
         return
     }
 
-	; activate the bracelet
+    ; activate the bracelet
     Bracelet()
     {
-		if (Availability.IsSpiritVortexAvailable()) {
-			Skills.SpiritVortex()
-			sleep 5
-		}
+        if (Availability.IsSpiritVortexAvailable()) {
+            Skills.SpiritVortex()
+            sleep 5
+        }
     }
 }
 
@@ -246,12 +247,12 @@ class Utility
     {
         PixelGetColor, color, x, y, RGB
         StringRight color,color,10
-		Return color
-	}
+        Return color
+    }
 
-	;check if BnS is the current active window
-	GameActive()
-	{
-		Return WinActive("ahk_class LaunchUnrealUWindowsClient")
-	}
+    ;check if BnS is the current active window
+    GameActive()
+    {
+        Return WinActive("ahk_class LaunchUnrealUWindowsClient")
+    }
 }
