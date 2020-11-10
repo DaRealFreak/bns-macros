@@ -15,7 +15,7 @@ F1::
 	PixelGetColor, color, %mouseX%, %mouseY%, RGB
 	StringRight color,color,10 ;
 	Clipboard = %mouseX%, %OmouseY% %color%
-	tooltip, Coordinate:%mouseX%，%mouseY% `nHexColor：%color%
+	tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
 	SetTimer, RemoveToolTip, -5000
 	return
 

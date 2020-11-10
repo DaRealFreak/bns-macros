@@ -13,15 +13,15 @@ SetBatchLines, -1
 F1::
 	MouseGetPos, mouseX, mouseY
 	PixelGetColor, color, %mouseX%, %mouseY%, RGB
-	StringRight color,color,10
+	StringRight color,color,10 ;
 	Clipboard = %mouseX%, %OmouseY% %color%
-	tooltip, Coordinate:%mouseX%，%mouseY% `nHexColor：%color%
+	tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
 	SetTimer, RemoveToolTip, -5000
 	return
 
 RemoveToolTip:
-    ToolTip
-    return
+	ToolTip
+Return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 ^F10::Reload
