@@ -13,7 +13,7 @@ SetBatchLines, -1
 F1::
 	MouseGetPos, mouseX, mouseY
 	PixelGetColor, color, %mouseX%, %mouseY%, RGB
-	StringRight color,color,10 ;
+	StringRight color,color,10
 	Clipboard = %mouseX%, %OmouseY% %color%
 	tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
 	SetTimer, RemoveToolTip, -5000
@@ -160,7 +160,7 @@ class Rotations
     DpsPhase()
     {
 		; use talisman while no cd border and keys are pressed
-        While (Utility.GameActive() && Availability.IsTalismanAvailable() && (GetKeyState("F23","p") || GetKeyState("Y","p")))
+        While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
         {
             Skills.Talisman()
             sleep 5
@@ -168,7 +168,7 @@ class Rotations
 	
         ; check skill border for cooldown, check for skill icon for stance and break if keys aren't pressed anymore
         ; while in stance and stance off cooldown send stance key
-        While (Utility.GameActive() && Availability.IsStarstrikeAvailable() && (GetKeyState("F23","p") || GetKeyState("Y","p")))
+        While (Utility.GameActive() && Availability.IsStarstrikeAvailable() && GetKeyState("F23","p"))
         {
 			; use LMB if not used before activating the DPS phase to avoid LMB as first action after FS are available which caused some weird animation delays in my tests
 			if (Availability.IsLmbAvailable() && !Availability.IsSwordFallAvailable()) {

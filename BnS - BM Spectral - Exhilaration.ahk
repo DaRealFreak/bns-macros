@@ -195,14 +195,14 @@ class Rotations
     DpsPhase()
     {
         ; use spirit vortex before activating dps phase for exhilaration badge
-        While (Utility.GameActive() && Availability.IsSpiritVortexAvailable() && (GetKeyState("F23","p") || GetKeyState("Y","p")))
+        While (Utility.GameActive() && Availability.IsSpiritVortexAvailable() && GetKeyState("F23","p"))
         {
             Skills.SpiritVortex()
             sleep 5
         }
 
         ; use talisman while no cd border and keys are pressed
-        While (Utility.GameActive() && Availability.IsTalismanAvailable() && (GetKeyState("F23","p") || GetKeyState("Y","p")))
+        While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
         {
             Skills.Talisman()
             sleep 5
@@ -210,7 +210,7 @@ class Rotations
 
         ; check skill border for cooldown, check for skill icon for stance and break if keys aren't pressed anymore
         ; while in stance and stance off cooldown send stance key
-        While (Utility.GameActive() && Availability.IsStarstrikeAvailable() && (GetKeyState("F23","p") || GetKeyState("Y","p")))
+        While (Utility.GameActive() && Availability.IsStarstrikeAvailable() && GetKeyState("F23","p"))
         {
             ; use LMB if not used before activating the DPS phase to avoid LMB as first action after FS are available which caused some weird animation delays in my tests
             if (Availability.IsLmbAvailable() && !Availability.IsSwordFallAvailable()) {
