@@ -21,9 +21,12 @@ SwitchProfile() {
         ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, %classIcon%
         if (ErrorLevel = 0) {
             tooltip, % "found: " item.ClassName 
+            SetTimer, RemoveToolTip, -2000
+
             if (item.CheckBadge) {
                 badgeIcon := item.BadgeIcon
-                ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, %badgeIcon%
+                ; don't check lower screen positions cause of inventory
+                ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight - 600, %badgeIcon%
             } else {
                 ErrorLevel := 0
             }
