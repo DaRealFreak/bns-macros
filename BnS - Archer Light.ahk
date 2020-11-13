@@ -92,8 +92,8 @@ class Availability
     }
 
     IsDynamiteOrFireworksAvailable() {
-        color := Utility.GetColor(935,962)
-        return color == "0x0D525D" || color == "0x8F5D19"
+        color := Utility.GetColor(885,962)
+        return color == "0x0D525D" || color == "0x69390F"
     }
 
     IsDawnstrikeAvailable() {
