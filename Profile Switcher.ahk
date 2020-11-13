@@ -8,6 +8,11 @@ Profiles.Insert("Raid 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher Ic
 Profiles.Insert("Phantom SIN", {ClassName: "SIN", ClassIcon: "Profile Switcher Icons/SIN.png", CheckBadge: false, ScriptPath: "BnS - SIN Phantom.ahk"})
 Profiles.Insert("Light Archer", {ClassName: "ARC", ClassIcon: "Profile Switcher Icons/ARC.png", CheckBadge: false, ScriptPath: "BnS - Archer Light.ahk"})
 
+^F3::Reload
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+^F5::SwitchProfile()
+^F12::ExitApp
+
 SwitchProfile() {
     global Profiles
     for index, item in Profiles
@@ -68,9 +73,3 @@ AHKPanic(Kill=0, Pause=0, Suspend=0, SelfToo=0) {
 RemoveToolTip:
 	ToolTip
 Return
-
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
-^F3::Reload
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
-^F5::SwitchProfile()
-^F12::ExitApp

@@ -23,11 +23,8 @@ RemoveToolTip:
 	ToolTip
 Return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
 ^F10::Reload
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
 ^F11::Pause
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
 ^F12::ExitApp
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
