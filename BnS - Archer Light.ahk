@@ -1,4 +1,4 @@
-﻿#NoEnv
+#NoEnv
 #KeyHistory 0
 #InstallMouseHook
 #SingleInstance force
@@ -43,6 +43,50 @@ $F23::
     }
 
 	return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & q::
+    ; way to deal with input lags while manually strafing
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsStrafeLeftAvailable())
+	{
+        Skills.StrafeLeft()
+        sleep 5
+	}
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~XButton2 & q::
+    ; way to deal with input lags while manually strafing
+    While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsStrafeLeftAvailable())
+	{
+        Skills.StrafeLeft()
+        sleep 5
+	}
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & e::
+    ; way to deal with input lags while manually strafing
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsStrafeRightAvailable())
+	{
+        Skills.StrafeRight()
+        sleep 5
+	}
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~XButton2 & e::
+    ; way to deal with input lags while manually strafing
+    While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsStrafeRightAvailable())
+	{
+        Skills.StrafeRight()
+        sleep 5
+	}
+
+    return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $XButton2::
