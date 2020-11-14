@@ -7,6 +7,7 @@ Profiles.Insert("Burst 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher I
 Profiles.Insert("Raid 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM.png", CheckBadge: true, BadgeIcon: "Profile Switcher Icons/BM - Exemplar Soul Badge.png", ScriptPath: "BnS - BM Spectral - Exemplar.ahk"})
 Profiles.Insert("Phantom SIN", {ClassName: "SIN", ClassIcon: "Profile Switcher Icons/SIN.png", CheckBadge: false, ScriptPath: "BnS - SIN Phantom.ahk"})
 Profiles.Insert("Light Archer", {ClassName: "ARC", ClassIcon: "Profile Switcher Icons/ARC.png", CheckBadge: false, ScriptPath: "BnS - Archer Light.ahk"})
+Profiles.Insert("Astromancer Thunder", {ClassName: "AST", ClassIcon: "Profile Switcher Icons/AST.png", CheckBadge: false, ScriptPath: "BnS - Astromancer Thunder.ahk"})
 
 ^F3::Reload
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
