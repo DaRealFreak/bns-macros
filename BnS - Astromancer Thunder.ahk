@@ -63,7 +63,9 @@ class Availability
     }
 
     IsOrbitalStrikeAvailable() {
-        return Utility.GetColor(1149,698) == "0x264A80"
+        color := Utility.GetColor(1149,698)
+        ; normal and awakened orbital strike
+        return color == "0x264A80" || color == "0x264A80"
     }
 
     IsFirstElectrifyAvailable() {
