@@ -361,6 +361,8 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
+        ; ToDo: don't use any lux generating skills while sunburst is available
+
         if (useDpsPhase && (!Availability.WaitForSoul() || Availability.IsSoulProced()) && Availability.IsSolarizeAvailable()) {
             ; dps phase is ready and soul active, use it
             Skills.Solarize()
