@@ -333,7 +333,9 @@ class Rotations
 					Skills.LMB()
 					sleep 5
 				}
+
 				return
+
 			case "overcharge":
 				if (stanceChange) {
 					Skills.VoltSalvo()
@@ -382,7 +384,9 @@ class Rotations
 						sleep 5
 					}
 				}
+
 				return
+
 			case "godmode":
 				if (stanceChange) {
 					Skills.LightningStrike()
