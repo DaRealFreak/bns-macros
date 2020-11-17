@@ -293,6 +293,16 @@ class Rotations
 			}
 		}
 
+		; separate if condition in case reset happened before we can check for lightning strike
+		if (Availability.IsWeaponResetClose()) {
+			; activate lightning strike right before a weapon reset
+			While (Utility.GameActive() && Availability.IsLightningStrikeAvailable() && GetKeyState("F23","p"))
+			{
+				Skills.LightningStorm()
+				sleep 5
+			}
+		}
+
 		; can't check for availability in stance change since the skillbar moves, so just default macro here
 		if (stanceChange) {
 			Skills.RMB()
@@ -332,6 +342,35 @@ class Rotations
 				if (!Availability.IsOverchargeAvailable() && !Availability.IsChargeOnCooldown() && !Availability.IsGodModeAvailable()) {
 					Skills.LMB()
 					sleep 5
+				}
+
+				if (Availability.IsOverchargeAvailable()) {
+					; case: godmode long cd (every second overcharge)
+					ImageSearch, FoundX, FoundY, 600, 800, 1000, 900, Bns - FM Lightning Godmode Long CD.png
+					if (ErrorLevel = 0) {
+						While (Utility.GameActive() && Availability.IsOverchargeAvailable() && GetKeyState("F23","p")) {
+							Skills.LMB()
+							sleep 5
+						}
+					} else {
+						; case: godmode nearly ready again
+						ImageSearch, FoundX, FoundY, 600, 800, 1000, 900, Bns - FM Lightning Godmode Short CD.png
+						if (ErrorLevel = 0) {
+							While (Utility.GameActive() && Availability.IsOverchargeAvailable() && GetKeyState("F23","p")) {
+								Skills.LMB()
+								sleep 5
+							}
+						} else {
+							; case: godmode fully off cd
+							ImageSearch, FoundX, FoundY, 600, 800, 1000, 900, Bns - FM Lightning Godmode CD.png
+							if (ErrorLevel = 1) {
+								While (Utility.GameActive() && Availability.IsOverchargeAvailable() && GetKeyState("F23","p")) {
+									Skills.LMB()
+									sleep 5
+								}
+							}
+						}
+					}
 				}
 
 				return
