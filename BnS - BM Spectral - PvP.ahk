@@ -141,6 +141,11 @@ class Availability
         return Utility.GetColor(821,894) == "0x747E8C"
     }
 
+    IsSecondWindOnCd()
+    {
+        return Utility.GetColor(821,894) == "0x41464E"
+    }
+
     IsLightningDrawAvailable()
     {
         return Utility.GetColor(1036,895) != "0x2B1A80"
@@ -257,7 +262,7 @@ class Rotations
                 sleep 5
             }
 
-            doubleAir := A_TickCount+1950
+            doubleAir := A_TickCount+1750
         }
 
         ; spirit vortex conditions
@@ -269,12 +274,25 @@ class Rotations
 
     Escape()
     {
+        static tabCd := 0
+        ; reset tab cd to insta use tab again
+        if (A_TickCount > tabCd) {
+            tabCd := 0
+        }
+
         ; priorities kd'ed: tab
         ; priorities stunned: F -> TAB -> 3 -> 1
         if (Availability.IsCCed()) {
             if (Availability.IsStunned()) {
-                send {tab}
-                sleep 5
+                While (Utility.GameActive() && Availability.IsStunned() && tabCd == 0) {
+                    if (Availability.IsSecondWindOnCd()) {
+                        tabCd := A_TickCount + 1000
+                        return
+                    }
+
+                    send {tab}
+                    sleep 5
+                }
             } else {
                 if (Availability.IsRollAvailable()) {
                     While (Utility.GameActive() && Availability.IsRollAvailable()) {
@@ -283,6 +301,7 @@ class Rotations
                     }
                 } else {
                     send {tab}
+                    sleep 5
                 }
 
                 if (Availability.IsSecondWindAvailable()) {
@@ -311,11 +330,13 @@ class Rotations
 
     Aircombo()
     {
-        If (Availability.UsingExhilarationBadge()) {
+        If (Availability.UsingExhilarationBadge() && !Availability.IsSpiritVortexAvailable()) {
             While (Utility.GameActive() && !Availability.IsSpiritVortexAvailable() && Availability.IsStarstrikeAvailable()) {
                 Skills.Starstrike()
                 sleep 5
             }
+        } else {
+            sleep 200
         }
 
         While (Utility.GameActive() && Availability.IsSpiritVortexAvailable()) {
