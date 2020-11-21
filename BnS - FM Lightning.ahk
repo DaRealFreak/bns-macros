@@ -12,10 +12,8 @@ SetBatchLines, -1
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 F1::
 	MouseGetPos, mouseX, mouseY
-	PixelGetColor, color, %mouseX%, %mouseY%, RGB
-	StringRight color,color,10 ;
-	Clipboard = %mouseX%, %OmouseY% %color%
-	tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
+	color := Utility.GetColor(mouseX, mouseY, r, g, b)
+	tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%`nR:%r% G:%g% B:%b%
 	SetTimer, RemoveToolTip, -5000
 	return
 
@@ -49,6 +47,12 @@ $XButton1::
 	{
 		Rotations.Default()
 	}
+	return
+
+F2::
+	topColor := Utility.GetColor(663 + 25, 855, r, g, b)
+	topColor2 := Utility.GetColor(702 + 25, 855, r2, g2, b2)
+	tooltip % topColor ", " r ", " g ", " b "`n" topColor2 ", " r2 ", " g2 ", " b2
 	return
 
 ; everything related to checking availability of skills or procs
@@ -189,6 +193,25 @@ class Availability
 	IsOverchargeAvailable() {
 		chargeColor := Utility.GetColor(1099,894)
 		return chargeColor == "0x5178B4" || chargeColor == "0x2D4364"
+	}
+
+	GetGodModeCd() {
+		; start of cd icons
+		debuffIconStartPos := 663
+		Loop, 10
+		{
+			startPos := debuffIconStartPos + (A_Index - 1) * 39
+			Utility.GetColor(startPos + 25, 855, tr, tg, tb)
+			Utility.GetColor(startPos + 25, 871, br, bg, bb)
+			if (br > 120 && br < 160 && bg > 120 && bg < 160 && bb > 120 && bb < 160) {
+				return "long"
+			} else if (tr > 240 && tg > 220 && tb > 170 && tb < 200) {
+				return "short"
+			} else if (br > 230 && bg > 230 && bb > 230) {
+				return "shortWaiting"
+			}
+		}
+		return "off"
 	}
 
 	IsUltrashockAvailable() {
@@ -345,29 +368,19 @@ class Rotations
 				}
 
 				if (Availability.IsOverchargeAvailable()) {
+					godModeCd := Availability.GetGodModeCd()
 					; case: godmode long cd (every second overcharge)
-					ImageSearch, FoundX, FoundY, 600, 800, 1000, 900, Bns - FM Lightning Godmode Long CD.png
-					if (ErrorLevel = 0) {
+					if (godModeCd == "long") {
 						While (Utility.GameActive() && Availability.IsOverchargeAvailable() && GetKeyState("F23","p")) {
 							Skills.LMB()
 							sleep 5
 						}
 					} else {
 						; case: godmode nearly ready again
-						ImageSearch, FoundX, FoundY, 600, 800, 1000, 900, Bns - FM Lightning Godmode Short CD.png
-						if (ErrorLevel = 0) {
+						if (godModeCd == "short" || godModeCd == "off") {
 							While (Utility.GameActive() && Availability.IsOverchargeAvailable() && GetKeyState("F23","p")) {
 								Skills.LMB()
 								sleep 5
-							}
-						} else {
-							; case: godmode fully off cd
-							ImageSearch, FoundX, FoundY, 600, 800, 1000, 900, Bns - FM Lightning Godmode CD.png
-							if (ErrorLevel = 1) {
-								While (Utility.GameActive() && Availability.IsOverchargeAvailable() && GetKeyState("F23","p")) {
-									Skills.LMB()
-									sleep 5
-								}
 							}
 						}
 					}
@@ -434,6 +447,14 @@ class Rotations
 					Skills.StormWrath()
 					sleep 5
 				} else {
+					if (Availability.IsTalismanAvailable()) {
+						While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
+						{
+							Skills.Talisman()
+							sleep 5
+						}
+					}
+
 					if (Availability.IsGodmodeEnding()) {
 						While (Utility.GameActive() && GetKeyState("F23","p"))
 						{
@@ -510,10 +531,13 @@ class Rotations
 class Utility
 {
     ;return the color at the passed position
-    GetColor(x,y)
+    GetColor(x, y, ByRef red:=0, ByRef green:=0, ByRef blue:=0)
     {
         PixelGetColor, color, x, y, RGB
         StringRight color,color,10
+		red := ((color & 0xFF0000) >> 16)
+		green := ((color & 0xFF00) >> 8)
+		blue := (color & 0xFF)
 		Return color
 	}
 
