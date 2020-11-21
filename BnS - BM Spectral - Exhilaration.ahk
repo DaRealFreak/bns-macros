@@ -51,6 +51,38 @@ $XButton1::
     }
     return
 
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & c::
+    ; way to deal with input lags on iframes without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsGuardianBladesAvailable())
+	{
+        Skills.GuardianBlades()
+        sleep 5
+	}
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & q::
+    ; way to deal with input lags on iframes without releasing the macro
+    if (Availability.IsBlindsideAvailable()) {
+        While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsBlindsideAvailable())
+        {
+            Skills.Blindside()
+            sleep 5
+        }
+    } else {
+        if (Availability.IsStrafeAvailable()) {
+            While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsStrafeAvailable())
+            {
+                Skills.Strafe()
+                sleep 5
+            }
+        }
+    }
+
+    return
+
 ; everything related to checking availability of skills or procs
 class Availability
 {
@@ -62,16 +94,29 @@ class Availability
 
     IsSwordFallAvailable()
     {
-        ; check for color of Swordfall skill icon
         return Utility.GetColor(1107,912) == "0x130B41"
     }
 
     IsSpiritVortexAvailable()
     {
-        ; check for color of Spirit Vortex skill icon
         return Utility.GetColor(1036,963) == "0x2828C9"
     }
     
+    IsGuardianBladesAvailable()
+    {
+        return Utility.GetColor(985,961) == "0x081A30"
+    }
+
+    IsBlindsideAvailable()
+    {
+        return Utility.GetColor(682,894) == "0xEBB0BA"
+    }
+
+    IsStrafeAvailable()
+    {
+        return Utility.GetColor(682,894) == "0xEDCEB5"
+    }
+
     IsLmbAvailable()
     {
         lmbColor := Utility.GetColor(1103,906)
@@ -122,6 +167,14 @@ class Skills {
         send t
     }
 
+    Blindside() {
+        send q
+    }
+
+    Strafe() {
+        send q
+    }
+
     SpiritVortex() {
         send v
     }
@@ -132,6 +185,10 @@ class Skills {
 
     LightningDraw() {
         send 4
+    }
+
+    GuardianBlades() {
+        send c
     }
 
     Talisman() {
