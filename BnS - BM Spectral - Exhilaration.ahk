@@ -83,6 +83,17 @@ $XButton1::
 
     return
 
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & v::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsSpiritVortexAvailable())
+	{
+        Skills.SpiritVortex()
+        sleep 5
+	}
+
+    return
+
 ; everything related to checking availability of skills or procs
 class Availability
 {
