@@ -318,7 +318,7 @@ class Rotations
 			; activate lightning strike right before a weapon reset
 			While (Utility.GameActive() && Availability.IsLightningStrikeAvailable() && GetKeyState("F23","p"))
 			{
-				Skills.LightningStorm()
+				Skills.LightningStrike()
 				sleep 5
 			}
 		}
@@ -433,12 +433,6 @@ class Rotations
 							lastStormCloud := A_TickCount
 						}
 					}
-
-					While (Utility.GameActive() && Availability.IsLightningStormAvailable() && !Availability.IsLightningStrikeAvailable() && !Availability.IsGodModeClose() && GetKeyState("F23","p"))
-					{
-						Skills.LightningStorm()
-						sleep 5
-					}
 				}
 
 				return
@@ -452,10 +446,10 @@ class Rotations
 					sleep 5
 				} else {
 					if (Availability.IsGodmodeEnding()) {
-						While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsGodmodeEnding())
+						While (Utility.GameActive() && GetKeyState("F23","p") && Availability.GetStance() == "godmode" && !Availability.IsUltrashockCasting() && !Availability.IsWeaponResetClose())
 						{
 							Skills.Ultrashock()
-							sleep 5
+							sleep 25
 						}
 
 						If (Availability.IsUltrashockCasting()) {
