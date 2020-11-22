@@ -206,12 +206,22 @@ class Availability
 	}
 
 	IsUltrashockCasting() {
-		return Utility.GetColor(453,962) == "0xF5B20C"
+		Utility.GetColor(451,964,r)
+		return r >= 190
 	}
 
 	IsUltrashockOnCooldown() {
-		ImageSearch, FoundX, FoundY, 600, 800, 1000, 900, Bns - FM Lightning Ultrashock.png
-        return ErrorLevel = 0
+		; start of cd icons
+		debuffIconStartPos := 663
+		Loop, 10
+		{
+			startPos := debuffIconStartPos + (A_Index - 1) * 39
+			color := Utility.GetColor(startPos + 18, 852, r, g, b)
+			if (r > 100 && r < 130 && g > 110 && g < 150 && b > 130 && b < 160) {
+				return true
+			}
+		}
+		return false
 	}
 
     IsWeaponResetClose()
@@ -365,6 +375,13 @@ class Rotations
 					} else {
 						; case: godmode nearly ready again
 						if (godModeCd == "short" || godModeCd == "off") {
+							if (Availability.IsTalismanAvailable()) {
+								While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
+								{
+									Skills.Talisman()
+									sleep 5
+								}
+							}
 							While (Utility.GameActive() && Availability.IsOverchargeAvailable() && GetKeyState("F23","p")) {
 								Skills.LMB()
 								sleep 5
@@ -434,28 +451,18 @@ class Rotations
 					Skills.StormWrath()
 					sleep 5
 				} else {
-					if (Availability.IsTalismanAvailable()) {
-						While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
-						{
-							Skills.Talisman()
-							sleep 5
-						}
-					}
-
 					if (Availability.IsGodmodeEnding()) {
-						While (Utility.GameActive() && GetKeyState("F23","p"))
+						While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsGodmodeEnding())
 						{
-							if (!Availability.IsUltrashockAvailable() || Availability.IsUltrashockCasting() || !Availability.IsGodmodeEnding() || Availability.IsUltrashockOnCooldown()) {
-								break
-							}
-
 							Skills.Ultrashock()
-							sleep 20
+							sleep 5
 						}
 
-						ultrashockTick := A_TickCount
-						While (A_TickCount < ultrashockTick + 1200 || Availability.IsUltrashockOnCooldown()) {
-							sleep 5
+						If (Availability.IsUltrashockCasting()) {
+							While (Utility.GameActive() && GetKeyState("F23","p") && !Availability.IsUltrashockOnCooldown())
+							{
+								sleep 5
+							}
 						}
 					}
 
