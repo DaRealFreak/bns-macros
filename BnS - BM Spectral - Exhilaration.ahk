@@ -84,6 +84,28 @@ $XButton1::
     return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & e::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsCometStepAvailable())
+	{
+        Skills.CometStep()
+        sleep 5
+	}
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & 1::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsDeflectAvailable())
+	{
+        Skills.Deflect()
+        sleep 5
+	}
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
 ~f23 & v::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsSpiritVortexAvailable())
@@ -126,6 +148,16 @@ class Availability
     IsStrafeAvailable()
     {
         return Utility.GetColor(682,894) == "0xEDCEB5"
+    }
+
+    IsCometStepAvailable()
+    {
+        return Utility.GetColor(735,894) == "0x332769"
+    }
+
+    IsDeflectAvailable()
+    {
+        return Utility.GetColor(885,894) == "0x001A2A"
     }
 
     IsLmbAvailable()
@@ -184,6 +216,14 @@ class Skills {
 
     Strafe() {
         send q
+    }
+
+    CometStep() {
+        send e
+    }
+
+    Deflect() {
+        send 1
     }
 
     SpiritVortex() {
