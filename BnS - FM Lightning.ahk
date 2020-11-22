@@ -184,10 +184,10 @@ class Availability
 
 	GetGodModeCd() {
 		; start of cd icons
-		debuffIconStartPos := 663
+		cdIconStartPos := 663
 		Loop, 10
 		{
-			startPos := debuffIconStartPos + (A_Index - 1) * 39
+			startPos := cdIconStartPos + (A_Index - 1) * 39
 			Utility.GetColor(startPos + 25, 855, tr, tg, tb)
 			Utility.GetColor(startPos + 25, 871, br, bg, bb)
 			if (br > 120 && br < 160 && bg > 120 && bg < 160 && bb > 120 && bb < 160) {
@@ -212,10 +212,10 @@ class Availability
 
 	IsUltrashockOnCooldown() {
 		; start of cd icons
-		debuffIconStartPos := 663
+		cdIconStartPos := 663
 		Loop, 10
 		{
-			startPos := debuffIconStartPos + (A_Index - 1) * 39
+			startPos := cdIconStartPos + (A_Index - 1) * 39
 			color := Utility.GetColor(startPos + 18, 852, r, g, b)
 			if (r > 100 && r < 130 && g > 110 && g < 150 && b > 130 && b < 160) {
 				return true
@@ -446,14 +446,14 @@ class Rotations
 					sleep 5
 				} else {
 					if (Availability.IsGodmodeEnding()) {
-						While (Utility.GameActive() && GetKeyState("F23","p") && Availability.GetStance() == "godmode" && !Availability.IsUltrashockCasting() && !Availability.IsWeaponResetClose())
+						While (Utility.GameActive() && GetKeyState("F23","p") && Availability.GetStance() == "godmode" && !Availability.IsUltrashockCasting())
 						{
 							Skills.Ultrashock()
 							sleep 25
 						}
 
 						If (Availability.IsUltrashockCasting()) {
-							While (Utility.GameActive() && GetKeyState("F23","p") && !Availability.IsUltrashockOnCooldown())
+							While (Utility.GameActive() && GetKeyState("F23","p") && !Availability.IsUltrashockOnCooldown() && Availability.IsUltrashockCasting())
 							{
 								sleep 5
 							}
