@@ -123,22 +123,16 @@ class Availability
 
 			; debuff with moderate dark moderate blue found, check bottom color too
 			if (vred < 50 && vgreen < 100 && vgreen > 50 && vblue > 100) {
-				bottomColor := Utility.GetColor(startPos + 4, 136)
-				vblue := (bottomColor & 0xFF)
-				vgreen := ((bottomColor & 0xFF00) >> 8)
-				vred := ((bottomColor & 0xFF0000) >> 16)
-
-				; dark moderate violet found, return true assuming that the enemy is galvanized
-				if (vred > 50 && vred < 100 && vgreen < 70 && vgreen > 20 && vblue > 100) {
-					return true
-				}
+				return true
 			}
 		}
 		return false
 	}
 
 	IsOverchargeEnding() {
+		; last pixel of overcharge bar to check if we are still in the phase
 		if (((Utility.GetColor(894, 757) & 0xFF0000) >> 16) > 150) {
+			; pixel to check for no red color anymore to indicate that overcharge is ending
 			if (((Utility.GetColor(918, 749) & 0xFF0000) >> 16) < 150) {
 				return true
 			}
@@ -147,8 +141,10 @@ class Availability
 	}
 
 	IsGodmodeEnding() {
+		; left pixel of godmode bar to check if we are still in the phase
 		leftColor := Utility.GetColor(894, 757)
 		if (((leftColor & 0xFF00) >> 8) > 150 && ((leftColor & 0xFF0000) >> 16) > 150) {
+			; pixel to check for no yellow color anymore to indicate that godmode is ending
 			rightColor := Utility.GetColor(906, 751)
 			if (((rightColor & 0xFF00) >> 8) < 150 && ((rightColor & 0xFF0000) >> 16) < 150) {
 				return true
@@ -183,8 +179,7 @@ class Availability
 	}
 
 	IsOverchargeAvailable() {
-		chargeColor := Utility.GetColor(1099,894)
-		return chargeColor == "0x5178B4" || chargeColor == "0x2D4364"
+		return Utility.GetColor(1099,894) == "0x5178B4"
 	}
 
 	GetGodModeCd() {
