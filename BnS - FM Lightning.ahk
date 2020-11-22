@@ -49,12 +49,6 @@ $XButton1::
 	}
 	return
 
-F2::
-	topColor := Utility.GetColor(663 + 25, 855, r, g, b)
-	topColor2 := Utility.GetColor(702 + 25, 855, r2, g2, b2)
-	tooltip % topColor ", " r ", " g ", " b "`n" topColor2 ", " r2 ", " g2 ", " b2
-	return
-
 ; everything related to checking availability of skills or procs
 class Availability
 {
@@ -63,11 +57,9 @@ class Availability
 		electrocuteColor := Utility.GetColor(885,961)
 		voltSalvoColor := Utility.GetColor(1148,693)
 		; electrocute color checks: available, available on cd, unavailable, unavailable on cd, locked (overcharge mode)
-		if ((electrocuteColor != "0x2F1D0E" && electrocuteColor != "0x1A1008" 
+		if (electrocuteColor != "0x2F1D0E" && electrocuteColor != "0x1A1008" 
 			&& electrocuteColor != "0x0B0B0B" && electrocuteColor != "0x070707" 
-			&& electrocuteColor != "0x242524")
-			; volt salvo color checks: unavailable (switch to godmode for a split second), unavailable on cd (switch to godmode for a split second)
-			|| (voltSalvoColor == "0x0B0B0B" || voltSalvoColor == "0x0F0F0F")) {
+			&& electrocuteColor != "0x242524") {
 			return "godmode"
 		}
 		
