@@ -94,6 +94,18 @@ $XButton1::
 
     return
 
+~f23 & s::
+    If (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 200) {
+        ; way to deal with input lags without releasing the macro
+        While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsEvadeAvailable())
+        {
+            Skills.Evade()
+            sleep 5
+        }
+    }
+    
+    return
+
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 ~f23 & 1::
     ; way to deal with input lags without releasing the macro
@@ -155,6 +167,11 @@ class Availability
         return Utility.GetColor(735,894) == "0x332769"
     }
 
+    IsEvadeAvailable()
+    {
+        return Utility.GetColor(682,961) == "0x875049"
+    }
+
     IsDeflectAvailable()
     {
         return Utility.GetColor(885,894) == "0x001A2A"
@@ -184,7 +201,7 @@ class Availability
     IsWeaponResetClose()
     {
         ; check for weapon reset cooldown (slightly above and below to see if the reset is close)
-        return Utility.GetColor(558,921) == "0xFFBA01" && Utility.GetColor(557,918) != "0xFFBA01"
+        return Utility.GetColor(558,921) == "0xFFBA01" && Utility.GetColor(556,909) != "0xFFBA01"
     }
 
     IsSoulProced()
@@ -242,6 +259,10 @@ class Skills {
         send c
     }
 
+    Evade() {
+        send ss
+    }
+
     Talisman() {
         send 9
     }
@@ -250,17 +271,11 @@ class Skills {
 ; everything rotation related
 class Rotations
 {
+    static lastLightningDrawUse := 0
+
     ; default rotation without any logic for max counts
     Default()
     {
-        Skills.RMB()
-        sleep 5
-
-        if (Availability.IsLightningDrawAvailable()) {
-            Skills.LightningDraw()
-            sleep 5
-        }
-
         Skills.RMB()
         sleep 5
 
@@ -270,6 +285,8 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
+        usedLightningDraw := false
+
         if (Availability.IsBraceletCloseToExpiration()) {
             ; bracelet effect close to expiring, use it before it fully expired to avoid bracelet effect bug
             Rotations.Bracelet()
@@ -281,8 +298,21 @@ class Rotations
         }
 
         if (Availability.IsWeaponResetClose()) {
+            if (Availability.IsLightningDrawAvailable()) {
+                Skills.LightningDraw()
+                sleep 5
+                usedLightningDraw = true
+            }
+
             ; activate bracelet right before a weapon reset
             Rotations.Bracelet()
+        }
+
+        if (Availability.IsLightningDrawAvailable() && A_TickCount > this.lastLightningDrawUse + 8000) {
+            Skills.LightningDraw()
+            sleep 5
+
+            usedLightningDraw = true
         }
 
         Rotations.Default()
@@ -293,12 +323,24 @@ class Rotations
             sleep 5    
         }
 
+        if (!Availability.IsLightningDrawAvailable() && usedLightningDraw) {
+            this.lastLightningDrawUse := A_TickCount
+        }
+
         return
     }
 
     ; activate starstrike and talisman if it's ready
     DpsPhase()
     {
+        ; use lightning draw activating dps phase for exhilaration badge (no animation so use it first)
+        While (Utility.GameActive() && Availability.IsLightningDrawAvailable() && GetKeyState("F23","p"))
+        {
+            Skills.LightningDraw()
+            sleep 5
+            this.lastLightningDrawUse := A_TickCount
+        }
+
         ; use spirit vortex before activating dps phase for exhilaration badge
         While (Utility.GameActive() && Availability.IsSpiritVortexAvailable() && GetKeyState("F23","p"))
         {
