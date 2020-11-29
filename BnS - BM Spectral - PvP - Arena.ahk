@@ -11,16 +11,16 @@ SetBatchLines, -1
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 F1::
-	MouseGetPos, mouseX, mouseY
-	PixelGetColor, color, %mouseX%, %mouseY%, RGB
-	StringRight color,color,10 ;
-	Clipboard = %mouseX%, %OmouseY% %color%
-	tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
-	SetTimer, RemoveToolTip, -5000
-	return
+    MouseGetPos, mouseX, mouseY
+    PixelGetColor, color, %mouseX%, %mouseY%, RGB
+    StringRight color,color,10 ;
+    Clipboard = %mouseX%, %OmouseY% %color%
+    tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
+    SetTimer, RemoveToolTip, -5000
+    return
 
 RemoveToolTip:
-	ToolTip
+    ToolTip
 Return
 
 ^F10::Reload
@@ -29,11 +29,11 @@ Return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $F23::
-	While (Utility.GameActive() && GetKeyState("F23","p"))
-	{
-		Rotations.Default()
-	}
-	return
+    While (Utility.GameActive() && GetKeyState("F23","p"))
+    {
+        Rotations.Default()
+    }
+    return
 
 aircombo := 0
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
@@ -42,14 +42,14 @@ $XButton2::
     aircombo := !aircombo
     if (aircombo) {
         tooltip "activating automatic double air combo"
-    	SetTimer, RemoveToolTip, 1000
+        SetTimer, RemoveToolTip, 1000
         SetTimer, DoubleAirCombo, 0
     } else {
         tooltip "deactivating automatic double air combo"
-    	SetTimer, RemoveToolTip, 1000
+        SetTimer, RemoveToolTip, 1000
         SetTimer, DoubleAirCombo, off
     }
-	return
+    return
 
 DoubleAirCombo:
     Rotations.DoubleAirCombo()
@@ -62,14 +62,14 @@ $XButton1::
     autoEscape := !autoEscape
     if (autoEscape) {
         tooltip "activating automatic escape"
-    	SetTimer, RemoveToolTip, 1000
+        SetTimer, RemoveToolTip, 1000
         SetTimer, AutoEscape, 0
     } else {
         tooltip "deactivating automatic escape"
-    	SetTimer, RemoveToolTip, 1000
+        SetTimer, RemoveToolTip, 1000
         SetTimer, AutoEscape, off
     }
-	return
+    return
 
 AutoEscape:
     Rotations.Escape()
@@ -158,20 +158,20 @@ class Availability
 
     IsTalismanAvailable()
     {
-		; check for talisman cooldown border
-		return Utility.GetColor(559,635) != "0xE46B14"
+        ; check for talisman cooldown border
+        return Utility.GetColor(559,635) != "0xE46B14"
     }
 }
 
 ; skill bindings
 class Skills {
-	LMB() {
-		send r
-	}
+    LMB() {
+        send r
+    }
 
-	RMB() {
-		send t
-	}
+    RMB() {
+        send t
+    }
 
     RisingEagle() {
         send r
@@ -185,21 +185,21 @@ class Skills {
         send f
     }
 
-	SpiritVortex() {
-		send v
-	}
+    SpiritVortex() {
+        send v
+    }
 
-	Starstrike() {
-		send y
-	}
+    Starstrike() {
+        send y
+    }
 
-	LightningDraw() {
-		send 4
-	}
+    LightningDraw() {
+        send 4
+    }
 
-	Talisman() {
-		send 9
-	}
+    Talisman() {
+        send 9
+    }
 }
 
 ; everything rotation related
@@ -208,7 +208,7 @@ class Rotations
     ; default rotation without any logic for max counts
     Default()
     {
-		Skills.RMB()
+        Skills.RMB()
         sleep 10
 
         if (Availability.IsLightningDrawAvailable()) {
@@ -360,12 +360,12 @@ class Utility
     {
         PixelGetColor, color, x, y, RGB
         StringRight color,color,10
-		Return color
-	}
+        Return color
+    }
 
-	;check if BnS is the current active window
-	GameActive()
-	{
-		Return WinActive("ahk_class LaunchUnrealUWindowsClient")
-	}
+    ;check if BnS is the current active window
+    GameActive()
+    {
+        Return WinActive("ahk_class LaunchUnrealUWindowsClient")
+    }
 }

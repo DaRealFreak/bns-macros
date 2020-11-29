@@ -11,16 +11,16 @@ SetBatchLines, -1
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 F1::
-	MouseGetPos, mouseX, mouseY
-	PixelGetColor, color, %mouseX%, %mouseY%, RGB
-	StringRight color,color,10 ;
-	Clipboard = %mouseX%, %OmouseY% %color%
-	tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
-	SetTimer, RemoveToolTip, -5000
-	return
+    MouseGetPos, mouseX, mouseY
+    PixelGetColor, color, %mouseX%, %mouseY%, RGB
+    StringRight color,color,10 ;
+    Clipboard = %mouseX%, %OmouseY% %color%
+    tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
+    SetTimer, RemoveToolTip, -5000
+    return
 
 RemoveToolTip:
-	ToolTip
+    ToolTip
 Return
 
 ^F10::Reload
@@ -29,27 +29,27 @@ Return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $F23::
-	While (Utility.GameActive() && GetKeyState("F23","p"))
-	{
-		Rotations.Default()
-	}
-	return
+    While (Utility.GameActive() && GetKeyState("F23","p"))
+    {
+        Rotations.Default()
+    }
+    return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $XButton2::
-	While (Utility.GameActive() && GetKeyState("XButton2","p"))
-	{
+    While (Utility.GameActive() && GetKeyState("XButton2","p"))
+    {
         Rotations.DpsPhase()
-	}
-	return
-	
+    }
+    return
+    
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $XButton1::
-	While (Utility.GameActive() && GetKeyState("XButton1","p"))
-	{
-		Rotations.Bracelet()
-	}
-	return
+    While (Utility.GameActive() && GetKeyState("XButton1","p"))
+    {
+        Rotations.Bracelet()
+    }
+    return
 
 ; everything related to checking availability of skills or procs
 class Availability
@@ -78,36 +78,36 @@ class Availability
 
     IsTalismanAvailable()
     {
-		; check for talisman cooldown border
-		return Utility.GetColor(559,635) != "0xE46B14"
+        ; check for talisman cooldown border
+        return Utility.GetColor(559,635) != "0xE46B14"
     }
 }
 
 ; skill bindings
 class Skills {
-	LMB() {
-		send r
-	}
+    LMB() {
+        send r
+    }
 
-	RMB() {
-		send t
-	}
+    RMB() {
+        send t
+    }
 
-	SpiritVortex() {
-		send v
-	}
+    SpiritVortex() {
+        send v
+    }
 
-	Starstrike() {
-		send y
-	}
+    Starstrike() {
+        send y
+    }
 
-	LightningDraw() {
-		send 4
-	}
+    LightningDraw() {
+        send 4
+    }
 
-	Talisman() {
-		send 9
-	}
+    Talisman() {
+        send 9
+    }
 }
 
 ; everything rotation related
@@ -116,7 +116,7 @@ class Rotations
     ; default rotation without any logic for max counts
     Default()
     {
-		Skills.RMB()
+        Skills.RMB()
         sleep 10
 
         if (Availability.IsLightningDrawAvailable()) {
@@ -148,7 +148,7 @@ class Rotations
         return
     }
 
-	; activate the bracelet
+    ; activate the bracelet
     Bracelet()
     {
         if (Availability.IsSpiritVortexAvailable()) {
@@ -166,12 +166,12 @@ class Utility
     {
         PixelGetColor, color, x, y, RGB
         StringRight color,color,10
-		Return color
-	}
+        Return color
+    }
 
-	;check if BnS is the current active window
-	GameActive()
-	{
-		Return WinActive("ahk_class LaunchUnrealUWindowsClient")
-	}
+    ;check if BnS is the current active window
+    GameActive()
+    {
+        Return WinActive("ahk_class LaunchUnrealUWindowsClient")
+    }
 }

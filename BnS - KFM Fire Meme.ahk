@@ -11,16 +11,16 @@ SetBatchLines, -1
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 F1::
-	MouseGetPos, mouseX, mouseY
-	PixelGetColor, color, %mouseX%, %mouseY%, RGB
-	StringRight color,color,10 ;
-	Clipboard = %mouseX%, %OmouseY% %color%
-	tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
-	SetTimer, RemoveToolTip, -5000
-	return
+    MouseGetPos, mouseX, mouseY
+    PixelGetColor, color, %mouseX%, %mouseY%, RGB
+    StringRight color,color,10 ;
+    Clipboard = %mouseX%, %OmouseY% %color%
+    tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
+    SetTimer, RemoveToolTip, -5000
+    return
 
 RemoveToolTip:
-	ToolTip
+    ToolTip
 Return
 
 ^F10::Reload
@@ -29,27 +29,27 @@ Return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $F23::
-	While (Utility.GameActive() && GetKeyState("F23","p"))
-	{
-		Rotations.FullRotation(true)
-	}
-	return
+    While (Utility.GameActive() && GetKeyState("F23","p"))
+    {
+        Rotations.FullRotation(true)
+    }
+    return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $XButton2::
-	While (Utility.GameActive() && GetKeyState("XButton2","p"))
-	{
-		Rotations.FullRotation(false)
-	}
-	return
-	
+    While (Utility.GameActive() && GetKeyState("XButton2","p"))
+    {
+        Rotations.FullRotation(false)
+    }
+    return
+    
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $XButton1::
-	While (Utility.GameActive() && GetKeyState("XButton1","p"))
-	{
-		Rotations.Default()
-	}
-	return
+    While (Utility.GameActive() && GetKeyState("XButton1","p"))
+    {
+        Rotations.Default()
+    }
+    return
 
 ; everything related to checking availability of skills or procs
 class Availability
@@ -62,39 +62,39 @@ class Availability
 
     IsCometStrikeAvailable()
     {
-		; check for color of Comet Strike skill icon
+        ; check for color of Comet Strike skill icon
         return Utility.GetColor(1037,899) == "0x8B4F24"
     }
 
     IsSearingPalmAvailable() {
-		; check for color of Comet Strike skill icon
+        ; check for color of Comet Strike skill icon
         return Utility.GetColor(1040,911) == "0x12110C"
     }
 
     IsTremorAvailable()
     {
-		; check for color of Tremor skill icon
+        ; check for color of Tremor skill icon
         return Utility.GetColor(1039,962) == "0xC67E5C"
     }
 
     IsSoulProced()
     {
-		; check for soul duration progress bar
+        ; check for soul duration progress bar
         return Utility.GetColor(543,915) == "0x01C1FF"
     }
 
     IsTalismanAvailable()
     {
-		; check for talisman cooldown border
-		return Utility.GetColor(559,635) != "0xE46B14"
+        ; check for talisman cooldown border
+        return Utility.GetColor(559,635) != "0xE46B14"
     }
 }
 
 ; skill bindings
 class Skills {
-	SearingDragon() {
-		send x
-	}
+    SearingDragon() {
+        send x
+    }
 
     Tremor() {
         send v
@@ -108,9 +108,9 @@ class Skills {
         send 4
     }
 
-	Talisman() {
-		send 9
-	}
+    Talisman() {
+        send 9
+    }
 }
 
 ; everything rotation related
@@ -119,13 +119,13 @@ class Rotations
     ; default rotation without any logic for max counts
     Default()
     {
-		Skills.SearingDragon()
+        Skills.SearingDragon()
         sleep 5
 
-		if (Availability.IsCometStrikeAvailable() || Availability.IsSearingPalmAvailable()) {
-			Skills.CometStrike()
-			sleep 5
-		}
+        if (Availability.IsCometStrikeAvailable() || Availability.IsSearingPalmAvailable()) {
+            Skills.CometStrike()
+            sleep 5
+        }
 
         return
     }
@@ -161,7 +161,7 @@ class Rotations
 
         ; loop while BlueBuff is not on cooldown or break if keys aren't pressed anymore
         While (Utility.GameActive() && Availability.IsBlueBuffAvailable() && GetKeyState("F23","p"))
-        {	
+        {    
             Skills.BlueBuff()
             sleep 5
         }
@@ -178,12 +178,12 @@ class Utility
     {
         PixelGetColor, color, x, y, RGB
         StringRight color,color,10
-		Return color
-	}
+        Return color
+    }
 
-	;check if BnS is the current active window
-	GameActive()
-	{
-		Return WinActive("ahk_class LaunchUnrealUWindowsClient")
-	}
+    ;check if BnS is the current active window
+    GameActive()
+    {
+        Return WinActive("ahk_class LaunchUnrealUWindowsClient")
+    }
 }

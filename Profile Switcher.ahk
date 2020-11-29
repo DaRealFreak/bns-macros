@@ -75,5 +75,5 @@ AHKPanic(Kill=0, Pause=0, Suspend=0, SelfToo=0) {
 }
 
 RemoveToolTip:
-	ToolTip
+    ToolTip
 Return

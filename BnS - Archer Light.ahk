@@ -11,16 +11,16 @@ SetBatchLines, -1
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 F1::
-	MouseGetPos, mouseX, mouseY
-	PixelGetColor, color, %mouseX%, %mouseY%, RGB
-	StringRight color,color,10
-	Clipboard = %mouseX%, %OmouseY% %color%
-	tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
-	SetTimer, RemoveToolTip, -5000
-	return
+    MouseGetPos, mouseX, mouseY
+    PixelGetColor, color, %mouseX%, %mouseY%, RGB
+    StringRight color,color,10
+    Clipboard = %mouseX%, %OmouseY% %color%
+    tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
+    SetTimer, RemoveToolTip, -5000
+    return
 
 RemoveToolTip:
-	ToolTip
+    ToolTip
 Return
 
 ^F10::Reload
@@ -30,28 +30,28 @@ Return
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $F23::
     if (Availability.ScriptStrafes()) {
-    	Settimer, Strafes, 15
+        Settimer, Strafes, 15
     }
 
-	While (Utility.GameActive() && GetKeyState("F23","p"))
-	{
-		Rotations.FullRotation(true)
-	}
+    While (Utility.GameActive() && GetKeyState("F23","p"))
+    {
+        Rotations.FullRotation(true)
+    }
 
     if (Availability.ScriptStrafes()) {
         SetTimer, Strafes, Off
     }
 
-	return
+    return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 ~f23 & q::
     ; way to deal with input lags while manually strafing
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsStrafeLeftAvailable())
-	{
+    {
         Skills.StrafeLeft()
         sleep 5
-	}
+    }
 
     return
 
@@ -59,10 +59,10 @@ $F23::
 ~XButton2 & q::
     ; way to deal with input lags while manually strafing
     While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsStrafeLeftAvailable())
-	{
+    {
         Skills.StrafeLeft()
         sleep 5
-	}
+    }
 
     return
 
@@ -70,10 +70,10 @@ $F23::
 ~f23 & e::
     ; way to deal with input lags while manually strafing
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsStrafeRightAvailable())
-	{
+    {
         Skills.StrafeRight()
         sleep 5
-	}
+    }
 
     return
 
@@ -81,37 +81,37 @@ $F23::
 ~XButton2 & e::
     ; way to deal with input lags while manually strafing
     While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsStrafeRightAvailable())
-	{
+    {
         Skills.StrafeRight()
         sleep 5
-	}
+    }
 
     return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $XButton2::
     if (Availability.ScriptStrafes()) {
-    	Settimer, Strafes, 15
+        Settimer, Strafes, 15
     }
     
     While (Utility.GameActive() && GetKeyState("XButton2","p"))
-	{
-		Rotations.FullRotation(false)
-	}
+    {
+        Rotations.FullRotation(false)
+    }
 
     if (Availability.ScriptStrafes()) {
         SetTimer, Strafes, Off
     }
 
-	return
+    return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $XButton1::
-	While (Utility.GameActive() && GetKeyState("XButton1","p"))
-	{
-		Rotations.Default()
-	}
-	return
+    While (Utility.GameActive() && GetKeyState("XButton1","p"))
+    {
+        Rotations.Default()
+    }
+    return
 
 Strafes:
     Rotations.Strafes()
@@ -202,8 +202,8 @@ class Availability
 
     IsTalismanAvailable()
     {
-		; check for talisman cooldown border
-		return Utility.GetColor(559,635) != "0xE46B14"
+        ; check for talisman cooldown border
+        return Utility.GetColor(559,635) != "0xE46B14"
     }
 }
 
@@ -245,9 +245,9 @@ class Skills {
         send z
     }
 
-	Talisman() {
-		send 9
-	}
+    Talisman() {
+        send 9
+    }
 }
 
 ; everything rotation related
@@ -398,12 +398,12 @@ class Utility
     {
         PixelGetColor, color, x, y, RGB
         StringRight color,color,10
-		Return color
-	}
+        Return color
+    }
 
-	;check if BnS is the current active window
-	GameActive()
-	{
-		Return WinActive("ahk_class LaunchUnrealUWindowsClient")
-	}
+    ;check if BnS is the current active window
+    GameActive()
+    {
+        Return WinActive("ahk_class LaunchUnrealUWindowsClient")
+    }
 }

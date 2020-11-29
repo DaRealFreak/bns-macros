@@ -11,16 +11,16 @@ SetBatchLines, -1
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 F1::
-	MouseGetPos, mouseX, mouseY
-	PixelGetColor, color, %mouseX%, %mouseY%, RGB
-	StringRight color,color,10
-	Clipboard = %mouseX%, %OmouseY% %color%
-	tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
-	SetTimer, RemoveToolTip, -5000
-	return
+    MouseGetPos, mouseX, mouseY
+    PixelGetColor, color, %mouseX%, %mouseY%, RGB
+    StringRight color,color,10
+    Clipboard = %mouseX%, %OmouseY% %color%
+    tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
+    SetTimer, RemoveToolTip, -5000
+    return
 
 RemoveToolTip:
-	ToolTip
+    ToolTip
 Return
 
 ^F10::Reload
@@ -29,19 +29,19 @@ Return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $F23::
-	While (Utility.GameActive() && GetKeyState("F23","p"))
-	{
-		Rotations.FullRotation(true)
-	}
-	return
+    While (Utility.GameActive() && GetKeyState("F23","p"))
+    {
+        Rotations.FullRotation(true)
+    }
+    return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 $XButton2::
-	While (Utility.GameActive() && GetKeyState("XButton2","p"))
-	{
-		Rotations.FullRotation(false)
-	}
-	return
+    While (Utility.GameActive() && GetKeyState("XButton2","p"))
+    {
+        Rotations.FullRotation(false)
+    }
+    return
 
 ; everything related to checking availability of skills or procs
 class Availability
@@ -87,29 +87,29 @@ class Availability
 
 ; skill bindings
 class Skills {
-	LMB() {
-		send r
-	}
+    LMB() {
+        send r
+    }
 
-	RMB() {
-		send t
-	}
+    RMB() {
+        send t
+    }
 
-	SpiritVortex() {
-		send v
-	}
+    SpiritVortex() {
+        send v
+    }
 
-	Starstrike() {
-		send y
-	}
+    Starstrike() {
+        send y
+    }
 
-	LightningDraw() {
-		send 4
-	}
+    LightningDraw() {
+        send 4
+    }
 
-	Talisman() {
-		send 9
-	}
+    Talisman() {
+        send 9
+    }
 }
 
 ; everything rotation related
@@ -147,7 +147,7 @@ class Rotations
         ; wait until Spirit Vortex went through without blocking (would lose FS/Slice counts)
         if (Availability.IsLmbAvailable() && !(Availability.IsSwordFallAvailable() && Availability.IsSpiritVortexAvailable())) {
             Skills.LMB()
-            sleep 14	
+            sleep 14    
         }
 
         return
@@ -156,30 +156,30 @@ class Rotations
     ; activate starstrike and talisman if it's ready
     DpsPhase()
     {
-		; use talisman while no cd border and keys are pressed
+        ; use talisman while no cd border and keys are pressed
         While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
         {
             Skills.Talisman()
             sleep 5
         }
-	
+    
         ; check skill border for cooldown, check for skill icon for stance and break if keys aren't pressed anymore
         ; while in stance and stance off cooldown send stance key
         While (Utility.GameActive() && Availability.IsStarstrikeAvailable() && GetKeyState("F23","p"))
         {
-			; use LMB if not used before activating the DPS phase to avoid LMB as first action after FS are available which caused some weird animation delays in my tests
-			if (Availability.IsLmbAvailable() && !Availability.IsSwordFallAvailable()) {
-				Skills.LMB()
-				sleep 5	
-			}
-		
+            ; use LMB if not used before activating the DPS phase to avoid LMB as first action after FS are available which caused some weird animation delays in my tests
+            if (Availability.IsLmbAvailable() && !Availability.IsSwordFallAvailable()) {
+                Skills.LMB()
+                sleep 5    
+            }
+        
             Skills.Starstrike()
             sleep 5
         }
-		
-		; try to use FS as the very first action
-		Skills.RMB()
-		sleep 5
+        
+        ; try to use FS as the very first action
+        Skills.RMB()
+        sleep 5
 
         return
     }
@@ -193,12 +193,12 @@ class Utility
     {
         PixelGetColor, color, x, y, RGB
         StringRight color,color,10
-		return color
-	}
+        return color
+    }
 
-	; check if BnS is the current active window
-	GameActive()
-	{
-		return WinActive("ahk_class LaunchUnrealUWindowsClient")
-	}
+    ; check if BnS is the current active window
+    GameActive()
+    {
+        return WinActive("ahk_class LaunchUnrealUWindowsClient")
+    }
 }

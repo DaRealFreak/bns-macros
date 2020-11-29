@@ -11,16 +11,16 @@ SetBatchLines, -1
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 F1::
-	MouseGetPos, mouseX, mouseY
-	PixelGetColor, color, %mouseX%, %mouseY%, RGB
-	StringRight color,color,10 ;
-	Clipboard = %mouseX%, %OmouseY% %color%
-	tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
-	SetTimer, RemoveToolTip, -5000
-	return
+    MouseGetPos, mouseX, mouseY
+    PixelGetColor, color, %mouseX%, %mouseY%, RGB
+    StringRight color,color,10 ;
+    Clipboard = %mouseX%, %OmouseY% %color%
+    tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
+    SetTimer, RemoveToolTip, -5000
+    return
 
 RemoveToolTip:
-	ToolTip
+    ToolTip
 Return
 
 ^F10::Reload
@@ -55,10 +55,10 @@ $XButton1::
 ~f23 & c::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsGuardianBladesAvailable())
-	{
+    {
         Skills.GuardianBlades()
         sleep 5
-	}
+    }
 
     return
 
@@ -87,10 +87,10 @@ $XButton1::
 ~f23 & e::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsCometStepAvailable())
-	{
+    {
         Skills.CometStep()
         sleep 5
-	}
+    }
 
     return
 
@@ -103,17 +103,17 @@ $XButton1::
             sleep 5
         }
     }
-    
+
     return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 ~f23 & 1::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsDeflectAvailable())
-	{
+    {
         Skills.Deflect()
         sleep 5
-	}
+    }
 
     return
 
@@ -121,10 +121,10 @@ $XButton1::
 ~f23 & v::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsSpiritVortexAvailable())
-	{
+    {
         Skills.SpiritVortex()
         sleep 5
-	}
+    }
 
     return
 
