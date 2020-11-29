@@ -94,8 +94,8 @@ $XButton1::
 
     return
 
-~f23 & s::
-    If (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 200) {
+~f23 & ~s::
+    If (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey > 50 && A_TimeSincePriorHotkey < 200) {
         ; way to deal with input lags without releasing the macro
         While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsEvadeAvailable())
         {
@@ -131,6 +131,11 @@ $XButton1::
 ; everything related to checking availability of skills or procs
 class Availability
 {
+    UseThunderCrash()
+    {
+        return true
+    }
+
     IsStarstrikeAvailable()
     {
         ; check for color of Starstrike skill icon and cooldown color
@@ -188,9 +193,21 @@ class Availability
         return Utility.GetColor(1036,895) != "0x2B1A80"
     }
 
+    IsThunderCrashAvailable()
+    {
+        return Utility.GetColor(935,961) == "0x1330CC"
+    }
+
     IsBraceletCloseToExpiration()
     {
         return Utility.GetColor(596,921) != "0x01C1FF"
+    }
+
+    IsInDpsPhase()
+    {
+        color := Utility.GetColor(1148,894)
+        ; check falling stars for off cd and on cd
+        return color == "0x26267D" || color == "0x151546"
     }
 
     IsBraceletActive()
@@ -259,6 +276,10 @@ class Skills {
         send c
     }
 
+    ThunderCrash() {
+        send x
+    }
+
     Evade() {
         send ss
     }
@@ -321,6 +342,11 @@ class Rotations
         if (Availability.IsLmbAvailable() && (!(Availability.IsSwordFallAvailable() && Availability.IsSpiritVortexAvailable()) || Availability.IsBraceletActive())) {
             Skills.LMB()
             sleep 5    
+        }
+
+        if (Availability.UseThunderCrash() && Availability.IsThunderCrashAvailable() && !Availability.IsInDpsPhase()) {
+            Skills.ThunderCrash()
+            sleep 5
         }
 
         if (!Availability.IsLightningDrawAvailable() && usedLightningDraw) {
