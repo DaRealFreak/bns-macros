@@ -51,6 +51,50 @@ $XButton1::
     }
     return
 
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & c::
+    ; way to deal with input lags on iframes without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsNightFuryAvailable())
+    {
+        Skills.NightFury()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & e::
+    ; way to deal with input lags on iframes without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsShunpoAvailable())
+    {
+        Skills.Shunpo()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & q::
+    ; way to deal with input lags on iframes without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsShadowDanceAvailable())
+    {
+        Skills.ShadowDance()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & z::
+    ; way to deal with input lags on iframes without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsUpheavalAvailable())
+    {
+        Skills.Upheaval()
+        sleep 5
+    }
+
+    return
+
 ; everything related to checking availability of skills or procs
 class Availability
 {
@@ -105,6 +149,26 @@ class Availability
         return Utility.GetColor(1304,902) == "0xA06645"
     }
 
+    IsUpheavalAvailable()
+    {
+        return Utility.GetColor(885,961) == "0x8F27F3"
+    }
+
+    IsShadowDanceAvailable()
+    {
+        return Utility.GetColor(682,894) == "0x0E0B0E"
+    }
+
+    IsShunpoAvailable()
+    {
+        return Utility.GetColor(735,894) == "0xEFBAA1"
+    }
+
+    IsNightFuryAvailable()
+    {
+        return Utility.GetColor(985,961) == "0x1F0033"
+    }
+
     IsSoulProced()
     {
         ; check for soul duration progress bar
@@ -150,6 +214,22 @@ class Skills {
 
     BlueBuff() {
         send v
+    }
+
+    Upheaval() {
+        send z
+    }
+
+    ShadowDance() {
+        send q
+    }
+
+    Shunpo() {
+        send e
+    }
+
+    NightFury() {
+        send c
     }
 
     Phantom() {
