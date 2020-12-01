@@ -344,7 +344,7 @@ class Rotations
             sleep 5    
         }
 
-        if (Availability.UseThunderCrash() && Availability.IsThunderCrashAvailable() && !Availability.IsInDpsPhase()) {
+        if (Availability.UseThunderCrash() && Availability.IsThunderCrashAvailable() && !Availability.IsSwordFallAvailable() && !Availability.IsInDpsPhase()) {
             Skills.ThunderCrash()
             sleep 5
         }
