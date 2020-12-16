@@ -138,8 +138,7 @@ class Availability
 
     IsStarstrikeAvailable()
     {
-        ; check for color of Starstrike skill icon and cooldown color
-        return Utility.GetColor(880,980) == "0x0A3EE7" && Utility.GetColor(885,960) != "0x6D3A20"
+        return Utility.GetColor(885,961) == "0x080F46"
     }
 
     IsSwordFallAvailable()
@@ -149,7 +148,7 @@ class Availability
 
     IsSpiritVortexAvailable()
     {
-        return Utility.GetColor(1036,963) == "0x2828C9"
+        return Utility.GetColor(1035,961) == "0x241AA2"
     }
     
     IsGuardianBladesAvailable()
@@ -230,7 +229,7 @@ class Availability
     IsTalismanAvailable()
     {
         ; check for talisman cooldown border
-        return Utility.GetColor(559,635) != "0xE46B14"
+        return Utility.GetColor(557,635) != "0xE46B14"
     }
 }
 
