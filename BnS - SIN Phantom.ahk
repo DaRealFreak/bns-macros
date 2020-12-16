@@ -85,6 +85,17 @@ $XButton1::
     return
 
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & 1::
+    ; way to deal with input lags on iframes without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsPhantomDashAvailable())
+    {
+        Skills.PhantomDash()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
 ~f23 & z::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsUpheavalAvailable())
@@ -99,6 +110,11 @@ $XButton1::
 class Availability
 {
     WaitForSoul() {
+        return false
+    }
+
+    UseShadowSlash() {
+        ; false for exhilaration badge, true for stoic
         return false
     }
 
@@ -147,6 +163,11 @@ class Availability
     IsAwakenAvailable()
     {
         return Utility.GetColor(1304,902) == "0xA06645"
+    }
+
+    IsPhantomDashAvailable()
+    {
+        return Utility.GetColor(885,894) == "0x1B162C"
     }
 
     IsUpheavalAvailable()
@@ -220,6 +241,10 @@ class Skills {
         send z
     }
 
+    PhantomDash() {
+        send 1
+    }
+
     ShadowDance() {
         send q
     }
@@ -254,7 +279,7 @@ class Rotations
         sleep 5
 
         ; ToDo: only use shadow slash if not full stacked already
-        if (Availability.IsShadowSlashAvailable()) {
+        if (Availability.UseShadowSlash() && Availability.IsShadowSlashAvailable()) {
             Skills.ShadowSlash()
             sleep 5
         }
@@ -297,6 +322,8 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
+        Rotations.Default()
+
         if (useDpsPhase && (Availability.IsPhantomAvailable() && (!Availability.WaitForSoul() || Availability.IsSoulProced()))) {
             ; dps phase is ready and soul active, use it
             Rotations.DpsPhase()
@@ -305,8 +332,6 @@ class Rotations
         if (useDpsPhase && Availability.IsAwakenAvailable()) {
             Rotations.BlueBuff()
         }
-
-        Rotations.Default()
 
         return
     }
