@@ -94,18 +94,6 @@ $XButton1::
 
     return
 
-~f23 & ~s::
-    If (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey > 50 && A_TimeSincePriorHotkey < 200) {
-        ; way to deal with input lags without releasing the macro
-        While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsEvadeAvailable())
-        {
-            Skills.Evade()
-            sleep 5
-        }
-    }
-
-    return
-
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 ~f23 & 1::
     ; way to deal with input lags without releasing the macro
@@ -133,7 +121,7 @@ class Availability
 {
     UseThunderCrash()
     {
-        return true
+        return false
     }
 
     IsStarstrikeAvailable()
@@ -212,6 +200,12 @@ class Availability
     IsBraceletActive()
     {
         return !Availability.IsBraceletCloseToExpiration()
+    }
+
+    IsBadgeEffectActive()
+    {
+        ; bracelet at break to 6 seconds
+        return Utility.GetColor(601,900) == "0x01C1FF"
     }
 
     IsWeaponResetClose()
@@ -307,7 +301,7 @@ class Rotations
     {
         usedLightningDraw := false
 
-        if (Availability.IsBraceletCloseToExpiration()) {
+        if (Availability.IsBraceletCloseToExpiration() || (Availability.IsInDpsPhase() && !Availability.IsBadgeEffectActive())) {
             ; bracelet effect close to expiring, use it before it fully expired to avoid bracelet effect bug
             Rotations.Bracelet()
         }
