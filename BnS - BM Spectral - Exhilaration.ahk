@@ -131,7 +131,7 @@ class Availability
 
     IsSwordFallAvailable()
     {
-        return Utility.GetColor(1107,912) == "0x130B41"
+        return Utility.GetColor(1149,694) == "0x01060E"
     }
 
     IsSpiritVortexAvailable()
@@ -273,6 +273,10 @@ class Skills {
         send x
     }
 
+    SwordFall() {
+        send f
+    }
+
     Evade() {
         send ss
     }
@@ -290,8 +294,21 @@ class Rotations
     ; default rotation without any logic for max counts
     Default()
     {
-        Skills.RMB()
-        sleep 5
+        ; rightclick not on cd, use it above anything else
+        if (Utility.GetColor(1148,892) == "0xE46B14") {
+            if (Availability.IsSwordFallAvailable()) {
+                Skills.SwordFall()
+                sleep 5
+            }
+
+            if (Availability.IsLMBAvailable()) {
+                Skills.LMB()
+                sleep 5
+            }
+        } else {
+            Skills.RMB()
+            sleep 5
+        }
 
         return
     }
