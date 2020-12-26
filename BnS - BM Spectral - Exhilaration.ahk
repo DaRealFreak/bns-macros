@@ -289,26 +289,14 @@ class Skills {
 ; everything rotation related
 class Rotations
 {
+    static usedLightningDraw := false
     static lastLightningDrawUse := 0
 
     ; default rotation without any logic for max counts
     Default()
     {
-        ; rightclick not on cd, use it above anything else
-        if (Utility.GetColor(1148,892) == "0xE46B14") {
-            if (Availability.IsSwordFallAvailable()) {
-                Skills.SwordFall()
-                sleep 5
-            }
-
-            if (Availability.IsLMBAvailable()) {
-                Skills.LMB()
-                sleep 5
-            }
-        } else {
-            Skills.RMB()
-            sleep 5
-        }
+        Skills.RMB()
+        sleep 5
 
         return
     }
@@ -316,51 +304,53 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
-        usedLightningDraw := false
-
-        if (Availability.IsBraceletCloseToExpiration() || (Availability.IsInDpsPhase() && !Availability.IsBadgeEffectActive())) {
-            ; bracelet effect close to expiring, use it before it fully expired to avoid bracelet effect bug
-            Rotations.Bracelet()
-        }
-
-        if (useDpsPhase && (Availability.IsStarstrikeAvailable() && Availability.IsSoulProced())) {
-            ; dps phase is ready and soul active, use it
-            Rotations.DpsPhase()
-        }
-
-        if (Availability.IsWeaponResetClose()) {
-            if (Availability.IsLightningDrawAvailable()) {
-                Skills.LightningDraw()
-                sleep 5
-                usedLightningDraw = true
+        ; most left: 1148, 892
+        ; rightclick not on cd, use it above anything else
+        if (Utility.GetColor(1148,892) == "0xE46B14") {
+            shouldRefreshLightningDraw := Availability.IsLightningDrawAvailable() && A_TickCount > this.lastLightningDrawUse + 8000
+            if (!shouldRefreshLightningDraw && this.usedLightningDraw) {
+                this.usedLightningDraw := false
+                this.lastLightningDrawUse := A_TickCount
             }
 
-            ; activate bracelet right before a weapon reset
-            Rotations.Bracelet()
-        }
+            if (Availability.IsBraceletCloseToExpiration() || (Availability.IsInDpsPhase() && !Availability.IsBadgeEffectActive())) {
+                ; bracelet effect close to expiring, use it before it fully expired to avoid bracelet effect bug
+                Rotations.Bracelet()
+            }
 
-        if (Availability.IsLightningDrawAvailable() && A_TickCount > this.lastLightningDrawUse + 8000) {
-            Skills.LightningDraw()
-            sleep 5
+            if (useDpsPhase && (Availability.IsStarstrikeAvailable() && Availability.IsSoulProced())) {
+                ; dps phase is ready and soul active, use it
+                Rotations.DpsPhase()
+            }
 
-            usedLightningDraw = true
-        }
+            if (Availability.IsWeaponResetClose()) {
+                if (Availability.IsLightningDrawAvailable()) {
+                    Skills.LightningDraw()
+                    sleep 5
+                }
 
-        Rotations.Default()
+                if (Availability.IsSpiritVortexAvailable()) {
+                    Rotations.Bracelet()
+                }
+            }
 
-        ; wait until Spirit Vortex went through without blocking (would lose FS/Slice counts) or use it if we still have bracelet uptime
-        if (Availability.IsLmbAvailable() && (!(Availability.IsSwordFallAvailable() && Availability.IsSpiritVortexAvailable()) || Availability.IsBraceletActive())) {
-            Skills.LMB()
-            sleep 5    
-        }
+            if (shouldRefreshLightningDraw) {
+                Skills.LightningDraw()
+                send 5
+                this.usedLightningDraw := true
+            } else {
+                if (Availability.IsLmbAvailable()) {
+                    Skills.LMB()
+                }
 
-        if (Availability.UseThunderCrash() && Availability.IsThunderCrashAvailable() && !Availability.IsSwordFallAvailable() && !Availability.IsInDpsPhase()) {
-            Skills.ThunderCrash()
-            sleep 5
-        }
+                if (Availability.UseThunderCrash() && Availability.IsThunderCrashAvailable() && !Availability.IsSwordFallAvailable() && !Availability.IsInDpsPhase()) {
+                    Skills.ThunderCrash()
+                    sleep 5
+                }
+            }
 
-        if (!Availability.IsLightningDrawAvailable() && usedLightningDraw) {
-            this.lastLightningDrawUse := A_TickCount
+        } else {
+            this.Default()
         }
 
         return
