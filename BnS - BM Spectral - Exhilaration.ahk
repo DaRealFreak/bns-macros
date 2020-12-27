@@ -304,6 +304,16 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
+        if (useDpsPhase && (Availability.IsStarstrikeAvailable() && Availability.IsSoulProced())) {
+            ; dps phase is ready and soul active, use it
+            Rotations.DpsPhase()
+        }
+
+        if (Availability.IsBraceletCloseToExpiration() || (Availability.IsInDpsPhase() && !Availability.IsBadgeEffectActive())) {
+            ; bracelet effect close to expiring, use it before it fully expired to avoid bracelet effect bug
+            Rotations.Bracelet()
+        }
+
         ; most left: 1148, 892
         ; rightclick not on cd, use it above anything else
         if (Utility.GetColor(1148,892) == "0xE46B14") {
@@ -311,16 +321,6 @@ class Rotations
             if (!shouldRefreshLightningDraw && this.usedLightningDraw) {
                 this.usedLightningDraw := false
                 this.lastLightningDrawUse := A_TickCount
-            }
-
-            if (Availability.IsBraceletCloseToExpiration() || (Availability.IsInDpsPhase() && !Availability.IsBadgeEffectActive())) {
-                ; bracelet effect close to expiring, use it before it fully expired to avoid bracelet effect bug
-                Rotations.Bracelet()
-            }
-
-            if (useDpsPhase && (Availability.IsStarstrikeAvailable() && Availability.IsSoulProced())) {
-                ; dps phase is ready and soul active, use it
-                Rotations.DpsPhase()
             }
 
             if (Availability.IsWeaponResetClose()) {
@@ -336,7 +336,7 @@ class Rotations
 
             if (shouldRefreshLightningDraw) {
                 Skills.LightningDraw()
-                send 5
+                sleep 5
                 this.usedLightningDraw := true
             } else {
                 if (Availability.IsLmbAvailable()) {
