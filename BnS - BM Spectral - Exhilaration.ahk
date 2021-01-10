@@ -9,13 +9,14 @@ SetDefaultMouseSpeed, 0
 SetWinDelay, -1
 SetBatchLines, -1
 
+#Include %A_ScriptDir%\lib\utility.ahk
+
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 F1::
     MouseGetPos, mouseX, mouseY
-    PixelGetColor, color, %mouseX%, %mouseY%, RGB
-    StringRight color,color,10 ;
-    Clipboard = %mouseX%, %OmouseY% %color%
-    tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%
+    color := Utility.GetColor(mouseX, mouseY, r, g, b)
+    tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%`nR:%r% G:%g% B:%b%
+    Clipboard := "Utility.GetColor(" mouseX "," mouseY ") == `""" color "`"""
     SetTimer, RemoveToolTip, -5000
     return
 
@@ -409,23 +410,5 @@ class Rotations
             Skills.SpiritVortex()
             sleep 5
         }
-    }
-}
-
-; everything utility related
-class Utility
-{
-    ;return the color at the passed position
-    GetColor(x,y)
-    {
-        PixelGetColor, color, x, y, RGB
-        StringRight color,color,10
-        Return color
-    }
-
-    ;check if BnS is the current active window
-    GameActive()
-    {
-        Return WinActive("ahk_class LaunchUnrealUWindowsClient")
     }
 }
