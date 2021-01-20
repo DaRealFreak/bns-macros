@@ -3,6 +3,7 @@
 #InstallMouseHook
 #SingleInstance force
 ListLines Off
+Process, Priority, , A
 SetKeyDelay, -1, -1
 SetMouseDelay, -1
 SetDefaultMouseSpeed, 0
@@ -186,6 +187,11 @@ class Availability
         return Utility.GetColor(935,961) == "0x1330CC"
     }
 
+    IsRmbUnavailable()
+    {
+        return Utility.GetColor(1148,892) == "0xE46B14"
+    }
+
     IsBraceletCloseToExpiration()
     {
         return Utility.GetColor(596,921) != "0x01C1FF"
@@ -315,9 +321,8 @@ class Rotations
             Rotations.Bracelet()
         }
 
-        ; most left: 1148, 892
         ; rightclick not on cd, use it above anything else
-        if (Utility.GetColor(1148,892) == "0xE46B14") {
+        if (Availability.IsRmbUnavailable()) {
             shouldRefreshLightningDraw := Availability.IsLightningDrawAvailable() && A_TickCount > this.lastLightningDrawUse + 8000
             if (!shouldRefreshLightningDraw && this.usedLightningDraw) {
                 this.usedLightningDraw := false
