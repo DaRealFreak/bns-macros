@@ -316,6 +316,9 @@ class Rotations
             Rotations.DpsPhase()
         }
 
+        ; cases covered:
+        ; - bracelet expiring
+        ; - mystic badge expired + in starstrike stance
         if (Availability.IsBraceletCloseToExpiration() || (Availability.IsInDpsPhase() && !Availability.IsBadgeEffectActive())) {
             ; bracelet effect close to expiring, use it before it fully expired to avoid bracelet effect bug
             Rotations.Bracelet()
