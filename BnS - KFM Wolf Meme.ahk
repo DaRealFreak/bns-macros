@@ -181,7 +181,7 @@ class Rotations
     {
         ; sleep since final combo hit is on autocast
         if (Availability.IsFinalComboHitVisible()) {
-            sleep 5
+            sleep 150
             return
         }
 
