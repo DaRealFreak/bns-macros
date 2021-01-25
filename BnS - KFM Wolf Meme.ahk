@@ -191,13 +191,13 @@ class Rotations
                 sleep 5
             } else {
                 ; searing stomp reduces incinerate cd, so don't use searing stomp if incinerate is available
-                While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsSearingStompAvailable()) {
+                While (Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p")) && Availability.IsSearingStompAvailable()) {
                     Skills.SearingStomp()
                     sleep 5
                 }
 
                 ; rampage doesn't improve uptime on buffs and is currently dmg loss with the titan stance XML
-                ;While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsRampageAvailable() && Availability.IsSearingStompOnLongCooldown()) {
+                ;While (Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p")) && Availability.IsRampageAvailable() && Availability.IsSearingStompOnLongCooldown()) {
                 ;    Skills.Rampage()
                 ;    sleep 5
                 ;}
@@ -209,7 +209,7 @@ class Rotations
                         this.comboIndex += 1
                     }
 
-                    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsTitanStrikeAvailable()) {
+                    While (Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p")) && Availability.IsTitanStrikeAvailable()) {
                         Skills.TitanStrike()
                         sleep 5
                     }
