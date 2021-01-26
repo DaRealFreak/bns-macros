@@ -53,9 +53,50 @@ $XButton1::
     }
     return
 
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & q::
+    ; way to deal with input lags on iframes without releasing the macro
+    if (Availability.IsShadowDanceAvailable()) {
+        While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsShadowDanceAvailable())
+        {
+            Skills.ShadowDance()
+            sleep 5
+        }
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & e::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsFootworkAvailable())
+    {
+        Skills.Footwork()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & c::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsFlurryAvailable())
+    {
+        Skills.Flurry()
+        sleep 5
+    }
+
+    return
+
 ; everything related to checking availability of skills or procs
 class Availability
 {
+    UseWolf()
+    {
+        ; if the gear is not high enough wolf is actually dmg loss, so here you can decide if you even want to use wolf
+        return true
+    }
+
     IsBlueBuffAvailable()
     {
         ; check for color of BlueBuff skill icon
@@ -97,19 +138,70 @@ class Availability
         return Utility.GetColor(1150,691) == "0x7D2013"
     }
 
+    IsWolfVisible()
+    {
+        color := Utility.GetColor(1035,961)
+        return color == "0x04090E" || color == "0x070F18"
+    }
+
+    IsPackFrenzyAvailable()
+    {
+        return Utility.GetColor(1035,892) == "0x283749"
+    }
+
+    IsClawAvailable()
+    {
+        ; claw and awakened claw
+        color := Utility.GetColor(1099,892)
+        return color == "0x1E7798" || color == "0x297DA4"
+    }
+
+    IsIronPawAvailable()
+    {
+        ; both iron paw skills and both awakened iron paw skills
+        color := Utility.GetColor(1148,892)
+        return color == "0x0D2A55" || color == "0x0B234C" || color == "0x133268" || color == "0x0B234C"
+    }
+
+    IsShadowDanceAvailable()
+    {
+        ; shadow dance in normal stance and wolf
+        return Utility.GetColor(682,892) == "0xB7280F" || Utility.GetColor(682,892) == "0x3F0309"
+    }
+
+    IsFootworkAvailable()
+    {
+        ; footwork in normal stance and wolf
+        return Utility.GetColor(735,892) == "0xC5A792" || Utility.GetColor(735,892) == "0x030836"
+    }
+
+    IsFlurryAvailable()
+    {
+        return Utility.GetColor(985,959) == "0x190C0A"
+    }
+
     IsCounterVisible()
     {
-        return Utility.GetColor(885,892) == "0xE4A172" || Utility.GetColor(885,892) == "0xE46B14"
+        color := Utility.GetColor(885,892)
+        return color == "0xE4A172" || color == "0xE46B14"
     }
 
     IsGuidingFistVisible()
     {
-        return Utility.GetColor(935,892) == "0x544A42" || Utility.GetColor(935,892) == "0xE46B14"
+        color := Utility.GetColor(935,892)
+        return color == "0x544A42" || color == "0xE46B14" || color == "0x1B1B1B" || color == "0xB13A10"
     }
 
     IsLegSweepVisible()
     {
-        return Utility.GetColor(985,892) == "0x332E33" || Utility.GetColor(985,892) == "0xE46B14"
+        color := Utility.GetColor(985,892)
+        return color == "0x332E33" || color == "0xE46B14"
+    }
+
+    IsPackFrenzyVisible()
+    {
+        color := Utility.GetColor(1035,894)
+        return color == "0x050B15" || color == "0x091325"
     }
 
     IsFinalComboHitVisible()
@@ -120,13 +212,13 @@ class Availability
     IsInCombo()
     {
         ; block or approach or knockdown available or on cd
-        return !Availability.IsGuidingFistVisible() || !Availability.IsLegSweepVisible() || !Availability.IsCounterVisible()
+        return (!Availability.IsGuidingFistVisible() || !Availability.IsLegSweepVisible() || !Availability.IsCounterVisible()) && !Availability.IsPackFrenzyVisible()
     }
 
     IsSoulProced()
     {
         ; check for soul duration progress bar
-        return Utility.GetColor(541,904) == "0x01C1FF"
+        return Utility.GetColor(517,915) == "0x01C1FF"
     }
 
     IsTalismanAvailable()
@@ -158,6 +250,34 @@ class Skills {
         send b
     }
 
+    Wolf() {
+        send v
+    }
+
+    PackFrenzy() {
+        send 4
+    }
+
+    Claw() {
+        send r
+    }
+
+    IronPaw() {
+        send t
+    }
+
+    ShadowDance() {
+        send q
+    }
+
+    Footwork() {
+        send e
+    }
+
+    Flurry() {
+        send c
+    }
+
     BlueBuff() {
         send {Tab}
     }
@@ -179,6 +299,27 @@ class Rotations
     ; default rotation without any logic for max counts
     Default()
     {
+        if (Availability.UseWolf()) {
+            if (Availability.IsPackFrenzyAvailable()) {
+                this.comboIndex := 0
+                Skills.PackFrenzy()
+                sleep 5
+                return
+            } else {
+                if (Availability.IsClawAvailable()) {
+                    Skills.Claw()
+                    sleep 5
+                    return
+                } else {
+                    if (Availability.IsIronPawAvailable()) {
+                        Skills.IronPaw()
+                        sleep 5
+                        return
+                    }
+                }
+            }
+        }
+
         ; sleep since final combo hit is on autocast
         if (Availability.IsFinalComboHitVisible()) {
             sleep 150
@@ -228,7 +369,7 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
-        if (useDpsPhase && (Availability.IsBlueBuffAvailable() && Availability.IsSoulProced())) {
+        if (useDpsPhase && (Availability.IsBlueBuffAvailable() && Availability.IsSoulProced() && (!Availability.UseWolf() || !Availability.IsInCombo()))) {
             ; dps phase is ready and soul active, use it
             Rotations.DpsPhase()
         }
@@ -253,6 +394,19 @@ class Rotations
         {    
             Skills.BlueBuff()
             sleep 5
+        }
+
+        if (Availability.UseWolf()) {
+            While (Utility.GameActive() && !Availability.IsWolfVisible() && GetKeyState("F23","p"))
+            {
+                sleep 5
+            }
+
+            While (Utility.GameActive() && Availability.IsWolfVisible() && GetKeyState("F23","p"))
+            {
+                Skills.Wolf()
+                sleep 5
+            }
         }
 
         return
