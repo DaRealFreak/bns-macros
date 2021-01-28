@@ -354,6 +354,12 @@ class Rotations
                 Skills.Electrocute()
                 sleep 5
             }
+
+            While (Utility.GameActive() && Availability.IsVoltSalvoAvailable() && GetKeyState("F23","p"))
+            {
+                Skills.VoltSalvo()
+                sleep 5
+            }
         }
 
         switch stance
@@ -397,6 +403,11 @@ class Rotations
                     Skills.VoltSalvo()
                     sleep 5
                 } else {
+                    if (!Availability.IsOverchargeAvailable() && !Availability.IsChargeOnCooldown() && !Availability.IsGodModeAvailable()) {
+                        Skills.LMB()
+                        sleep 5
+                    }
+
                     if (Availability.IsOverchargeEnding() && Availability.IsGodModeAvailable()) {
                         While (Utility.GameActive() && Availability.IsThunderCloudAvailable() && GetKeyState("F23","p"))
                         {
@@ -409,12 +420,6 @@ class Rotations
                             Skills.LMB()
                             sleep 5
                         }
-                    }
-
-                    While (Utility.GameActive() && Availability.IsVoltSalvoAvailable() && GetKeyState("F23","p"))
-                    {
-                        Skills.VoltSalvo()
-                        sleep 5
                     }
 
                     if (Availability.IsEnemyGalvanized() || (A_TickCount > lastStormCloud + 750 && A_TickCount - lastStormCloud < 6000)) {
