@@ -2,12 +2,13 @@
 #SingleInstance force
 
 Profiles := []
-Profiles.Insert("Meme KFM", {ClassName: "KFM", ClassIcon: "Profile Switcher Icons/KFM.png", CheckBadge: true, BadgeIcon: "Profile Switcher Icons/KFM - Courage Soul Badge.png", ScriptPath: "BnS - KFM Fire Meme.ahk"})
-Profiles.Insert("Burst 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM.png", CheckBadge: true, BadgeIcon: "Profile Switcher Icons/BM - Exhilaration Soul Badge.png", ScriptPath: "BnS - BM Spectral - Exhilaration.ahk"})
-Profiles.Insert("Raid 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM.png", CheckBadge: true, BadgeIcon: "Profile Switcher Icons/BM - Exemplar Soul Badge.png", ScriptPath: "BnS - BM Spectral - Exemplar.ahk"})
-Profiles.Insert("Phantom SIN", {ClassName: "SIN", ClassIcon: "Profile Switcher Icons/SIN.png", CheckBadge: false, ScriptPath: "BnS - SIN Phantom.ahk"})
 Profiles.Insert("Light Archer", {ClassName: "ARC", ClassIcon: "Profile Switcher Icons/ARC.png", CheckBadge: false, ScriptPath: "BnS - Archer Light.ahk"})
 Profiles.Insert("Astromancer Thunder", {ClassName: "AST", ClassIcon: "Profile Switcher Icons/AST.png", CheckBadge: false, ScriptPath: "BnS - Astromancer Thunder.ahk"})
+Profiles.Insert("BD 3rd", {ClassName: "BD", ClassIcon: "Profile Switcher Icons/BD.png", CheckBadge: false, ScriptPath: "BnS - BD Grim Blade.ahk"})
+Profiles.Insert("Burst 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM.png", CheckBadge: false, ScriptPath: "BnS - BM Spectral - Exhilaration.ahk"})
+Profiles.Insert("Meme KFM", {ClassName: "KFM", ClassIcon: "Profile Switcher Icons/KFM.png", CheckBadge: false, ScriptPath: "BnS - KFM Wolf Meme.ahk"})
+Profiles.Insert("Light FM", {ClassName: "FM", ClassIcon: "Profile Switcher Icons/FM.png", CheckBadge: false, ScriptPath: "BnS - FM Lightning.ahk"})
+Profiles.Insert("Phantom SIN", {ClassName: "SIN", ClassIcon: "Profile Switcher Icons/SIN.png", CheckBadge: false, ScriptPath: "BnS - SIN Phantom.ahk"})
 
 ^F3::Reload
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
