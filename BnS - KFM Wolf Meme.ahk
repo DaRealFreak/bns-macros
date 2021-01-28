@@ -88,6 +88,17 @@ $XButton1::
 
     return
 
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & Tab::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsBlueBuffAvailable())
+    {
+        Skills.BlueBuff()
+        sleep 5
+    }
+
+    return
+
 ; everything related to checking availability of skills or procs
 class Availability
 {
