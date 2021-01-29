@@ -105,7 +105,7 @@ class Availability
     UseWolf()
     {
         ; if the gear is not high enough wolf is actually dmg loss, so here you can decide if you even want to use wolf
-        return true
+        return false
     }
 
     IsBlueBuffAvailable()
