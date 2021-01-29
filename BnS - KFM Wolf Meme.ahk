@@ -333,7 +333,7 @@ class Rotations
 
         ; sleep since final combo hit is on autocast
         if (Availability.IsFinalComboHitVisible()) {
-            sleep 150
+            sleep 50
             return
         }
 
@@ -370,7 +370,7 @@ class Rotations
         } else {
             if (!Availability.IsCounterVisible() || !Availability.IsGuidingFistVisible() || !Availability.IsLegSweepVisible()) {
                 send % this.comboIndex
-                sleep 50
+                sleep 25
             }
         }
 
