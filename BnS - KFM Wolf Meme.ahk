@@ -223,7 +223,7 @@ class Availability
     IsInCombo()
     {
         ; block or approach or knockdown available or on cd
-        return (!Availability.IsGuidingFistVisible() || !Availability.IsLegSweepVisible() || !Availability.IsCounterVisible()) && !Availability.IsPackFrenzyVisible()
+        return (!Availability.IsGuidingFistVisible() || !Availability.IsLegSweepVisible() || !Availability.IsCounterVisible()) && !Availability.IsPackFrenzyVisible() && !Availability.IsFinalComboHitVisible()
     }
 
     IsSoulProced()
@@ -331,10 +331,9 @@ class Rotations
             }
         }
 
-        ; sleep since final combo hit is on autocast
+        ; sleep since final combo hit is on autocast and we don't want to skip the final hit, we want to ani cancel it
         if (Availability.IsFinalComboHitVisible()) {
             sleep 50
-            return
         }
 
         if (!Availability.IsInCombo()) {
