@@ -118,6 +118,71 @@ $XButton1::
 
     return
 
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~XButton2 & c::
+    ; way to deal with input lags on iframes without releasing the macro
+    While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsGuardianBladesAvailable())
+    {
+        Skills.GuardianBlades()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~XButton2 & q::
+    ; way to deal with input lags on iframes without releasing the macro
+    if (Availability.IsBlindsideAvailable()) {
+        While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsBlindsideAvailable())
+        {
+            Skills.Blindside()
+            sleep 5
+        }
+    } else {
+        if (Availability.IsStrafeAvailable()) {
+            While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsStrafeAvailable())
+            {
+                Skills.Strafe()
+                sleep 5
+            }
+        }
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~XButton2 & e::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsCometStepAvailable())
+    {
+        Skills.CometStep()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~XButton2 & 1::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsDeflectAvailable())
+    {
+        Skills.Deflect()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~XButton2 & v::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsSpiritVortexAvailable())
+    {
+        Skills.SpiritVortex()
+        sleep 5
+    }
+
+    return
+
 ; everything related to checking availability of skills or procs
 class Availability
 {
