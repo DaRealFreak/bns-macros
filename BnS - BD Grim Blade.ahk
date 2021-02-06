@@ -216,7 +216,7 @@ class Rotations
             sleep 5
         }
 
-        While (Availability.IsTwinSabersAvailable() && Utility.GameActive() && GetKeyState("F23","p")) {
+        While (Availability.IsTwinSabersAvailable() && Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
             Skills.F()
             sleep 5
         }
@@ -236,28 +236,28 @@ class Rotations
             sleep 5
         }
 
-        if (Availability.IsGraveyardShiftAvailable()) {
-            While (Availability.IsCycloneAvailable() && Utility.GameActive() && GetKeyState("F23","p")) {
+        if (useDpsPhase && Availability.IsGraveyardShiftAvailable()) {
+            While (Availability.IsCycloneAvailable() && Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
                 Skills.Cyclone()
                 sleep 200
             }
 
-            While (Availability.IsDeathtollAvailable() && Utility.GameActive() && GetKeyState("F23","p")) {
+            While (Availability.IsDeathtollAvailable() && Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
                 Skills.Deathtoll()
                 sleep 200
             }
 
-            While (Availability.IsGrimReaverAvailable() && Utility.GameActive() && GetKeyState("F23","p")) {
+            While (Availability.IsGrimReaverAvailable() && Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
                 Skills.GrimReaver()
                 sleep 5
             }
 
-            While (Availability.IsGraveyardShiftAvailable() && Utility.GameActive() && GetKeyState("F23","p")) {
+            While (Availability.IsGraveyardShiftAvailable() && Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
                 Skills.GraveyardShift()
                 sleep 5
             }
 
-            While (!Availability.IsLmbUnavailable() && Utility.GameActive() && GetKeyState("F23","p")) {
+            While (!Availability.IsLmbUnavailable() && Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
                 Skills.LMB()
                 sleep 5
             }
