@@ -9,6 +9,7 @@ Profiles.Insert("Burst 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher I
 Profiles.Insert("Meme KFM", {ClassName: "KFM", ClassIcon: "Profile Switcher Icons/KFM.png", CheckBadge: false, ScriptPath: "BnS - KFM Wolf Meme.ahk"})
 Profiles.Insert("Light FM", {ClassName: "FM", ClassIcon: "Profile Switcher Icons/FM.png", CheckBadge: false, ScriptPath: "BnS - FM Lightning.ahk"})
 Profiles.Insert("Phantom SIN", {ClassName: "SIN", ClassIcon: "Profile Switcher Icons/SIN.png", CheckBadge: false, ScriptPath: "BnS - SIN Phantom.ahk"})
+Profiles.Insert("Lightning WR", {ClassName: "WR", ClassIcon: "Profile Switcher Icons/WR.png", CheckBadge: false, ScriptPath: "BnS - WR Lightning.ahk"})
 
 ^F3::Reload
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
