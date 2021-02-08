@@ -9,11 +9,14 @@ SetDefaultMouseSpeed, 0
 SetWinDelay, -1
 SetBatchLines, -1
 
+#Include %A_ScriptDir%\lib\utility.ahk
+
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 F1::
     MouseGetPos, mouseX, mouseY
     color := Utility.GetColor(mouseX, mouseY, r, g, b)
     tooltip, Coordinate: %mouseX%`, %mouseY% `nHexColor: %color%`nR:%r% G:%g% B:%b%
+    Clipboard := "Utility.GetColor(" mouseX "," mouseY ") == `""" color "`"""
     SetTimer, RemoveToolTip, -5000
     return
 
@@ -55,7 +58,7 @@ class Availability
     GetStance()
     {
         electrocuteColor := Utility.GetColor(885,961)
-        voltSalvoColor := Utility.GetColor(1148,693)
+        chargeColor := Utility.GetColor(1099,894)
         ; electrocute color checks: available, available on cd, unavailable, unavailable on cd, locked (overcharge mode)
         if (electrocuteColor != "0x2F1D0E" && electrocuteColor != "0x1A1008" 
             && electrocuteColor != "0x0B0B0B" && electrocuteColor != "0x070707" 
@@ -63,12 +66,12 @@ class Availability
             return "godmode"
         }
         
-        ; volt salvo color checks: available, available on cd
-        if (voltSalvoColor == "0x131A2C" || voltSalvoColor == "0x0B0F19") {
-            return "overcharge"
+        ; charge color checks: available, available on cd
+        if (chargeColor == "0x424C86" || chargeColor == "0x252A4B" || chargeColor == "0x5178B4" || chargeColor == "0x2D4364") {
+            return "default"
         }
 
-        return "default"
+        return "overcharge"
     }
     
     IsInStanceChange() {
@@ -159,7 +162,7 @@ class Availability
     }
 
     IsVoltSalvoAvailable() {
-        return Utility.GetColor(1148,693) == "0x131A2C"
+        return Utility.GetColor(1299,959) == "0x0A0D0F"
     }
 
     IsGodModeAvailable() {
@@ -262,7 +265,7 @@ class Skills {
     }
 
     VoltSalvo() {
-        send f
+        send b
     }
 
     StormWrath() {
@@ -517,26 +520,5 @@ class Rotations
             Skills.Supernova()
             sleep 5
         }
-    }
-}
-
-; everything utility related
-class Utility
-{
-    ;return the color at the passed position
-    GetColor(x, y, ByRef red:=0, ByRef green:=0, ByRef blue:=0)
-    {
-        PixelGetColor, color, x, y, RGB
-        StringRight color,color,10
-        red := ((color & 0xFF0000) >> 16)
-        green := ((color & 0xFF00) >> 8)
-        blue := (color & 0xFF)
-        Return color
-    }
-
-    ;check if BnS is the current active window
-    GameActive()
-    {
-        Return WinActive("ahk_class LaunchUnrealUWindowsClient")
     }
 }
