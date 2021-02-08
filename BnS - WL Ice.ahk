@@ -165,6 +165,10 @@ class Rotations
                 sleep 5
             }
         } else {
+            ; additional dragoncall call for UI effects while it's still available
+            Skills.Dragoncall()
+            sleep 5
+
             Skills.RMB()
             sleep 5
         }
