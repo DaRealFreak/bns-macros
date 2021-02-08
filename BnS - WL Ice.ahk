@@ -78,13 +78,13 @@ class Availability
 
     IsLeechAvailable()
     {
-        return Utility.GetColor(1149,703) == "0x13211F"
+        return Utility.GetColor(1147,691) == "0x071223"
     }
 
     IsInSoulburn()
     {
-        ; bombardment available and bombardment not available due to focus during sb
-        return Utility.GetColor(1161,908) == "0x012E68" || Utility.GetColor(1161,908) == "0x161616"
+        ; bombardment available, bombardment on gcd, and bombardment not available due to focus during sb
+        return Utility.GetColor(1161,908) == "0x012E68" || Utility.GetColor(1161,908) == "0x011A3A" || Utility.GetColor(1161,908) == "0x161616"
     }
 
     IsWeaponResetClose()
@@ -179,10 +179,26 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
-        if (Availability.HasRmbNoFocus()) {
-            if (Availability.IsLeechAvailable()) {
+        ; try to always use leech outside of soulburn stance
+        if (!Availability.IsInSoulburn() && Availability.IsLeechAvailable()) {
+            While (Utility.GameActive() && Availability.IsLeechAvailable() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
                 Skills.Leech()
                 sleep 5
+            }
+        }
+
+        ; if we don't have focus use soul shackle -> leech during sb or only soul shackle outside of sb since we try to have leech up anyways
+        if (Availability.HasRmbNoFocus()) {
+            if (Availability.IsInSoulburn()) {
+                if (Availability.IsSoulShackleAvailable()) {
+                    Skills.SoulShackle()
+                    sleep 5
+                } else {
+                    if (Availability.IsLeechAvailable()) {
+                        Skills.Leech()
+                        sleep 5
+                    }
+                }
             }
             else {
                 if (Availability.IsSoulShackleAvailable()) {
@@ -192,6 +208,7 @@ class Rotations
             }
         }
 
+        ; use soul shackle if bracelet is not active or a weapon reset is close
         if ((!Availability.IsBraceletActive() || Availability.IsWeaponResetClose()) && Availability.IsSoulShackleAvailable()) {
             Skills.SoulShackle()
             sleep 5
