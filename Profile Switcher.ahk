@@ -11,6 +11,7 @@ Profiles.Insert("Light FM", {ClassName: "FM", ClassIcon: "Profile Switcher Icons
 Profiles.Insert("Phantom SIN", {ClassName: "SIN", ClassIcon: "Profile Switcher Icons/SIN.png", CheckBadge: false, ScriptPath: "BnS - SIN Phantom.ahk"})
 Profiles.Insert("Lightning WR", {ClassName: "WR", ClassIcon: "Profile Switcher Icons/WR.png", CheckBadge: false, ScriptPath: "BnS - WR Lightning.ahk"})
 Profiles.Insert("Ice WL", {ClassName: "WL", ClassIcon: "Profile Switcher Icons/WL.png", CheckBadge: false, ScriptPath: "BnS - WL Ice.ahk"})
+Profiles.Insert("Earth Summoner", {ClassName: "SUM", ClassIcon: "Profile Switcher Icons/SUM.png", CheckBadge: false, ScriptPath: "BnS - SUM Earth.ahk"})
 
 ^F3::Reload
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
