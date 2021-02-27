@@ -193,7 +193,8 @@ class Availability
 
     IsStarstrikeAvailable()
     {
-        return Utility.GetColor(885,961) == "0x080F46"
+        ;return Utility.GetColor(885,961) == "0x080F46"
+        return Utility.GetColor(821,894) == "0x060C42"
     }
 
     IsSwordFallAvailable()
@@ -330,7 +331,7 @@ class Skills {
     }
 
     Starstrike() {
-        send y
+        send {tab}
     }
 
     LightningDraw() {
