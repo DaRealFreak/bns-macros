@@ -66,6 +66,11 @@ class Availability
         return Utility.GetColor(935,892) == "0x171141"
     }
 
+    IsImprisonAvailable()
+    {
+        return Utility.GetColor(985,892) == "0x270E3E"
+    }
+
     IsWingstormAvailable()
     {
         return Utility.GetColor(1035,959) == "0x0C1B2D"
@@ -125,6 +130,11 @@ class Skills {
     SoulShackle()
     {
         send 2
+    }
+
+    Imprison()
+    {
+        send 3
     }
 
     Wingstorm()
@@ -221,6 +231,16 @@ class Rotations
 
         if (Availability.IsWingstormAvailable()) {
             Skills.Wingstorm()
+            sleep 5
+        }
+
+        if (Availability.IsImprisonAvailable()) {
+            Skills.Imprison()
+            sleep 5
+        }
+
+        if (Availability.IsTalismanAvailable()) {
+            Skills.Talisman()
             sleep 5
         }
 
