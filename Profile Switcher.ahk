@@ -12,6 +12,7 @@ Profiles.Insert("Phantom SIN", {ClassName: "SIN", ClassIcon: "Profile Switcher I
 Profiles.Insert("Lightning WR", {ClassName: "WR", ClassIcon: "Profile Switcher Icons/WR.png", CheckBadge: false, ScriptPath: "BnS - WR Lightning.ahk"})
 Profiles.Insert("Ice WL", {ClassName: "WL", ClassIcon: "Profile Switcher Icons/WL.png", CheckBadge: false, ScriptPath: "BnS - WL Ice.ahk"})
 Profiles.Insert("Earth Summoner", {ClassName: "SUM", ClassIcon: "Profile Switcher Icons/SUM.png", CheckBadge: false, ScriptPath: "BnS - SUM Earth.ahk"})
+Profiles.Insert("Earth Destroyer", {ClassName: "DES", ClassIcon: "Profile Switcher Icons/DES.png", CheckBadge: false, ScriptPath: "BnS - DES Reaper.ahk"})
 
 ^F3::Reload
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
