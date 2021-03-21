@@ -263,6 +263,16 @@ class Availability
         return Utility.GetColor(596,921) != "0x01C1FF"
     }
 
+    IsBladeStormOrSwordFallVisible()
+    {
+        return Utility.GetColor(1098,894) == "0x144CBC" || Utility.GetColor(1099,894) == "0x0E326C" || Utility.GetColor(1098,894) == "0x194383"
+    }
+
+    IsThunderCrashOnLmb()
+    {
+        return Utility.GetColor(1098,894) == "0x0C19BA"
+    }
+
     IsInDpsPhase()
     {
         color := Utility.GetColor(1148,894)
@@ -362,30 +372,15 @@ class Skills {
 ; everything rotation related
 class Rotations
 {
-    static usedSkill := false
+    static usedLightningDraw := false
+    static lastLightningDrawUse := 0
 
     ; default rotation without any logic for max counts
     Default()
     {
-        ; check falling stars off cd and on cd
-        if (Utility.GetColor(1148,894) == "0x26267D" || Utility.GetColor(1148,894) == "0x151546") {
-            ; 4th hit is not visible
-            if (this.usedSkill && Utility.GetColor(1298,892) != "0x131152") {
-                this.usedSkill := false
-            }
-
-            ; 4th hit is visible
-            if (!this.usedSkill && Utility.GetColor(1298,892) == "0x131152") {
-                Skills.LMB()
-                this.usedSkill := true
-            }
-
-            Skills.RMB()
-
-        } else {
-            Skills.RMB()
-            Skills.LMB()
-        }
+        Skills.RMB()
+        Skills.LMB()
+        sleep 5
 
         return
     }
@@ -393,53 +388,99 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
+        if (useDpsPhase && (Availability.IsStarstrikeAvailable() && Availability.IsSoulProced())) {
+            ; dps phase is ready and soul active, use it
+            Rotations.DpsPhase()
+        }
+
+        if (Availability.IsLightningDrawAvailable() && Utility.GetColor(1099,894) != Utility.GetColor(1148,894)) {
+            shouldRefreshLightningDraw := A_TickCount > this.lastLightningDrawUse + 7500
+        } else {
+            shouldRefreshLightningDraw := false
+        }
+
+        ; LMB and RMB are different so we're on the 3rd or 4th hit
+        if (Utility.GetColor(1099,894) != Utility.GetColor(1148,894)) {
+            if (Availability.IsBraceletCloseToExpiration() || (Availability.IsInDpsPhase() && !Availability.IsBadgeEffectActive())) {
+                Rotations.Bracelet()
+            } else {
+                if (shouldRefreshLightningDraw) {
+                    While (Utility.GameActive() && Availability.IsLightningDrawAvailable() && (GetKeyState("F23","p") || GetKeyState("XButton1","p")))
+                    {
+                        Skills.LightningDraw()
+                        sleep 1
+                    }
+
+                    this.lastLightningDrawUse := A_TickCount
+                    Skills.RMB()
+
+                    return
+                }
+            }
+
+            if (Availability.IsWeaponResetClose()) {
+                if (Availability.IsLightningDrawAvailable()) {
+                    While (Utility.GameActive() && Availability.IsLightningDrawAvailable() && (GetKeyState("F23","p") || GetKeyState("XButton1","p")))
+                    {
+                        Skills.LightningDraw()
+                        sleep 1
+                    }
+
+                    this.lastLightningDrawUse := A_TickCount
+                    Skills.RMB()
+
+                    return
+                }
+
+                if (Availability.IsSpiritVortexAvailable()) {
+                    Rotations.Bracelet()
+
+                    Rotations.Default()
+                    return
+                }
+            }
+        }
+
         Rotations.Default()
-        
+
         return
     }
 
     ; activate starstrike and talisman if it's ready
     DpsPhase()
     {
-        ; use lightning draw activating dps phase for exhilaration badge (no animation so use it first)
-        While (Utility.GameActive() && Availability.IsLightningDrawAvailable() && GetKeyState("F23","p"))
-        {
-            Skills.LightningDraw()
-            sleep 5
-            this.lastLightningDrawUse := A_TickCount
-        }
-
         ; use spirit vortex before activating dps phase for exhilaration badge
         While (Utility.GameActive() && Availability.IsSpiritVortexAvailable() && GetKeyState("F23","p"))
         {
             Skills.SpiritVortex()
-            sleep 5
+            sleep 1
+        }
+
+        ; use lightning draw for additional crit dmg
+        While (Utility.GameActive() && Availability.IsLightningDrawAvailable() && GetKeyState("F23","p"))
+        {
+            Skills.LightningDraw()
+            sleep 1
+            this.lastLightningDrawUse := A_TickCount
         }
 
         ; use talisman while no cd border and keys are pressed
         While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
         {
             Skills.Talisman()
-            sleep 5
+            sleep 1
         }
 
         ; check skill border for cooldown, check for skill icon for stance and break if keys aren't pressed anymore
         ; while in stance and stance off cooldown send stance key
         While (Utility.GameActive() && Availability.IsStarstrikeAvailable() && GetKeyState("F23","p"))
         {
-            ; use LMB if not used before activating the DPS phase to avoid LMB as first action after FS are available which caused some weird animation delays in my tests
-            if (Availability.IsLmbAvailable() && !Availability.IsSwordFallAvailable()) {
-                Skills.LMB()
-                sleep 5    
-            }
-        
             Skills.Starstrike()
-            sleep 5
+            sleep 1
         }
         
         ; try to use FS as the very first action
         Skills.RMB()
-        sleep 5
 
         return
     }
@@ -449,7 +490,6 @@ class Rotations
     {
         if (Availability.IsSpiritVortexAvailable()) {
             Skills.SpiritVortex()
-            sleep 5
         }
     }
 }
