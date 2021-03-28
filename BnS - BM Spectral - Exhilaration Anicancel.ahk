@@ -388,62 +388,70 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
-        if (useDpsPhase && (Availability.IsStarstrikeAvailable() && Availability.IsSoulProced())) {
-            ; dps phase is ready and soul active, use it
-            Rotations.DpsPhase()
+        lightningDrawAvailable := Availability.IsLightningDrawAvailable()
+        spiritVortexAvailable := Availability.IsSpiritVortexAvailable()
+        weaponResetClose := Availability.IsWeaponResetClose()
+
+        if (this.usedLightningDraw && !lightningDrawAvailable) {
+            this.usedLightningDraw := false
+            this.lastLightningDrawUse := A_TickCount
         }
 
-        if (Availability.IsLightningDrawAvailable() && Utility.GetColor(1099,894) != Utility.GetColor(1148,894)) {
-            shouldRefreshLightningDraw := A_TickCount > this.lastLightningDrawUse + 7500
+        if (A_TickCount > this.lastLightningDrawUse + 7500) {
+            shouldRefreshLightningDraw := true
         } else {
             shouldRefreshLightningDraw := false
         }
 
-        ; LMB and RMB are different so we're on the 3rd or 4th hit
-        if (Utility.GetColor(1099,894) != Utility.GetColor(1148,894)) {
-            if (Availability.IsBraceletCloseToExpiration() || (Availability.IsInDpsPhase() && !Availability.IsBadgeEffectActive())) {
-                Rotations.Bracelet()
-            } else {
-                if (shouldRefreshLightningDraw) {
-                    While (Utility.GameActive() && Availability.IsLightningDrawAvailable() && (GetKeyState("F23","p") || GetKeyState("XButton1","p")))
-                    {
-                        Skills.LightningDraw()
-                        sleep 1
-                    }
-
-                    this.lastLightningDrawUse := A_TickCount
-                    Skills.RMB()
-
-                    return
-                }
-            }
-
-            if (Availability.IsWeaponResetClose()) {
-                if (Availability.IsLightningDrawAvailable()) {
-                    While (Utility.GameActive() && Availability.IsLightningDrawAvailable() && (GetKeyState("F23","p") || GetKeyState("XButton1","p")))
-                    {
-                        Skills.LightningDraw()
-                        sleep 1
-                    }
-
-                    this.lastLightningDrawUse := A_TickCount
-                    Skills.RMB()
-
-                    return
-                }
-
-                if (Availability.IsSpiritVortexAvailable()) {
+        if (Availability.IsInDpsPhase()) {
+            ; FS not visible on LMB so we're on the 3rd or 4th hit
+            if (!(Utility.GetColor(1099,894) == "0x1A0461" || Utility.GetColor(1099,894) == "0x0F0336")) {
+                if (spiritVortexAvailable && (!Availability.IsBadgeEffectActive() || weaponResetClose)) {
+                    ; bracelet effect close to expiring, use it before it fully expired to avoid bracelet effect bug
                     Rotations.Bracelet()
-
-                    Rotations.Default()
-                    return
+                } else if (lightningDrawAvailable && (shouldRefreshLightningDraw || weaponResetClose)) {
+                    Skills.LightningDraw()
+                    this.usedLightningDraw := true
+                } else {
+                    Skills.LMB()
                 }
+
+                Skills.RMB()
+                sleep 1
+            } else {
+                Skills.RMB()
+                sleep 1
             }
+
+            return
+        } else {
+            if (useDpsPhase && (Availability.IsStarstrikeAvailable() && Availability.IsSoulProced())) {
+                ; dps phase is ready and soul active, use it
+                Rotations.DpsPhase()
+                return
+            }
+
+            ; Slice not visible on LMB so we're on the 3rd or 4th hit
+            if (!(Utility.GetColor(1099,894) == "0x07388C" || Utility.GetColor(1099,894) == "0x041F4E")) {
+                if (spiritVortexAvailable && (Availability.IsBraceletCloseToExpiration() || weaponResetClose)) {
+                    ; bracelet effect close to expiring, use it before it fully expired to avoid bracelet effect bug
+                    Rotations.Bracelet()
+                } else if (lightningDrawAvailable && (shouldRefreshLightningDraw || weaponResetClose)) {
+                    Skills.LightningDraw()
+                    this.usedLightningDraw := true
+                } else {
+                    Skills.LMB()
+                }
+
+                Skills.RMB()
+                sleep 1
+            } else {
+                Skills.RMB()
+                sleep 1
+            }
+
+            return
         }
-
-        Rotations.Default()
-
-        return
     }
 
     ; activate starstrike and talisman if it's ready
