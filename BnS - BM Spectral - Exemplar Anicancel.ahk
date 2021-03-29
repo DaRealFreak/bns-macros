@@ -188,7 +188,7 @@ class Availability
 {
     KeepBadgeEffectUp()
     {
-        return false
+        return true
     }
 
     IsStarstrikeAvailable()
