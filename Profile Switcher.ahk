@@ -5,7 +5,7 @@ Profiles := []
 Profiles.Insert("Light Archer", {ClassName: "ARC", ClassIcon: "Profile Switcher Icons/ARC.png", CheckBadge: false, ScriptPath: "BnS - Archer Light.ahk"})
 Profiles.Insert("Astromancer Thunder", {ClassName: "AST", ClassIcon: "Profile Switcher Icons/AST.png", CheckBadge: false, ScriptPath: "BnS - Astromancer Thunder.ahk"})
 Profiles.Insert("BD 3rd", {ClassName: "BD", ClassIcon: "Profile Switcher Icons/BD.png", CheckBadge: false, ScriptPath: "BnS - BD Grim Blade.ahk"})
-Profiles.Insert("Burst 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM.png", CheckBadge: false, ScriptPath: "BnS - BM Spectral - Exhilaration Anicancel.ahk"})
+Profiles.Insert("Burst 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM.png", CheckBadge: false, ScriptPath: "BnS - BM Spectral - Exemplar Anicancel.ahk"})
 Profiles.Insert("Fire BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BMF.png", CheckBadge: false, ScriptPath: "BnS - BM Fire.ahk"})
 Profiles.Insert("Meme KFM", {ClassName: "KFM", ClassIcon: "Profile Switcher Icons/KFM.png", CheckBadge: false, ScriptPath: "BnS - KFM Wolf Meme.ahk"})
 Profiles.Insert("Light FM", {ClassName: "FM", ClassIcon: "Profile Switcher Icons/FM.png", CheckBadge: false, ScriptPath: "BnS - FM Lightning.ahk"})

@@ -83,7 +83,7 @@ class Availability
 
     IsLeechAvailable()
     {
-        return Utility.GetColor(1147,691) == "0x071223"
+        return Utility.GetColor(1183,700) == "0x1F698B"
     }
 
     IsInSoulburn()

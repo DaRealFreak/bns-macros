@@ -136,17 +136,17 @@ class Availability
 
     IsTitanStrikeAvailable()
     {
-        return Utility.GetColor(1299,892) == "0x3F0504"
+        return Utility.GetColor(1300,894) == "0x560101"
     }
 
     IsTitanSmiteAvailable()
     {
-        return Utility.GetColor(1299,959) == "0xBE5320"
+        return Utility.GetColor(1300,961) == "0xE59362"
     }
 
     IsTwinPalmAvailable()
     {
-        return Utility.GetColor(1150,691) == "0x7D2013"
+        return Utility.GetColor(1180,685) == "0xEB6F41"
     }
 
     IsWolfVisible()
