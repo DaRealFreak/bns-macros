@@ -20,7 +20,18 @@ Profiles.Insert("Earth Destroyer", {ClassName: "DES", ClassIcon: "Profile Switch
 ^F5::SwitchProfile()
 ^F12::ExitApp
 
-SwitchProfile() {
+^Numpad0::LoadScript("../Bots/BnS - Dst Farm Bot - Hardmode.ahk")
+
+LoadScript(scriptPath)
+{
+    Run, %A_AHKPath% "%A_ScriptDir%\%scriptPath%"
+    tooltip, loaded: %scriptPath%
+    SetTimer, RemoveToolTip, -2000
+    return
+}
+
+SwitchProfile()
+{
     global Profiles
     for index, item in Profiles
     {
@@ -52,7 +63,8 @@ SwitchProfile() {
     return
 }
 
-AHKPanic(Kill=0, Pause=0, Suspend=0, SelfToo=0) {
+AHKPanic(Kill=0, Pause=0, Suspend=0, SelfToo=0)
+{
     DetectHiddenWindows, On
     WinGet, IDList ,List, ahk_class AutoHotkey
     Loop %IDList%
@@ -82,4 +94,4 @@ AHKPanic(Kill=0, Pause=0, Suspend=0, SelfToo=0) {
 
 RemoveToolTip:
     ToolTip
-Return
+    return
