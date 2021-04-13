@@ -382,7 +382,7 @@ class Rotations
 
     BlueBuff() {
         ; loop while BlueBuff is not on cooldown or break if keys aren't pressed anymore
-        While (Utility.GameActive() && Availability.IsBlueBuffAvailable() && GetKeyState("F23","p"))
+        While (Utility.GameActive() && Availability.IsBlueBuffAvailable() && Availability.IsAwakenAvailable() && GetKeyState("F23","p"))
         {    
             Skills.BlueBuff()
             sleep 5
