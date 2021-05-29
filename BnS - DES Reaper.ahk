@@ -53,6 +53,50 @@ $XButton1::
     }
     return
 
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & c::
+    ; way to deal with input lags on iframes without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsSearingStrikeAvailable())
+    {
+        Skills.SearingStrike()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & q::
+    ; way to deal with input lags on iframes without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsTyphoonAvailable())
+    {
+        Skills.Typhoon()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & 1::
+    ; way to deal with input lags on iframes without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsBlitzAvailable())
+    {
+        Skills.Blitz()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & 2::
+    ; way to deal with input lags on iframes without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsRamAvailable())
+    {
+        Skills.Ram()
+        sleep 5
+    }
+
+    return
+
 ; everything related to checking availability of skills or procs
 class Availability
 {
@@ -69,6 +113,26 @@ class Availability
     IsFuryAvailable()
     {
         return Utility.GetColor(735,892) == "0x420D2E"
+    }
+
+    IsRamAvailable()
+    {
+        return Utility.GetColor(935,894) == "0x4C3625"
+    }
+
+    IsBlitzAvailable()
+    {
+        return Utility.GetColor(885,894) == "0xB09F30"
+    }
+
+    IsSearingStrikeAvailable()
+    {
+        return Utility.GetColor(985,961) == "0x897141"
+    }
+
+    IsTyphoonAvailable()
+    {
+        return Utility.GetColor(682,894) == "0xEB7A8C"
     }
 
     IsTalismanAvailable()
@@ -100,6 +164,26 @@ class Skills {
         send e
     }
 
+    SearingStrike()
+    {
+        send c
+    }
+
+    Blitz()
+    {
+        send 1
+    }
+
+    Ram()
+    {
+        send 2
+    }
+
+    Typhoon()
+    {
+        send q
+    }
+
     Talisman() {
         send 9
     }
@@ -108,31 +192,9 @@ class Skills {
 ; everything rotation related
 class Rotations
 {
-    static rotation := 0
-
     ; default rotation without any logic for max counts
     Default()
     {
-        While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsEmberstompAvailable()) {
-            Skills.Emberstomp()
-            sleep 5
-        }
-
-        While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsTalismanAvailable()) {
-            Skills.Talisman()
-            sleep 5
-        }
-
-        While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsFuryAvailable()) {
-            Skills.Fury()
-            sleep 150
-        }
-
-        While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsExecuteAvailable()) {
-            Skills.Execute()
-            sleep 5
-        }
-
         Skills.RMB()
         sleep 5
 
@@ -142,6 +204,36 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
+        if (Availability.IsEmberstompAvailable()) {
+            Skills.Emberstomp()
+            sleep 5
+        }
+
+        if (Availability.IsTalismanAvailable()) {
+            Skills.Talisman()
+            sleep 5
+        }
+
+        While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsFuryAvailable()) {
+            Skills.Execute()
+            sleep 5
+        }
+
+        if (Availability.IsFuryAvailable()) {
+            Skills.Fury()
+            sleep 150
+        }
+
+        While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsExecuteAvailable()) {
+            Skills.Execute()
+            sleep 5
+        }
+
+        if (Availability.IsExecuteAvailable()) {
+            Skills.Execute()
+            sleep 5
+        }
+
         Rotations.Default()
 
         return
