@@ -23,7 +23,7 @@ F1::
 
 RemoveToolTip:
     ToolTip
-Return
+    return
 
 ^F10::Reload
 ^F11::Pause
@@ -147,18 +147,17 @@ class Availability
 
     IsFellstrikeAvailable()
     {
-        color := Utility.GetColor(1151,707)
-        return color == "0x4DC7F6" || color == "0x4DC7F6"
+        return Utility.GetColor(1182,684) == "0x112649"
     }
 
     IsRazeAvailable()
     {
-        return Utility.GetColor(1151,708) == "0x6E76BA"
+        return Utility.GetColor(1182,684) == "0x15164C"
     }
 
     IsBloodstormAvailable()
     {
-        return Utility.GetColor(1151,707) == "0x680B0A"
+        return Utility.GetColor(1182,684) == "0x1F060E"
     }
 
     IsShearStormAvailable()
