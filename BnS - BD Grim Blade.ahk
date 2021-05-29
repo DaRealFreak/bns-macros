@@ -84,7 +84,7 @@ class Availability
 
     IsFuneralPyreAvailable()
     {
-        return Utility.GetColor(1146,706) == "0x71AEA4"
+        return Utility.GetColor(1179,686) == "0x070C09"
     }
 
     IsRaidAvailable()
@@ -206,47 +206,23 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
-        if (Availability.IsCycloneAvailable()) {
-            Skills.Cyclone()
+        if (useDpsPhase && Availability.IsTalismanAvailable())
+        {
+            Skills.Talisman()
             sleep 5
         }
 
-        if (Availability.IsDeathtollAvailable()) {
-            Skills.Deathtoll()
-            sleep 5
-        }
-
-        While (Availability.IsTwinSabersAvailable() && Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
-            Skills.F()
-            sleep 5
-        }
-
-        if (Availability.HasRmbNoFocus() && Availability.IsRaidAvailable() && !Availability.IsTwinSabersAvailable()) {
+        if (Availability.HasRmbNoFocus() && Availability.IsRaidAvailable()) {
             Skills.Raid()
             sleep 5
         }
 
-        if (Availability.IsEviscerateAvailable() || Availability.IsFuneralPyreAvailable()) {
+        if (Availability.IsFuneralPyreAvailable()) {
             Skills.F()
             sleep 5
         }
 
-        if (Availability.IsRmbUnavailable()) {
-            send c
-            sleep 5
-        }
-
         if (useDpsPhase && Availability.IsGraveyardShiftAvailable()) {
-            While (Availability.IsCycloneAvailable() && Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
-                Skills.Cyclone()
-                sleep 200
-            }
-
-            While (Availability.IsDeathtollAvailable() && Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
-                Skills.Deathtoll()
-                sleep 200
-            }
-
             While (Availability.IsGrimReaverAvailable() && Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
                 Skills.GrimReaver()
                 sleep 5
