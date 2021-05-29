@@ -5,7 +5,7 @@ Profiles := []
 Profiles.Insert("Light Archer", {ClassName: "ARC", ClassIcon: "Profile Switcher Icons/ARC.png", CheckBadge: false, ScriptPath: "BnS - Archer Light.ahk"})
 Profiles.Insert("Astromancer Thunder", {ClassName: "AST", ClassIcon: "Profile Switcher Icons/AST.png", CheckBadge: false, ScriptPath: "BnS - Astromancer Thunder.ahk"})
 Profiles.Insert("BD 3rd", {ClassName: "BD", ClassIcon: "Profile Switcher Icons/BD.png", CheckBadge: false, ScriptPath: "BnS - BD Grim Blade.ahk"})
-Profiles.Insert("Burst 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM.png", CheckBadge: false, ScriptPath: "BnS - BM Spectral - Exemplar Anicancel.ahk"})
+Profiles.Insert("Burst 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM.png", CheckBadge: false, ScriptPath: "BnS - BM Spectral - Exhilaration Anicancel.ahk"})
 Profiles.Insert("Fire BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BMF.png", CheckBadge: false, ScriptPath: "BnS - BM Fire.ahk"})
 Profiles.Insert("Meme KFM", {ClassName: "KFM", ClassIcon: "Profile Switcher Icons/KFM.png", CheckBadge: false, ScriptPath: "BnS - KFM Wolf Meme.ahk"})
 Profiles.Insert("Light FM", {ClassName: "FM", ClassIcon: "Profile Switcher Icons/FM.png", CheckBadge: false, ScriptPath: "BnS - FM Lightning.ahk"})
@@ -13,14 +13,22 @@ Profiles.Insert("Phantom SIN", {ClassName: "SIN", ClassIcon: "Profile Switcher I
 Profiles.Insert("Lightning WR", {ClassName: "WR", ClassIcon: "Profile Switcher Icons/WR.png", CheckBadge: false, ScriptPath: "BnS - WR Lightning.ahk"})
 Profiles.Insert("Ice WL", {ClassName: "WL", ClassIcon: "Profile Switcher Icons/WL.png", CheckBadge: false, ScriptPath: "BnS - WL Ice.ahk"})
 Profiles.Insert("Earth Summoner", {ClassName: "SUM", ClassIcon: "Profile Switcher Icons/SUM.png", CheckBadge: false, ScriptPath: "BnS - SUM Earth.ahk"})
-Profiles.Insert("Earth Destroyer", {ClassName: "DES", ClassIcon: "Profile Switcher Icons/DES.png", CheckBadge: false, ScriptPath: "BnS - DES Reaper.ahk"})
+Profiles.Insert("Earth Destroyer", {ClassName: "DES", ClassIcon: "Profile Switcher Icons/DES_Earth.png", CheckBadge: false, ScriptPath: "BnS - DES Earth.ahk"})
+Profiles.Insert("Shadow Destroyer", {ClassName: "DES", ClassIcon: "Profile Switcher Icons/DES_Shadow.png", CheckBadge: false, ScriptPath: "BnS - DES Reaper.ahk"})
 
 ^F3::Reload
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 ^F5::SwitchProfile()
 ^F12::ExitApp
 
-^Numpad0::LoadScript("../Bots/BnS - Dst Farm Bot - Hardmode.ahk")
+^Numpad0::
+    AHKPanic(1)
+    LoadScript("BnS - BM Spectral - Exemplar Anicancel.ahk")
+    return
+
+^Numpad1::LoadScript("../Bots/BnS - Dst Farm Bot - Hardmode.ahk")
+
+^Numpad2::LoadScript("../Bots/BnS - Exp Charm Bot.ahk")
 
 LoadScript(scriptPath)
 {
