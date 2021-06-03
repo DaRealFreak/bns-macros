@@ -99,16 +99,6 @@ $XButton1::
 ; everything related to checking availability of skills or procs
 class Availability
 {
-    IsWrath1Available()
-    {
-        return Utility.GetColor(1098,892) == "0x450504"
-    }
-
-    IsWrath1Useable()
-    {
-        return Utility.GetColor(1099,894) == "0xF59622"
-    }
-
     IsWrath2Available()
     {
         return Utility.GetColor(1299,892) == "0x0C162F"
@@ -127,7 +117,7 @@ class Availability
 
     IsMightyCleaveAvailable()
     {
-	    return Utility.GetColor(1180,683) == "0x120E05"
+        return Utility.GetColor(1180,683) == "0x120E05"
     }
 
     IsNoFuryCleaveAvailable()
@@ -192,7 +182,7 @@ class Skills {
         send f
     }
 
-	Cleave() {
+    Cleave() {
         send t
     }
 
@@ -233,16 +223,16 @@ class Rotations
     ; default rotation without any logic for max counts
     Default()
     {
-        if ((Availability.IsWeaponResetClose() || Availability.IsBraceletCloseToExpiration())) {
+        if (Availability.IsWeaponResetClose()) {
+            if (Availability.IsEmberstompAvailable()) {
+                Skills.EmberStomp()
+                sleep 5
+            }
+
             if (Availability.IsSmashAvailable()) {
                 Skills.Smash()
                 sleep 5
             }
-        }
-
-        if (Availability.IsWeaponResetClose() && Availability.IsEmberstompAvailable()) {
-            Skills.EmberStomp()
-            sleep 5
         }
 
         if (Availability.IsTalismanAvailable()) {
@@ -252,17 +242,35 @@ class Rotations
 
         if (Availability.IsNoFuryCleaveAvailable()) {
             if (Availability.IsFuryAvailable()) {
-                ; if available use ember stomp before fury since fury insta anicancels the ember stomp (annoying gcd grp though)
+                ; emberstomp will get instantly anicanceled by fury, annoying gcd group though
                 Skills.EmberStomp()
                 sleep 20
                 Skills.Fury()
                 sleep 20
             } else {
+                if (Availability.IsEmberstompAvailable()) {
+                    Skills.EmberStomp()
+                    sleep 5
+                }
+
                 Skills.MightyCleave()
+                sleep 5
                 Skills.Cleave()
                 sleep 5
             }
         } else {
+            if (Availability.IsMightyCleaveAvailable() && Availability.IsBraceletCloseToExpiration()) {
+                While (Availability.IsMightyCleaveAvailable()) {
+                    Skills.MightyCleave()
+                    sleep 20
+                }
+
+                While (Availability.IsSmashAvailable()) {
+                    Skills.Smash()
+                    sleep 10
+                }
+            }
+
             if (Availability.IsWrath2Available()) {
                 ; if wrath 2 is available we want to use it before mighty cleave since the hit of the 2nd wrath is near instant
                 ; so we anicancel the 2nd wrath with mighty cleave
@@ -272,12 +280,6 @@ class Rotations
                 } 
 
                 sleep 40
-
-                ; use mighty cleave only if wrath 2 is not visible anymore and anicancel the 2nd wrath
-                While (Availability.IsMightyCleaveAvailable() && (!Availability.IsWrath2Available())) {
-                    Skills.MightyCleave()
-                    sleep 50
-                }
             } else {
                 if (Availability.IsWrath3Available()) {
                     ; wrath 3 actually has a higher duration until hit, so we cancel it with cleave after 70 ms
