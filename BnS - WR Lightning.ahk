@@ -145,6 +145,11 @@ class Availability
         return Utility.GetColor(823,892) == "0x791914"
     }
 
+    IsPrimalCallAvailable()
+    {
+        return Utility.GetColor(985,894) == "0xF8BBA6"
+    }
+
     IsFellstrikeAvailable()
     {
         return Utility.GetColor(1182,684) == "0x112649"
@@ -185,6 +190,11 @@ class Availability
         return Utility.GetColor(682,892) != "0xE46B14"
     }
 
+    IsBraceletCloseToExpiration()
+    {
+        return Utility.GetColor(596,921) != "0x01C1FF"
+    }
+
     IsTalismanAvailable()
     {
         ; check for talisman cooldown border
@@ -207,6 +217,11 @@ class Skills {
     BladeWard()
     {
         send v
+    }
+
+    PrimalCall()
+    {
+        send 3
     }
 
     SeismicStrike()
@@ -270,6 +285,12 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
+        if (Availability.IsTalismanAvailable())
+        {
+            Skills.Talisman()
+            sleep 5
+        }
+
         if (!Availability.IsFrenzyAvailable()) {
             if (Availability.IsBladeWardAvailable()) {
                 Skills.BladeWard()
@@ -293,6 +314,11 @@ class Rotations
                 Skills.Soulburn()
                 sleep 5
                 return
+            }
+
+            if (Availability.IsPrimalCallAvailable() && Availability.IsBraceletCloseToExpiration()) {
+                Skills.PrimalCall()
+                sleep 5
             }
         } else {
             while (Availability.IsSeismicStrikeAvailable() && (GetKeyState("F23","p") || GetKeyState("XButton2","p")) && Utility.GameActive()) {
