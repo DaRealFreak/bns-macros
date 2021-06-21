@@ -53,9 +53,84 @@ $XButton1::
     }
     return
 
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~F23 & q::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsShadowDanceAvailable())
+    {
+        Skills.ShadowDance()
+        sleep 5
+    }
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~F23 & e::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsFootworkAvailable())
+    {
+        Skills.Footwork()
+        sleep 5
+    }
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~F23 & c::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsFlurryAvailable())
+    {
+        Skills.Flurry()
+        sleep 5
+    }
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~XButton2 & q::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsShadowDanceAvailable())
+    {
+        Skills.ShadowDance()
+        sleep 5
+    }
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~XButton2 & e::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsFootworkAvailable())
+    {
+        Skills.Footwork()
+        sleep 5
+    }
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~XButton2 & c::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsFlurryAvailable())
+    {
+        Skills.Flurry()
+        sleep 5
+    }
+    return
+
 ; everything related to checking availability of skills or procs
 class Availability
 {
+    IsShadowDanceAvailable()
+    {
+        return Utility.GetColor(682,894) == "0xFFD13E"
+    }
+
+    IsFootworkAvailable()
+    {
+        return Utility.GetColor(735,894) == "0xEBBBA6"
+    }
+
+    IsFlurryAvailable()
+    {
+        return Utility.GetColor(985,961) == "0x391509"
+    }
+
     IsFightingSpiritAvailable()
     {
         return Utility.GetColor(821,894) == "0x003641"
@@ -219,6 +294,12 @@ class Rotations
         While (Utility.GameActive() && Availability.IsFightingSpiritAvailable() && GetKeyState("F23","p"))
         {
             Skills.FightingSpirit()
+            sleep 1
+        }
+
+        While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
+        {
+            Skills.Talisman()
             sleep 1
         }
 
