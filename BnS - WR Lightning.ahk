@@ -336,10 +336,4 @@ class Rotations
 
         return
     }
-
-    ; activate bluebuff and talisman if it's ready
-    DpsPhase()
-    {
-        return
-    }
 }
