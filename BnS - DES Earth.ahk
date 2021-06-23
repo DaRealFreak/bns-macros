@@ -99,9 +99,11 @@ $XButton1::
 ; everything related to checking availability of skills or procs
 class Availability
 {
-    IsWrath2Available()
+    IsAwkCleaveAvailable()
     {
-        return Utility.GetColor(1299,892) == "0x0C162F"
+        color := Utility.GetColor(1148,894)
+        ; awk cleave off gcd and on gcd
+        return color == "0xC17340" || color == "0x964915"
     }
 
     IsWrath3Available()
@@ -174,10 +176,6 @@ class Skills {
         send r
     }
 
-    Wrath2() {
-        send g
-    }
-
     Wrath3() {
         send f
     }
@@ -221,7 +219,7 @@ class Skills {
 class Rotations
 {
     ; default rotation without any logic for max counts
-    Default()
+    Default(useDpsPhase)
     {
         if (Availability.IsWeaponResetClose()) {
             if (Availability.IsEmberstompAvailable()) {
@@ -240,15 +238,24 @@ class Rotations
             sleep 5
         }
 
-        if (Availability.IsNoFuryCleaveAvailable()) {
-            if (Availability.IsFuryAvailable()) {
+        ; wrath is usable during sb but we still need the fury buff
+        if (useDpsPhase && Availability.IsFuryAvailable() && Availability.IsAwkCleaveAvailable()) {
+            if (useDpsPhase && Availability.IsFuryAvailable()) {
                 ; emberstomp will get instantly anicanceled by fury, annoying gcd group though
                 Skills.EmberStomp()
-                sleep 20
+                sleep 5
                 Skills.Fury()
-                sleep 20
+            }
+        }
+
+        if (Availability.IsNoFuryCleaveAvailable()) {
+            if (useDpsPhase && Availability.IsFuryAvailable()) {
+                ; emberstomp will get instantly anicanceled by fury, annoying gcd group though
+                Skills.EmberStomp()
+                sleep 5
+                Skills.Fury()
             } else {
-                if (Availability.IsEmberstompAvailable()) {
+                if (useDpsPhase && Availability.IsEmberstompAvailable()) {
                     Skills.EmberStomp()
                     sleep 5
                 }
@@ -259,46 +266,35 @@ class Rotations
                 sleep 5
             }
         } else {
-            if (Availability.IsMightyCleaveAvailable() && Availability.IsBraceletCloseToExpiration()) {
+            if (Availability.IsSmashAvailable() && (Availability.IsMightyCleaveAvailable())) {
                 While (Availability.IsMightyCleaveAvailable()) {
                     Skills.MightyCleave()
-                    sleep 20
+                    sleep 10
                 }
 
-                While (Availability.IsSmashAvailable()) {
+                While (Availability.IsSmashAvailable() && (!Availability.IsMightyCleaveAvailable())) {
                     Skills.Smash()
                     sleep 10
                 }
             }
 
-            if (Availability.IsWrath2Available()) {
-                ; if wrath 2 is available we want to use it before mighty cleave since the hit of the 2nd wrath is near instant
-                ; so we anicancel the 2nd wrath with mighty cleave
-                While (Availability.IsWrath2Available()) {
-                    Skills.Wrath2()
-                    sleep 10
-                } 
-
-                sleep 40
-            } else {
-                if (Availability.IsWrath3Available()) {
-                    ; wrath 3 actually has a higher duration until hit, so we cancel it with cleave after 70 ms
-                    While (Availability.IsWrath3Available()) {
-                        Skills.Wrath3()
-                        sleep 10
-                    }
-
-                    sleep 70
-
-                    While (Availability.IsCleaveAvailable()) {
-                        Skills.Cleave()
-                        sleep 10
-                    }
-                } else {
-                    ; spam wrath
-                    Skills.Wrath()
+            if (Availability.IsWrath3Available()) {
+                ; wrath 3 actually has a higher duration until hit, so we cancel it with cleave after 70 ms
+                While (Availability.IsWrath3Available()) {
+                    Skills.Wrath3()
                     sleep 10
                 }
+
+                sleep 70
+
+                While (Availability.IsCleaveAvailable()) {
+                    Skills.Cleave()
+                    sleep 10
+                }
+            } else {
+                ; spam wrath
+                Skills.Wrath()
+                sleep 10
             }
         }
 
@@ -308,7 +304,7 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
-        Rotations.Default()
+        Rotations.Default(useDpsPhase)
 
         return
     }
