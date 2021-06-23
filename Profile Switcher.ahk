@@ -27,8 +27,8 @@ Profiles.Insert("Shadow Destroyer", {ClassName: "DES", ClassIcon: "Profile Switc
     return
 
 ^Numpad1::LoadScript("../Bots/BnS - Dst Farm Bot - Hardmode.ahk")
-
 ^Numpad2::LoadScript("../Bots/BnS - Exp Charm Bot.ahk")
+^Numpad3::LoadScript("../Bots/BnS - Exp Soup.ahk")
 
 LoadScript(scriptPath)
 {
