@@ -12,6 +12,7 @@ Profiles.Insert("Light FM", {ClassName: "FM", ClassIcon: "Profile Switcher Icons
 Profiles.Insert("Phantom SIN", {ClassName: "SIN", ClassIcon: "Profile Switcher Icons/SIN.png", CheckBadge: false, ScriptPath: "BnS - SIN Phantom.ahk"})
 Profiles.Insert("Lightning WR", {ClassName: "WR", ClassIcon: "Profile Switcher Icons/WR.png", CheckBadge: false, ScriptPath: "BnS - WR Lightning.ahk"})
 Profiles.Insert("Ice WL", {ClassName: "WL", ClassIcon: "Profile Switcher Icons/WL.png", CheckBadge: false, ScriptPath: "BnS - WL Ice.ahk"})
+Profiles.Insert("WL 3rd", {ClassName: "WL", ClassIcon: "Profile Switcher Icons/WL_Reaver.png", CheckBadge: false, ScriptPath: "BnS - WL Reaver.ahk"})
 Profiles.Insert("Earth Summoner", {ClassName: "SUM", ClassIcon: "Profile Switcher Icons/SUM.png", CheckBadge: false, ScriptPath: "BnS - SUM Earth.ahk"})
 Profiles.Insert("Earth Destroyer", {ClassName: "DES", ClassIcon: "Profile Switcher Icons/DES_Earth.png", CheckBadge: false, ScriptPath: "BnS - DES Earth.ahk"})
 Profiles.Insert("Shadow Destroyer", {ClassName: "DES", ClassIcon: "Profile Switcher Icons/DES_Shadow.png", CheckBadge: false, ScriptPath: "BnS - DES Reaper.ahk"})
@@ -29,6 +30,22 @@ Profiles.Insert("Shadow Destroyer", {ClassName: "DES", ClassIcon: "Profile Switc
 ^Numpad1::LoadScript("../Bots/BnS - Dst Farm Bot - Hardmode.ahk")
 ^Numpad2::LoadScript("../Bots/BnS - Exp Charm Bot.ahk")
 ^Numpad3::LoadScript("../Bots/BnS - Exp Soup.ahk")
+^Numpad4::
+	AHKPanic(1)
+    LoadScript("../Bots/BnS - ToI Tickets.ahk")
+    return
+^Numpad5::
+	AHKPanic(1)
+    LoadScriptFullPath("H:\OneDrive\Games\Blade and Soul\dst\main.ahk")
+    return
+
+LoadScriptFullPath(scriptPath)
+{
+    Run, %A_AHKPath% "%scriptPath%"
+    tooltip, loaded: %scriptPath%
+    SetTimer, RemoveToolTip, -2000
+    return 
+}
 
 LoadScript(scriptPath)
 {
