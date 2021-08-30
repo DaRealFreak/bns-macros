@@ -31,9 +31,31 @@ Return
 #IfWinActive ahk_class LaunchUnrealUWindowsClient
 ~f23 & Tab::
     ; way to deal with input lags without releasing the macro
-    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsTimeGyreAvailable())
+    While (Utility.GameActive() && GetKeyState("F23","p") && (Availability.IsTimeGyreAvailable() || Availability.IsSoulBurnAvailable()))
     {
-        send {tab}
+        Skills.SbOrTd()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & c::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsReapAvailable())
+    {
+        Skills.Reap()
+        sleep 5
+    }
+
+    return
+
+#IfWinActive ahk_class LaunchUnrealUWindowsClient
+~f23 & y::
+    ; way to deal with input lags without releasing the macro
+    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsDeathVeilAvailable())
+    {
+        Skills.DeathVeil()
         sleep 5
     }
 
@@ -62,6 +84,11 @@ class Availability {
         return Utility.GetColor(822,893) == "0x884544"
     }
 
+    IsSoulBurnAvailable()
+    {
+        return Utility.GetColor(822,893) == "0x030403"
+    }
+
     IsBloodCurseAvailable()
     {
         return Utility.GetColor(985,894) == "0xFF2425"
@@ -80,7 +107,7 @@ class Availability {
     IsSoulReaveAvailable()
     {
         color := Utility.GetColor(1035,894)
-        return color == "0x000000" || color == "0x512112" || color == "0xEB2425"
+        return color == "0x000000" || color == "0x512112" || color == "0xEB2425" || color == "0x4F2012"
     }
 
     IsPlagueAvailable()
@@ -97,9 +124,19 @@ class Availability {
         return Utility.GetColor(1050,959) != "0xE46B14"
     }
 
+    IsReapAvailable()
+    {
+        return Utility.GetColor(985,961) == "0x8E2A00"
+    }
+
+    IsDeathVeilAvailable()
+    {
+        return Utility.GetColor(885,961) == "0x660009"
+    }
+
     IsWeaponResetClose()
     {
-        return Utility.GetColor(581,907) == "0xFFBA01"
+        return Utility.GetColor(558,921) == "0xFFBA01" && Utility.GetColor(581,907) != "0xFFBA01"
     }
 }
 
@@ -143,6 +180,21 @@ class Skills {
     SoulReave()
     {
     	send 4
+    }
+
+    SbOrTd()
+    {
+        send {tab}
+    }
+
+    Reap()
+    {
+        send c
+    }
+
+    DeathVeil()
+    {
+        send z
     }
 }
 
