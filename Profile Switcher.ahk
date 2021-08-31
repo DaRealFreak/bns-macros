@@ -27,16 +27,16 @@ Profiles.Insert("Shadow Destroyer", {ClassName: "DES", ClassIcon: "Profile Switc
     LoadScript("BnS - BM Spectral - Exemplar Anicancel.ahk")
     return
 
-^Numpad1::LoadScript("../Bots/BnS - Dst Farm Bot - Hardmode.ahk")
-^Numpad2::LoadScript("../Bots/BnS - Exp Charm Bot.ahk")
-^Numpad3::LoadScript("../Bots/BnS - Exp Soup.ahk")
-^Numpad4::
-	AHKPanic(1)
-    LoadScript("../Bots/BnS - ToI Tickets.ahk")
+^Numpad1::
+    AHKPanic(1)
+    LoadScriptFullPath("H:\OneDrive\Games\Blade and Soul\dst\main.ahk")
     return
+^Numpad2::LoadScriptFullPath("H:\OneDrive\Games\Blade and Soul\vacation\vacation.ahk")
+^Numpad3::LoadScript("../Bots/BnS - Exp Charm Bot.ahk")
+^Numpad4::LoadScript("../Bots/BnS - Exp Soup.ahk")
 ^Numpad5::
 	AHKPanic(1)
-    LoadScriptFullPath("H:\OneDrive\Games\Blade and Soul\dst\main.ahk")
+    LoadScript("../Bots/BnS - ToI Tickets.ahk")
     return
 
 LoadScriptFullPath(scriptPath)
