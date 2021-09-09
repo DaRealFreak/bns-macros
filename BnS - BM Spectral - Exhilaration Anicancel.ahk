@@ -12,7 +12,7 @@ SetBatchLines, -1
 
 #Include %A_ScriptDir%\lib\utility.ahk
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 F1::
     MouseGetPos, mouseX, mouseY
     color := Utility.GetColor(mouseX, mouseY, r, g, b)
@@ -29,7 +29,7 @@ Return
 ^F11::Pause
 ^F12::ExitApp
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $F23::
     While (Utility.GameActive() && GetKeyState("F23","p"))
     {
@@ -37,7 +37,7 @@ $F23::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton2::
     While (Utility.GameActive() && GetKeyState("XButton2","p"))
     {
@@ -45,7 +45,7 @@ $XButton2::
     }
     return
     
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton1::
     While (Utility.GameActive() && GetKeyState("XButton1","p"))
     {
@@ -53,7 +53,7 @@ $XButton1::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & c::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsGuardianBladesAvailable())
@@ -64,7 +64,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & q::
     ; way to deal with input lags on iframes without releasing the macro
     if (Availability.IsBlindsideAvailable()) {
@@ -85,7 +85,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & e::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsCometStepAvailable())
@@ -96,7 +96,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & 1::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsDeflectAvailable())
@@ -107,7 +107,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & v::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsSpiritVortexAvailable())
@@ -118,7 +118,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~XButton2 & c::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsGuardianBladesAvailable())
@@ -129,7 +129,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~XButton2 & q::
     ; way to deal with input lags on iframes without releasing the macro
     if (Availability.IsBlindsideAvailable()) {
@@ -150,7 +150,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~XButton2 & e::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsCometStepAvailable())
@@ -161,7 +161,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~XButton2 & 1::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsDeflectAvailable())
@@ -172,7 +172,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~XButton2 & v::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsSpiritVortexAvailable())
@@ -193,59 +193,60 @@ class Availability
 
     IsStarstrikeAvailable()
     {
-        ;return Utility.GetColor(885,961) == "0x080F46"
-        return Utility.GetColor(821,894) == "0x060C42"
+        return Utility.GetColor(825,887) == "0x192C47"
     }
 
     IsSpiritVortexAvailable()
     {
-        return Utility.GetColor(1035,961) == "0x241AA2"
+        return Utility.GetColor(1035,951) == "0x726DA1"
     }
     
     IsGuardianBladesAvailable()
     {
-        return Utility.GetColor(985,961) == "0x081A30"
+        return Utility.GetColor(987,951) == "0x697785"
     }
 
     IsBlindsideAvailable()
     {
-        return Utility.GetColor(682,894) == "0xEBB0BA"
+        return Utility.GetColor(695,887) == "0xD2A6A8"
     }
 
     IsStrafeAvailable()
     {
-        return Utility.GetColor(682,894) == "0xEDCEB5"
+        return Utility.GetColor(695,887) == "0xD2B8A6"
     }
 
     IsCometStepAvailable()
     {
-        return Utility.GetColor(735,894) == "0x332769"
+        return Utility.GetColor(742,887) == "0x40436D"
     }
 
     IsEvadeAvailable()
     {
-        return Utility.GetColor(682,961) == "0x875049"
+        return Utility.GetColor(695,950) == "0x73464A"
     }
 
     IsDeflectAvailable()
     {
-        return Utility.GetColor(885,894) == "0x001A2A"
+        return Utility.GetColor(892,887) == "0x13181D"
     }
 
     IsLightningDrawAvailable()
     {
-        return Utility.GetColor(1036,895) != "0x2B1A80"
+        return Utility.GetColor(1035,887) == "0x51388F"
     }
 
     IsBraceletCloseToExpiration()
     {
-        return Utility.GetColor(596,921) != "0x01C1FF"
+        Utility.GetColor(663,819, r, g, b)
+        return b < 240
     }
 
     IsInDpsPhase()
     {
+        col := Utility.GetColor(1147,887)
         ; check falling stars for off cd and on cd
-        return Utility.GetColor(1148,894) == "0x26267D" || Utility.GetColor(1148,894) == "0x151546"
+        return col == "0x1C1047" || col == "0x161328"
     }
 
     IsBraceletActive()
@@ -256,25 +257,35 @@ class Availability
     IsBadgeEffectActive()
     {
         ; bracelet at break to 6 seconds
-        return Utility.GetColor(601,900) == "0x01C1FF"
+        Utility.GetColor(663,797, r, g, b)
+        return b > 250
+        ;return Utility.GetColor(682,798) == "0x04B1FE"
     }
 
     IsWeaponResetClose()
     {
         ; check for weapon reset cooldown (slightly above and below to see if the reset is close)
-        return Utility.GetColor(558,921) == "0xFFBA01" && Utility.GetColor(556,909) != "0xFFBA01"
+        Utility.GetColor(620, 818, r, g)
+        if (r > 200 && g > 100 && g < 200) {
+            Utility.GetColor(602, 812, r2)
+            return r2 < 200
+        }
+
+        return false
     }
 
     IsSoulProced()
     {
         ; check for soul duration progress bar
-        return Utility.GetColor(543,915) == "0x01C1FF"
+        Utility.GetColor(592,811, r, g, b)
+        return b > 240
+        ;return colPos == "0x04B0FD" || colPos == "0x04B0FE" || colPos == "0x04B1FD" || colPos == "0x04B1FE"
     }
 
     IsTalismanAvailable()
     {
         ; check for talisman cooldown border
-        return Utility.GetColor(557,635) != "0xE46B14"
+        return Utility.GetColor(569,659) != "0x3C3C3D"
     }
 }
 
@@ -365,7 +376,8 @@ class Rotations
 
         if (Availability.IsInDpsPhase()) {
             ; FS not visible on LMB so we're on the 3rd or 4th hit
-            if (!(Utility.GetColor(1099,894) == "0x1A0461" || Utility.GetColor(1099,894) == "0x0F0336")) {
+            col := Utility.GetColor(1095,887)
+            if (!(col == "0x1C1047" || col == "0x161328")) {
                 if (spiritVortexAvailable && (!Availability.IsBadgeEffectActive() || weaponResetClose)) {
                     ; bracelet effect close to expiring, use it before it fully expired to avoid bracelet effect bug
                     Rotations.Bracelet()
@@ -392,7 +404,8 @@ class Rotations
             }
 
             ; Slice not visible on LMB so we're on the 3rd or 4th hit
-            if (!(Utility.GetColor(1099,894) == "0x07388C" || Utility.GetColor(1099,894) == "0x041F4E")) {
+            col := Utility.GetColor(1095,887)
+            if (!(col == "0x10114B" || col == "0x121329")) {
                 if (spiritVortexAvailable && ((Availability.KeepBadgeEffectUp() && !Availability.IsBadgeEffectActive()) || (!Availability.KeepBadgeEffectUp() && Availability.IsBraceletCloseToExpiration()) || weaponResetClose)) {
                     ; bracelet/badge effect close to expiring, use it before it fully expired to avoid bracelet effect bug
                     Rotations.Bracelet()

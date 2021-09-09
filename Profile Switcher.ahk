@@ -18,7 +18,7 @@ Profiles.Insert("Earth Destroyer", {ClassName: "DES", ClassIcon: "Profile Switch
 Profiles.Insert("Shadow Destroyer", {ClassName: "DES", ClassIcon: "Profile Switcher Icons/DES_Shadow.png", CheckBadge: false, ScriptPath: "BnS - DES Reaper.ahk"})
 
 ^F3::Reload
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ^F5::SwitchProfile()
 ^F12::ExitApp
 

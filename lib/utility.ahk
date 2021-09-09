@@ -26,6 +26,6 @@ class Utility
     ;check if BnS is the current active window
     GameActive()
     {
-        Return WinActive("ahk_class LaunchUnrealUWindowsClient")
+        Return WinActive("ahk_class UnrealWindow")
     }
 }
