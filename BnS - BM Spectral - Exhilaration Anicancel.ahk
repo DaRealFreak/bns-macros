@@ -278,8 +278,7 @@ class Availability
     {
         ; check for soul duration progress bar
         Utility.GetColor(592,811, r, g, b)
-        return b > 240
-        ;return colPos == "0x04B0FD" || colPos == "0x04B0FE" || colPos == "0x04B1FD" || colPos == "0x04B1FE"
+        return b > 240 && r < 20
     }
 
     IsTalismanAvailable()
