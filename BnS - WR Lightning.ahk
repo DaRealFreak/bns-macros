@@ -12,7 +12,7 @@ SetBatchLines, -1
 
 #Include %A_ScriptDir%\lib\utility.ahk
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 F1::
     MouseGetPos, mouseX, mouseY
     color := Utility.GetColor(mouseX, mouseY, r, g, b)
@@ -29,7 +29,7 @@ RemoveToolTip:
 ^F11::Pause
 ^F12::ExitApp
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $F23::
     While (Utility.GameActive() && GetKeyState("F23","p"))
     {
@@ -37,7 +37,7 @@ $F23::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton2::
     While (Utility.GameActive() && GetKeyState("XButton2","p"))
     {
@@ -45,7 +45,7 @@ $XButton2::
     }
     return
     
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton1::
     While (Utility.GameActive() && GetKeyState("XButton1","p"))
     {
@@ -53,7 +53,7 @@ $XButton1::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & q::
     ; way to deal with input lags on iframes without releasing the macro
     if (Availability.IsSeverStepAvailable() || Availability.IsOnrushAvailable()) {
@@ -74,18 +74,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
-~f23 & c::
-    ; way to deal with input lags on iframes without releasing the macro
-    While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsShearStormAvailable())
-    {
-        Skills.ShearStorm()
-        sleep 5
-    }
-
-    return
-
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~XButton2 & q::
     ; way to deal with input lags on iframes without releasing the macro
     if (Availability.IsSeverStepAvailable() || Availability.IsOnrushAvailable()) {
@@ -106,83 +95,53 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
-~XButton2 & c::
-    ; way to deal with input lags on iframes without releasing the macro
-    While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsShearStormAvailable())
-    {
-        Skills.ShearStorm()
-        sleep 5
-    }
-
-    return
-
 ; everything related to checking availability of skills or procs
 class Availability
 {
     IsBladeWardAvailable()
     {
-        return Utility.GetColor(1035,959) == "0x111E2C"
+        return Utility.GetColor(1035,951) == "0x6D7681"
     }
 
     IsDeadlockAvailable()
     {
-        return Utility.GetColor(735,892) == "0x2A325B"
+        return Utility.GetColor(742,888) == "0x91A2C6"
     }
 
     IsSeismicStrikeAvailable()
     {
-        return Utility.GetColor(1035,892) == "0x1A0B0B"
+        return Utility.GetColor(1035,888) == "0x726969"
     }
     
     IsSoulburnAvailable()
     {
-        return Utility.GetColor(885,959) == "0x4E301A" || Utility.GetColor(885,959) == "0x551622"
+        col := Utility.GetColor(892,951)
+        return col == "0x998575" || col == "0x9F727C"
     }
 
     IsFrenzyAvailable()
     {
-        return Utility.GetColor(823,892) == "0x791914"
+        return Utility.GetColor(827,887) == "0xA82C26"
     }
 
     IsPrimalCallAvailable()
     {
-        return Utility.GetColor(985,894) == "0xF8BBA6"
-    }
-
-    IsFellstrikeAvailable()
-    {
-        return Utility.GetColor(1182,684) == "0x112649"
-    }
-
-    IsRazeAvailable()
-    {
-        return Utility.GetColor(1182,684) == "0x15164C"
-    }
-
-    IsBloodstormAvailable()
-    {
-        return Utility.GetColor(1182,684) == "0x1F060E"
-    }
-
-    IsShearStormAvailable()
-    {
-        return Utility.GetColor(985,959) == "0x5C0502"
+        return Utility.GetColor(987,887) == "0xA4332E"
     }
 
     IsSeverStepAvailable()
     {
-        return Utility.GetColor(682,892) == "0xC3A798"
+        return Utility.GetColor(695,887) == "0xD2B4A6"
     }
 
     IsOnrushAvailable()
     {
-        return Utility.GetColor(682,892) == "0x541E38"
+        return Utility.GetColor(695,887) == "0x903B59"
     }
 
     IsStrafeAvailable()
     {
-        return Utility.GetColor(682,892) == "0xD1A395"
+        return Utility.GetColor(695,887) == "0xDDB0A3"
     }
 
     IsQAvailable()
@@ -192,13 +151,15 @@ class Availability
 
     IsBraceletCloseToExpiration()
     {
-        return Utility.GetColor(596,921) != "0x01C1FF"
+        Utility.GetColor(663,819, r, g, b)
+        return b < 240
     }
 
-    IsTalismanAvailable()
+    IsSoulProced()
     {
-        ; check for talisman cooldown border
-        return Utility.GetColor(557,635) != "0xE46B14"
+        ; check for soul duration progress bar
+        Utility.GetColor(592,811, r, g, b)
+        return b > 240 && r < 20
     }
 }
 
@@ -208,11 +169,6 @@ class Skills {
     {
 		send t
 	}
-
-    F()
-    {
-        send f
-    }
 
     BladeWard()
     {
@@ -244,11 +200,6 @@ class Skills {
         send q
     }
 
-    ShearStorm()
-    {
-        send c
-    }
-
     Soulburn()
     {
         send z
@@ -271,13 +222,8 @@ class Rotations
     ; default rotation without any logic for max counts
     Default()
     {
-        if (Availability.IsFellstrikeAvailable() || Availability.IsRazeAvailable() || Availability.IsBloodstormAvailable()) {
-            Skills.F()
-            sleep 5
-        } else {
-            Skills.Greatslash()
-            sleep 5
-        }
+        Skills.Greatslash()
+        sleep 5
 
         return
     }
@@ -285,12 +231,6 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
-        if (Availability.IsTalismanAvailable())
-        {
-            Skills.Talisman()
-            sleep 5
-        }
-
         if (!Availability.IsFrenzyAvailable()) {
             if (Availability.IsBladeWardAvailable()) {
                 Skills.BladeWard()
@@ -310,7 +250,9 @@ class Rotations
                 return
             }
 
-            if (useDpsPhase && Availability.IsSoulburnAvailable()) {
+            if (useDpsPhase && Availability.IsSoulProced() && Availability.IsSoulburnAvailable()) {
+                Skills.Talisman()
+                sleep 5
                 Skills.Soulburn()
                 sleep 5
                 return
