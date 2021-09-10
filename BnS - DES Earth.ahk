@@ -11,7 +11,7 @@ SetBatchLines, -1
 
 #Include %A_ScriptDir%\lib\utility.ahk
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 F1::
     MouseGetPos, mouseX, mouseY
     color := Utility.GetColor(mouseX, mouseY, r, g, b)
@@ -28,7 +28,7 @@ RemoveToolTip:
 ^F11::Pause
 ^F12::ExitApp
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $F23::
     While (Utility.GameActive() && GetKeyState("F23","p"))
     {
@@ -36,7 +36,7 @@ $F23::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton2::
     While (Utility.GameActive() && GetKeyState("XButton2","p"))
     {
@@ -44,7 +44,7 @@ $XButton2::
     }
     return
     
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton1::
     While (Utility.GameActive() && GetKeyState("XButton1","p"))
     {
@@ -52,7 +52,7 @@ $XButton1::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & c::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsSearingStrikeAvailable())
@@ -63,7 +63,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & q::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsTyphoonAvailable())
@@ -74,7 +74,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & 1::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsBlitzAvailable())
@@ -85,7 +85,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & 2::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsRamAvailable())
@@ -108,65 +108,72 @@ class Availability
 
     IsWrath3Available()
     {
-        return Utility.GetColor(1180,683) == "0x201308"
+        return Utility.GetColor(1143,700) == "0x7E7169"
     }
 
     IsCleaveAvailable()
     {
-        color := Utility.GetColor(1148,894)
-        return color == "0xAE6736" || color == "0xC17340"
+        color := Utility.GetColor(1146,887)
+        ; ToDo: awk cleave
+        return color == "0xB7602F" || color == "0xC17340"
     }
 
     IsMightyCleaveAvailable()
     {
-        return Utility.GetColor(1180,683) == "0x120E05"
+        return Utility.GetColor(1143,700) == "0x6F6C69"
     }
 
     IsNoFuryCleaveAvailable()
     {
-        return Utility.GetColor(1299,892) == "0x080808"
+        return Utility.GetColor(1276,888) == "0x7C6E69"
     }
 
     IsFuryAvailable()
     {
-        return Utility.GetColor(735,894) == "0x5F0E2B"
+        return Utility.GetColor(742,887) == "0x5E1842"
     }
 
     IsEmberstompAvailable()
     {
-        return Utility.GetColor(985,894) == "0x250B09"
+        return Utility.GetColor(987,887) == "0x281616"
     }
 
     IsSmashAvailable()
     {
-        return Utility.GetColor(935,961) == "0xA36346"
+        return Utility.GetColor(940,950) == "0x301B13"
     }
 
     IsSearingStrikeAvailable()
     {
-        return Utility.GetColor(985,961) == "0x897141"
+        return Utility.GetColor(987,950) == "0x6D5532"
     }
 
     IsTyphoonAvailable()
     {
-        return Utility.GetColor(682,894) == "0xEB7A8C"
+        return Utility.GetColor(695,887) == "0xBC4859"
     }
 
     IsBraceletCloseToExpiration()
     {
-        return Utility.GetColor(596,921) != "0x01C1FF"
+        Utility.GetColor(663,819, r, g, b)
+        return b < 240
+    }
+
+    IsBraceletActive()
+    {
+        return !Availability.IsBraceletCloseToExpiration()
     }
 
     IsWeaponResetClose()
     {
         ; check for weapon reset cooldown (slightly above and below to see if the reset is close)
-        return Utility.GetColor(558,921) == "0xFFBA01" && Utility.GetColor(556,909) != "0xFFBA01"
-    }
+        Utility.GetColor(620, 818, r, g)
+        if (r > 200 && g > 100 && g < 200) {
+            Utility.GetColor(602, 812, r2)
+            return r2 < 200
+        }
 
-    IsTalismanAvailable()
-    {
-        ; check for talisman cooldown border
-        return Utility.GetColor(557,635) != "0xE46B14"
+        return false
     }
 }
 
@@ -222,20 +229,18 @@ class Rotations
     Default(useDpsPhase)
     {
         if (Availability.IsWeaponResetClose()) {
+            Skills.Talisman()
+            sleep 5
+
             if (Availability.IsEmberstompAvailable()) {
                 Skills.EmberStomp()
-                sleep 5
+                sleep 50
             }
 
             if (Availability.IsSmashAvailable()) {
                 Skills.Smash()
-                sleep 5
+                sleep 50
             }
-        }
-
-        if (Availability.IsTalismanAvailable()) {
-            Skills.Talisman()
-            sleep 5
         }
 
         ; wrath is usable during sb but we still need the fury buff
@@ -266,7 +271,7 @@ class Rotations
                 sleep 5
             }
         } else {
-            if (Availability.IsSmashAvailable() && (Availability.IsMightyCleaveAvailable())) {
+            if ((Availability.IsMightyCleaveAvailable() || !Availability.IsBraceletActive()) && Availability.IsSmashAvailable()) {
                 While (Availability.IsMightyCleaveAvailable()) {
                     Skills.MightyCleave()
                     sleep 10
