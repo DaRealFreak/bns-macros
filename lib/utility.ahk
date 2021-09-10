@@ -20,12 +20,13 @@ class Utility
         if (blue != 0) {
             blue := (color & 0xFF)
         }
-        Return color
+
+        return color
     }
 
     ;check if BnS is the current active window
     GameActive()
     {
-        Return WinActive("ahk_class UnrealWindow")
+        return WinActive("ahk_class UnrealWindow")
     }
 }
