@@ -124,7 +124,12 @@ class Availability
 
     IsNoFuryCleaveAvailable()
     {
-        return Utility.GetColor(898,759) != "0x00ACFD"
+        return Utility.GetColor(1276,888) == "0x7C6E69"
+    }
+
+    IsFuryMysticBuffActive()
+    {
+        return Utility.GetColor(953,747) == "0x0086D9"
     }
 
     IsFuryAvailable()
@@ -244,7 +249,7 @@ class Rotations
 
         if (Availability.IsNoFuryCleaveAvailable()) {
             if (useDpsPhase && Availability.IsFuryAvailable()) {
-                ; emberstomp will get instantly anicanceled by fury, annoying gcd group though
+                ; emberstomp will get instantly anicanceled by fury
                 Skills.EmberStomp()
                 sleep 5
                 Skills.Fury()
@@ -260,6 +265,13 @@ class Rotations
                 sleep 5
             }
         } else {
+            if (!Availability.IsFuryMysticBuffActive() && Availability.IsFuryAvailable()) {
+                ; emberstomp will get instantly anicanceled by fury
+                Skills.EmberStomp()
+                sleep 5
+                Skills.Fury()
+            }
+
             if ((Availability.IsMightyCleaveAvailable() || !Availability.IsBraceletActive()) && Availability.IsSmashAvailable()) {
                 While (Availability.IsMightyCleaveAvailable()) {
                     Skills.MightyCleave()
