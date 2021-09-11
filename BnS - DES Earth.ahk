@@ -101,9 +101,9 @@ class Availability
 {
     IsAwkCleaveAvailable()
     {
-        color := Utility.GetColor(1148,894)
+        color := Utility.GetColor(1146,887)
         ; awk cleave off gcd and on gcd
-        return color == "0xC17340" || color == "0x964915"
+        return color == "0xB05D2F" || color == "0x4D3021"
     }
 
     IsWrath3Available()
@@ -114,8 +114,7 @@ class Availability
     IsCleaveAvailable()
     {
         color := Utility.GetColor(1146,887)
-        ; ToDo: awk cleave
-        return color == "0xB7602F" || color == "0xC17340"
+        return color == "0xB7602F" || color == "0xB05D2F"
     }
 
     IsMightyCleaveAvailable()
@@ -125,7 +124,7 @@ class Availability
 
     IsNoFuryCleaveAvailable()
     {
-        return Utility.GetColor(1276,888) == "0x7C6E69"
+        return Utility.GetColor(898,759) != "0x00ACFD"
     }
 
     IsFuryAvailable()
@@ -240,16 +239,6 @@ class Rotations
             if (Availability.IsSmashAvailable()) {
                 Skills.Smash()
                 sleep 50
-            }
-        }
-
-        ; wrath is usable during sb but we still need the fury buff
-        if (useDpsPhase && Availability.IsFuryAvailable() && Availability.IsAwkCleaveAvailable()) {
-            if (useDpsPhase && Availability.IsFuryAvailable()) {
-                ; emberstomp will get instantly anicanceled by fury, annoying gcd group though
-                Skills.EmberStomp()
-                sleep 5
-                Skills.Fury()
             }
         }
 
