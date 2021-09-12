@@ -11,7 +11,7 @@ SetBatchLines, -1
 
 #Include %A_ScriptDir%\lib\utility.ahk
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 F1::
     MouseGetPos, mouseX, mouseY
     color := Utility.GetColor(mouseX, mouseY, r, g, b)
@@ -28,7 +28,7 @@ Return
 ^F11::Pause
 ^F12::ExitApp
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & Tab::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && (Availability.IsTimeGyreAvailable() || Availability.IsSoulBurnAvailable()))
@@ -39,7 +39,7 @@ Return
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & c::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsReapAvailable())
@@ -50,7 +50,7 @@ Return
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & y::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsDeathVeilAvailable())
@@ -61,7 +61,7 @@ Return
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $F23::
     While (Utility.GameActive() && GetKeyState("F23","p"))
     {
@@ -69,7 +69,7 @@ $F23::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton2::
     While (Utility.GameActive() && GetKeyState("XButton2","p"))
     {
@@ -81,62 +81,70 @@ $XButton2::
 class Availability {
     IsTimeGyreAvailable()
     {
-        return Utility.GetColor(822,893) == "0x884544"
+        return Utility.GetColor(825,887) == "0x6C403D"
     }
 
     IsSoulBurnAvailable()
     {
-        return Utility.GetColor(822,893) == "0x030403"
+        return Utility.GetColor(825,887) == "0x141414"
     }
 
-    IsBloodCurseAvailable()
+    IsReaverAvailable()
     {
-        return Utility.GetColor(985,894) == "0xFF2425"
-    }
-
-    IsUndercutAvailable()
-    {
-        return Utility.GetColor(1035,961) == "0x680904"
+        col := Utility.GetColor(825,887)
+        return col == "0x8B2952" || col == "0x131313"
     }
 
     IsPossessionAvailable()
     {
-        return Utility.GetColor(1035,894) == "0x4A0100"
+        return Utility.GetColor(1035,887) == "0x841313"
     }
 
-    IsSoulReaveAvailable()
+    IsBloodCurseAvailable()
     {
-        color := Utility.GetColor(1035,894)
-        return color == "0x000000" || color == "0x512112" || color == "0xEB2425" || color == "0x4F2012"
+        return Utility.GetColor(987,887) == "0xEE2223"
     }
 
-    IsPlagueAvailable()
+    IsUndercutAvailable()
     {
-        return Utility.GetColor(1181,685) == "0x130901"
-    }
-
-    IsDoomAvailable() {
-	    return Utility.GetColor(935,894) == "0x250000"
+        return Utility.GetColor(1035,950) == "0xA35744"
     }
 
     IsUndercutClose()
     {
-        return Utility.GetColor(1050,959) != "0xE46B14"
+        col := Utility.GetColor(1051,962)
+        return col != "0x291819" && col != "0x18172C"
+    }
+
+    IsSoulReaveAvailable()
+    {
+        ; also check for sb colors
+        color := Utility.GetColor(1035,890)
+        return color == "0x595959" || color == "0xAD9073" || color == "0xF6CDCF"
+    }
+
+    IsPlagueAvailable()
+    {
+        return Utility.GetColor(1144,703) == "0x585150"
+    }
+
+    IsDoomAvailable() {
+	    return Utility.GetColor(940,887) == "0x2D1313"
     }
 
     IsReapAvailable()
     {
-        return Utility.GetColor(985,961) == "0x8E2A00"
+        return Utility.GetColor(987,950) == "0x46130C"
     }
 
     IsDeathVeilAvailable()
     {
-        return Utility.GetColor(885,961) == "0x660009"
+        return Utility.GetColor(892,950) == "0x4B0C0C"
     }
 
-    IsWeaponResetClose()
+    IsMistWalkerVisible()
     {
-        return Utility.GetColor(558,921) == "0xFFBA01" && Utility.GetColor(581,907) != "0xFFBA01"
+        return Utility.GetColor(694,887) == "0x631413"
     }
 }
 
@@ -187,6 +195,11 @@ class Skills {
         send {tab}
     }
 
+    Reaver()
+    {
+        send {tab}
+    }
+
     Reap()
     {
         send c
@@ -232,7 +245,7 @@ class Rotations {
             sleep 5
         }
 
-        if (doomAvailable && !Availability.IsUndercutClose() && !Availability.IsWeaponResetClose()) {
+        if (doomAvailable && !Availability.IsUndercutClose()) {
             Skills.Doom()
             sleep 5
         }
@@ -245,18 +258,26 @@ class Rotations {
         if (Availability.IsPlagueAvailable()) {
             Skills.Plague()
             sleep 5
-        }
+        } else {
+            Skills.RMB()
+            sleep 5
 
-        if (Availability.IsPossessionAvailable()) {
-            Skills.Possession()
+            Skills.LMB()
             sleep 5
         }
 
-        Skills.RMB()
-        sleep 5
+        if (!Availability.IsMistWalkerVisible()) {
+            if (Availability.IsPossessionAvailable()) {
+                Skills.Possession()
+                sleep 5
+            }
 
-        Skills.LMB()
-        sleep 5
+            if (Availability.IsReaverAvailable()) {
+                Skills.Reaver()
+                sleep 5
+            }
+        }
+
 
         return
     }
