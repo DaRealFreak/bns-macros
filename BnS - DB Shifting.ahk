@@ -191,6 +191,12 @@ class Availability
         return col == "0x291650" || col == "0x192D51" || col == "0x192551"
     }
 
+    IsBladeTurnVisible()
+    {
+        col := Utility.GetColor(1145,887)
+        return col == "0x161C1B" || col == "0x22667A" || col == "0x27347D"
+    }
+
     IsDeepCutAvailable()
     {
         return Utility.GetColor(1035,951) == "0x6B6970"
@@ -359,7 +365,7 @@ class Rotations
             sleep 15
         }
 
-        if (!Availability.IsInStanceChange() && !Availability.IsTurnStrikeAvailable()) {
+        if (!Availability.IsInStanceChange() && !Availability.IsTurnStrikeAvailable() && !Availability.IsBladeTurnVisible()) {
             Skills.StormBlade()
             sleep 15
         }
