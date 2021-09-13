@@ -16,6 +16,7 @@ Profiles.Insert("WL 3rd", {ClassName: "WL", ClassIcon: "Profile Switcher Icons/W
 Profiles.Insert("Earth Summoner", {ClassName: "SUM", ClassIcon: "Profile Switcher Icons/SUM.png", CheckBadge: false, ScriptPath: "BnS - SUM Earth.ahk"})
 Profiles.Insert("Earth Destroyer", {ClassName: "DES", ClassIcon: "Profile Switcher Icons/DES_Earth.png", CheckBadge: false, ScriptPath: "BnS - DES Earth.ahk"})
 Profiles.Insert("Shadow Destroyer", {ClassName: "DES", ClassIcon: "Profile Switcher Icons/DES_Shadow.png", CheckBadge: false, ScriptPath: "BnS - DES Reaper.ahk"})
+Profiles.Insert("Shifting DB", {ClassName: "DB", ClassIcon: "Profile Switcher Icons/DB.png", CheckBadge: false, ScriptPath: "BnS - DB Shifting.ahk"})
 
 ^F3::Reload
 #IfWinActive ahk_class UnrealWindow
