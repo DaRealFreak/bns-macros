@@ -280,12 +280,6 @@ class Availability
         Utility.GetColor(592,811, r, g, b)
         return b > 240 && r < 20
     }
-
-    IsTalismanAvailable()
-    {
-        ; check for talisman cooldown border
-        return Utility.GetColor(569,659) != "0x3C3C3D"
-    }
 }
 
 ; skill bindings
@@ -444,17 +438,16 @@ class Rotations
             this.lastLightningDrawUse := A_TickCount
         }
 
-        ; use talisman while no cd border and keys are pressed
-        While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
-        {
-            Skills.Talisman()
-            sleep 1
-        }
-
         ; check skill border for cooldown, check for skill icon for stance and break if keys aren't pressed anymore
         ; while in stance and stance off cooldown send stance key
         While (Utility.GameActive() && Availability.IsStarstrikeAvailable() && GetKeyState("F23","p"))
         {
+            ; make sure talisman is activated together with starstrike
+            loop, 2 {
+                Skills.Talisman()
+                sleep 5
+            }
+
             Skills.Starstrike()
             sleep 1
         }
