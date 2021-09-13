@@ -198,14 +198,16 @@ class Availability
 
     IsDriveStrikeAvailable()
     {
+        ; all 3 stances and all 3 stances in sb
         col := Utility.GetColor(1035,887)
-        return col == "0x4F235B" || col == "0x2C2D58" || col == "0x2C474F"
+        return col == "0x4F235B" || col == "0x2C2D58" || col == "0x2C474F" || col == "0x3F3F73" || col == "0x3F6169" || col == "0x622C6E"
     }
 
     IsDecimatorVisible()
     {
+        ; all 3 stances and all 3 stances in sb
         col := Utility.GetColor(1143,700)
-        return col == "0x9A79A5" || col == "0x757596" || col == "0x7594A4"
+        return col == "0x9A79A5" || col == "0x757596" || col == "0x7594A4" || col == "0x9A78A6"
     }
 
     IsCutOffAvailable()
