@@ -12,7 +12,7 @@ SetBatchLines, -1
 
 #Include %A_ScriptDir%\lib\utility.ahk
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 F1::
     MouseGetPos, mouseX, mouseY
     color := Utility.GetColor(mouseX, mouseY, r, g, b)
@@ -29,7 +29,7 @@ Return
 ^F11::Pause
 ^F12::ExitApp
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $F23::
     While (Utility.GameActive() && GetKeyState("F23","p"))
     {
@@ -37,7 +37,7 @@ $F23::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton2::
     While (Utility.GameActive() && GetKeyState("XButton2","p"))
     {
@@ -45,7 +45,7 @@ $XButton2::
     }
     return
     
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton1::
     While (Utility.GameActive() && GetKeyState("XButton1","p"))
     {
@@ -53,7 +53,7 @@ $XButton1::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~F23 & q::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsShadowDanceAvailable())
@@ -63,7 +63,7 @@ $XButton1::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~F23 & e::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsFootworkAvailable())
@@ -73,7 +73,7 @@ $XButton1::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~F23 & c::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsFlurryAvailable())
@@ -83,7 +83,7 @@ $XButton1::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~XButton2 & q::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsShadowDanceAvailable())
@@ -93,7 +93,7 @@ $XButton1::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~XButton2 & e::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsFootworkAvailable())
@@ -103,7 +103,7 @@ $XButton1::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~XButton2 & c::
     ; way to deal with input lags without releasing the macro
     While (Utility.GameActive() && GetKeyState("XButton2","p") && Availability.IsFlurryAvailable())
@@ -118,65 +118,67 @@ class Availability
 {
     IsShadowDanceAvailable()
     {
-        return Utility.GetColor(682,894) == "0xFFD13E"
+        return Utility.GetColor(695,887) == "0xEEAB18"
     }
 
     IsFootworkAvailable()
     {
-        return Utility.GetColor(735,894) == "0xEBBBA6"
+        return Utility.GetColor(742,887) == "0xCBB4A3"
     }
 
     IsFlurryAvailable()
     {
-        return Utility.GetColor(985,961) == "0x391509"
+        return Utility.GetColor(987,951) == "0x746A6A"
     }
 
     IsFightingSpiritAvailable()
     {
-        return Utility.GetColor(821,894) == "0x003641"
+        return Utility.GetColor(825,887) == "0x3D9CB3"
     }
 
     IsWindGyreAvailable()
     {
-        return Utility.GetColor(1035,961) == "0xE1EBFF"
+        return Utility.GetColor(1035,951) == "0x7A7C94"
     }
 
     IsCometStrikeAvailable()
     {
-        return Utility.GetColor(1035,894) == "0x582409"
+        return Utility.GetColor(1035,887) == "0xB29348"
     }
 
     IsSearingPalmAvailable()
     {
-        return Utility.GetColor(935,961) == "0x24484B"
+        return Utility.GetColor(940,951) == "0x94A8A6"
     }
 
     IsPivotKickAvailable()
     {
-        return Utility.GetColor(935,961) == "0x002A67"
+        return Utility.GetColor(940,951) == "0x6983A9"
     }
 
     IsBraceletCloseToExpiration()
     {
-        return Utility.GetColor(595,918) != "0x01C1FF"
+        Utility.GetColor(663,819, r, g, b)
+        return b < 240
     }
 
     IsWeaponResetClose()
     {
         ; check for weapon reset cooldown (slightly above and below to see if the reset is close)
-        return Utility.GetColor(558,921) == "0xFFBA01" && Utility.GetColor(556,909) != "0xFFBA01"
+        Utility.GetColor(620, 818, r, g)
+        if (r > 200 && g > 100 && g < 200) {
+            Utility.GetColor(602, 812, r2)
+            return r2 < 200
+        }
+
+        return false
     }
 
     IsSoulProced()
     {
         ; check for soul duration progress bar
-        return Utility.GetColor(543,908) == "0x01C1FF"
-    }
-
-    IsTalismanAvailable()
-    {
-        ; check for talisman cooldown border
-        return Utility.GetColor(557,635) != "0xE46B14"
+        Utility.GetColor(592,811, r, g, b)
+        return b > 240 && r < 20
     }
 }
 
@@ -293,13 +295,9 @@ class Rotations
         ; our dps phase is only bb lol
         While (Utility.GameActive() && Availability.IsFightingSpiritAvailable() && GetKeyState("F23","p"))
         {
-            Skills.FightingSpirit()
-            sleep 1
-        }
-
-        While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
-        {
             Skills.Talisman()
+            sleep 1
+            Skills.FightingSpirit()
             sleep 1
         }
 

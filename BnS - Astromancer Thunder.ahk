@@ -11,7 +11,7 @@ SetBatchLines, -1
 
 #Include %A_ScriptDir%\lib\utility.ahk
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 F1::
     MouseGetPos, mouseX, mouseY
     color := Utility.GetColor(mouseX, mouseY, r, g, b)
@@ -28,7 +28,7 @@ Return
 ^F11::Pause
 ^F12::ExitApp
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $F23::
     While (Utility.GameActive() && GetKeyState("F23","p"))
     {
@@ -36,7 +36,7 @@ $F23::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton2::
     While (Utility.GameActive() && GetKeyState("XButton2","p"))
     {
@@ -44,7 +44,7 @@ $XButton2::
     }
     return
     
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton1::
     While (Utility.GameActive() && GetKeyState("XButton1","p"))
     {
@@ -60,54 +60,44 @@ class Availability
     }
 
     IsLMBAvailable() {
-        return Utility.GetColor(1099,892) != "0xE46B14"
+        return Utility.GetColor(1095,887) == "0x5AAABB"
     }
 
     IsOrbitalStrikeAvailable() {
         ; normal and awakened orbital strike
-        return Utility.GetColor(1182,684) == "0x294D55"
+        return Utility.GetColor(1143,700) == "0x7C979C"
     }
 
     IsFirstElectrifyAvailable() {
-        return Utility.GetColor(935,894) == "0x5F8FCA"
+        return Utility.GetColor(940,887) == "0x16427C"
     }
 
     IsSecondElectrifyAvailable() {
-        return Utility.GetColor(935,894) == "0x2F7098"
+        return Utility.GetColor(940,887) == "0x273A4B"
     }
 
     IsThunderballAvailable() {
-        return Utility.GetColor(1035,894) == "0x122AB0"
+        return Utility.GetColor(1035,887) == "0x8F9EB4"
     }
 
     IsPortentAvailable() {
-        return Utility.GetColor(1035,964) == "0x1C1C43"
+        return Utility.GetColor(1035,957) == "0x36375C"
     }
 
     IsPolarityAvailable()
     {
-        return Utility.GetColor(821,894) == "0x44BBFF"
+        return Utility.GetColor(825,887) == "0x3589EE"
     }
 
     IsSupernovaAvailable() {
-        return Utility.GetColor(1301,892) == "0x174278"
-    }
-
-    IsScourgeEffectActive() {
-        ; raid badge effect scourge effect is only active for 10 seconds, so check for 5 second mark here
-        return Utility.GetColor(598,902) == "0x01C1FF"
+        return Utility.GetColor(1277,887) == "0x3D8FBD"
     }
 
     IsSoulProced()
     {
         ; check for soul duration progress bar
-        return Utility.GetColor(543,915) == "0x01C1FF"
-    }
-
-    IsTalismanAvailable()
-    {
-        ; check for talisman cooldown border
-        return Utility.GetColor(559,635) != "0xE46B14"
+        Utility.GetColor(592,811, r, g, b)
+        return b > 240 && r < 20
     }
 }
 
@@ -201,16 +191,11 @@ class Rotations
     }
 
     DpsPhase() {
-        ; use talisman while no cd border and keys are pressed
-        While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
-        {
-            Skills.Talisman()
-            sleep 5
-        }
-
         ; loop while polarity is not on cooldown or break if keys aren't pressed anymore
         While (Utility.GameActive() && Availability.IsPolarityAvailable() && GetKeyState("F23","p"))
         {    
+            Skills.Talisman()
+            sleep 5
             Skills.Polarity()
             sleep 5
         }
