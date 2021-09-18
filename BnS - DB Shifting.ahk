@@ -351,7 +351,7 @@ class Skills {
 class Rotations
 {
     static lastSplinterUse := 0
-    static dpsPhaseStart := 0
+    static dpsPhaseStarted := false
 
     ; default rotation without any logic for max counts
     Default()
@@ -385,7 +385,7 @@ class Rotations
         weaponResetClose := Availability.IsWeaponResetClose()
 
         if (useDpsPhase) {
-            if (A_TickCount > this.lastSplinterUse + 60*1000 && Availability.IsSoulProced()) {
+            if (A_TickCount > this.lastSplinterUse + 60*1000 && Availability.IsSoulProced() && Availability.IsDriveStrikeAvailable()) {
                 while (Availability.IsEscalateVisible()) {
                     Skills.Talisman()
                     sleep 5
@@ -407,7 +407,10 @@ class Rotations
         if (Availability.IsOblivionAvailable()) {
             Skills.Oblivion()
             sleep 5
-            this.dpsPhaseStart := A_TickCount
+            if (!this.dpsPhaseStarted) {
+                this.dpsPhaseStarted := true
+                this.lastSplinterUse := A_TickCount
+            }
         }
 
         if ((!Availability.IsBraceletActive() || weaponResetClose) && Availability.IsIncarnateAvailable()) {
@@ -417,13 +420,17 @@ class Rotations
             return
         }
 
-        if (A_TickCount < this.dpsPhaseStart + 10 * 1000) {
-            Rotations.BurstDefault()
-            return
+        if (this.dpsPhaseStarted) {
+            if (A_TickCount < this.lastSplinterUse + 10 * 1000) {
+                Rotations.BurstDefault()
+                return
+            } else {
+                this.dpsPhaseStarted := false
+            }
         }
 
         if (Availability.IsDriveStrikeAvailable() || Availability.IsDecimatorVisible()) {
-            if (!weaponResetClose && (A_TickCount > this.lastSplinterUse + (60-16) * 1000)) {
+            if (useDpsPhase && !weaponResetClose && (A_TickCount > this.lastSplinterUse + (60-16) * 1000)) {
                 Rotations.Default()
             } else {
                 Rotations.BurstDefault()
