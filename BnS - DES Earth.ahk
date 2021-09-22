@@ -250,6 +250,8 @@ class Rotations
         if (Availability.IsNoFuryCleaveAvailable()) {
             if (useDpsPhase && Availability.IsFuryAvailable()) {
                 ; emberstomp will get instantly anicanceled by fury
+                Skills.Talisman()
+                sleep 5
                 Skills.EmberStomp()
                 sleep 5
                 Skills.Fury()
@@ -267,9 +269,12 @@ class Rotations
         } else {
             if (!Availability.IsFuryMysticBuffActive() && Availability.IsFuryAvailable()) {
                 ; emberstomp will get instantly anicanceled by fury
+                Skills.Talisman()
+                sleep 5
                 Skills.EmberStomp()
                 sleep 5
                 Skills.Fury()
+                sleep 5
             }
 
             if ((Availability.IsMightyCleaveAvailable() || !Availability.IsBraceletActive()) && Availability.IsSmashAvailable()) {
