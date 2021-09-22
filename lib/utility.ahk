@@ -6,18 +6,18 @@ SetWorkingDir, %A_ScriptDir%
 class Utility
 {
     ;return the color at the passed position
-    GetColor(x, y, ByRef red:=0, ByRef green:=0, ByRef blue:=0)
+    GetColor(x, y, ByRef red:=-1, ByRef green:=-1, ByRef blue:=-1)
     {
         PixelGetColor, color, x, y, RGB
         StringRight color,color,10
         ; only bitshift if the refs actually got passed to the function
-        if (red != 0) {
+        if (red != -1) {
             red := ((color & 0xFF0000) >> 16)
         }
-        if (green != 0) {
+        if (green != -1) {
             green := ((color & 0xFF00) >> 8)
         }
-        if (blue != 0) {
+        if (blue != -1) {
             blue := (color & 0xFF)
         }
 
