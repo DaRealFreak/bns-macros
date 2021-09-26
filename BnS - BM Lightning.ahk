@@ -100,10 +100,8 @@ $XButton2::
     
 #IfWinActive ahk_class UnrealWindow
 $XButton1::
-    while (Utility.GameActive() && GetKeyState("XButton1","p"))
-    {
-        Rotations.Default()
-    }
+    Camera.Spin(1587)
+
     return
 
 ; everything related to checking availability of skills or procs
@@ -111,7 +109,9 @@ class Availability
 {
     IsBladeCallAvailable()
     {
-        return Utility.GetColor(1035,951) == "0x989592"
+        ; since blade call blinks on getting available we have to negate not available checks here
+        col := Utility.GetColor(987,951)
+        return col != "0x6F7071" && col != "0x7B7B7B"
     }
 
     IsLunarSlashAvailable()
@@ -140,20 +140,9 @@ class Availability
         return Utility.GetColor(1035,887) == "0xEE4142"
     }
 
-    IsFlashStepVisible()
-    {
-        col := Utility.GetColor(1035,951)
-        return col == "0x718092" || col == "0x6E747B"
-    }
-
     IsFlashStepAvailable()
     {
-        return Utility.GetColor(1035,951) == "0x718092"
-    }
-
-    IsViolentBladeAvailable()
-    {
-        return Utility.GetColor(1143,700) == "0x83BCCD"
+        return Utility.GetColor(1035,964) == "0x352217"
     }
 
     IsFatalBladeAvailable()
@@ -169,12 +158,6 @@ class Availability
     IsStrafeAvailable()
     {
         return Utility.GetColor(695,887) == "0xCBB4A3"
-    }
-
-    IsInDrawStance()
-    {
-        col := Utility.GetColor(1146,887)
-        return col  == "0x492018" || col == "0xA62F17"
     }
 
     IsWeaponResetClose()
@@ -254,18 +237,71 @@ class Skills {
     }
 }
 
+class Camera
+{
+    Spin(pxls)
+    {
+        ; you have to experiment a little with your settings here due to your DPI, ingame sensitivity etc
+        MouseGetPos, xp, yp
+        if (xp >= pxls) {
+            DllCall("mouse_event", "UInt", 0x0001, "UInt", -1 * pxls, "UInt", 0)
+        } else {
+            DllCall("mouse_event", "UInt", 0x0001, "UInt", pxls, "UInt", 0)
+        }
+    }
+}
+
 ; everything rotation related
 class Rotations
 {
-    static lastLightningDrawUse := 0
+    static bladeCallUse := 0
 
     Default()
     {
-        if (Availability.IsInDrawStance()) {
-            send r
-            sleep 25
-            send t
-            sleep 25
+        if (!Availability.IsLunarSlashAvailable()) {
+            if (Availability.IsSunderingSwordAvailable()) {
+                Skills.SunderingSword()
+                sleep 25
+                return
+            }
+        }
+
+        if (!Availability.IsFulminationActive()) {
+            if (Availability.IsLunarSlashAvailable()) {
+                Skills.LunarSlash()
+                sleep 25
+                return
+            } else {
+                
+            }
+        }
+
+        send r
+        sleep 25
+        send t
+        sleep 25
+    }
+
+    FlashSteps()
+    {
+        if (Availability.IsFlashStepAvailable() && A_TickCount < this.bladeCallUse + 24*1000) {
+            while (Availability.IsFlashStepAvailable()) {
+                while (Availability.IsFlashStepAvailable()) {
+                    send v
+                    sleep 25
+                }
+                sleep 300
+                Camera.Spin(1587)
+                ; sleep for gcd
+                sleep 300
+            }
+
+            if (Availability.IsFatalBladeAvailable()) {
+                while (Availability.IsFatalBladeAvailable()) {
+                    send f
+                    sleep 25
+                }
+            }
         }
     }
 
@@ -302,6 +338,43 @@ class Rotations
                 Skills.LunarSlash()
                 sleep 5
             }
+        }
+
+        if (Availability.IsBladeCallAvailable()) {
+            while (Availability.IsBladeCallAvailable()) {
+                send c
+                sleep 25
+            }
+            this.bladeCallUse := A_TickCount
+
+            if (Availability.IsLightningDrawAvailable()) {
+                while (Availability.IsLightningDrawAvailable()) {
+                    send 4
+                    sleep 25
+                }
+            }
+        }
+
+        if (A_TickCount > this.bladeCallUse + 6*1000 && A_TickCount < this.bladeCallUse + 7.3*1000) {
+            if (Availability.IsBladeStormAvailable()) {
+                while (Availability.IsBladeStormAvailable()) {
+                    send x
+                    sleep 25
+                }
+            }
+
+            if (Availability.IsFatalBladeAvailable()) {
+                while (Availability.IsFatalBladeAvailable()) {
+                    send f
+                    sleep 25
+                }
+            }
+
+            Rotations.FlashSteps()
+        }
+
+        if (!(A_TickCount > this.bladeCallUse + 4*1000 && A_TickCount < this.bladeCallUse + 8*1000)) {
+            Rotations.FlashSteps()
         }
 
         Rotations.Default()
