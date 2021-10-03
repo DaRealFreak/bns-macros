@@ -11,7 +11,7 @@ SetBatchLines, -1
 
 #Include %A_ScriptDir%\lib\utility.ahk
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 F1::
     MouseGetPos, mouseX, mouseY
     color := Utility.GetColor(mouseX, mouseY, r, g, b)
@@ -28,7 +28,7 @@ Return
 ^F11::Pause
 ^F12::ExitApp
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $F23::
     While (Utility.GameActive() && GetKeyState("F23","p"))
     {
@@ -36,7 +36,7 @@ $F23::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton2::
     While (Utility.GameActive() && GetKeyState("XButton2","p"))
     {
@@ -44,15 +44,13 @@ $XButton2::
     }
     return
     
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton1::
-    While (Utility.GameActive() && GetKeyState("XButton1","p"))
-    {
-        Rotations.Default()
-    }
+    Camera.Spin(1587)
+
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & c::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsNightFuryAvailable())
@@ -63,7 +61,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & e::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsShunpoAvailable())
@@ -74,7 +72,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & q::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsShadowDanceAvailable())
@@ -85,7 +83,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & 1::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsPhantomDashAvailable())
@@ -96,7 +94,7 @@ $XButton1::
 
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 ~f23 & z::
     ; way to deal with input lags on iframes without releasing the macro
     While (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsUpheavalAvailable())
@@ -110,97 +108,73 @@ $XButton1::
 ; everything related to checking availability of skills or procs
 class Availability
 {
-    WaitForSoul() {
-        return false
-    }
-
     UseShadowSlash() {
         ; false for exhilaration badge, true for stoic
-        return false
+        return true
     }
 
-    IsBlueBuffAvailable()
+    IsPhantomAvailable()
     {
-        return Utility.GetColor(1035,959) != "0xE46B14"
+        return Utility.GetColor(825,887) == "0x5B31B7"
     }
 
-    IsPhantomAvailable() {
-        return Utility.GetColor(821,894) == "0x221E09"
+    IsNightReaverAvailable()
+    {
+        return Utility.GetColor(1035,887) == "0x7326D7"
     }
 
-    IsNightReaverAvailable() {
-        return Utility.GetColor(1036,897) == "0x8300FF"
-    }
-
-    IsNightReaverUnavailable() {
-        color := Utility.GetColor(1036, 906)
-        ; off cd and on cd disabled nightreaver
-        return color == "0x272727" || color == "0x161616"
+    IsInStanceChange()
+    {
+        col := Utility.GetColor(824,887)
+        return col != "0xBF8C94" && col != "0x331F48"
     }
 
     IsNecroStrikeAvailable()
     {
-        return Utility.GetColor(1036,897) == "0x732AE6"
+        return Utility.GetColor(1035,887) == "0x471C54"
     }
 
     IsUltraVioletAvailable() {
-        return Utility.GetColor() == ""
+        return Utility.GetColor(1035,887) == "0x1F1324"
     }
 
     IsNightmareAvailable() {
-        return Utility.GetColor(934,964) == "0x151230"
+        return Utility.GetColor(940,951) == "0x8C6CD4"
     }
 
     IsPhantomShurikenAvailable()
     {
-        return Utility.GetColor(988,903) == "0x1B092E"
+        return Utility.GetColor(987,887) == "0x311735"
     }
 
     IsShadowSlashAvailable()
     {
-        return Utility.GetColor(987,899) == "0x0A070B"
-    }
-
-    IsAwakenAvailable()
-    {
-        return Utility.GetColor(1304,902) == "0xBB7551"
+        return Utility.GetColor(987,887) == "0x311C3D"
     }
 
     IsPhantomDashAvailable()
     {
-        return Utility.GetColor(885,894) == "0x1B162C"
+        return Utility.GetColor(892,887) == "0x8A63E4"
     }
 
     IsUpheavalAvailable()
     {
-        return Utility.GetColor(885,961) == "0x8F27F3"
+        return Utility.GetColor(892,951) == "0x916FD4"
     }
 
     IsShadowDanceAvailable()
     {
-        return Utility.GetColor(682,894) == "0x0E0B0E"
+        return Utility.GetColor(695,887) == "0x131414"
     }
 
     IsShunpoAvailable()
     {
-        return Utility.GetColor(735,894) == "0xEFBAA1"
+        return Utility.GetColor(742,887) == "0x164F3F"
     }
 
     IsNightFuryAvailable()
     {
-        return Utility.GetColor(985,961) == "0x1F0033"
-    }
-
-    IsSoulProced()
-    {
-        ; check for soul duration progress bar
-        return Utility.GetColor(543,915) == "0x01C1FF"
-    }
-
-    IsTalismanAvailable()
-    {
-        ; check for talisman cooldown border
-        return Utility.GetColor(559,635) != "0xE46B14"
+        return Utility.GetColor(987,951) == "0x7F6A88"
     }
 }
 
@@ -234,10 +208,6 @@ class Skills {
         send x
     }
 
-    BlueBuff() {
-        send v
-    }
-
     Upheaval() {
         send z
     }
@@ -267,10 +237,23 @@ class Skills {
     }
 }
 
+class Camera
+{
+    Spin(pxls)
+    {
+        ; you have to experiment a little with your settings here due to your DPI, ingame sensitivity etc
+        MouseGetPos, xp, yp
+        if (xp >= pxls) {
+            DllCall("mouse_event", "UInt", 0x0001, "UInt", -1 * pxls, "UInt", 0)
+        } else {
+            DllCall("mouse_event", "UInt", 0x0001, "UInt", pxls, "UInt", 0)
+        }
+    }
+}
+
 ; everything rotation related
 class Rotations
 {
-    ; default rotation without any logic for max counts
     Default()
     {
         Skills.LMB()
@@ -278,31 +261,22 @@ class Rotations
 
         Skills.RMB()
         sleep 5
+    }
 
-        ; ToDo: only use shadow slash if not full stacked already
-        if (Availability.UseShadowSlash() && Availability.IsShadowSlashAvailable()) {
-            Skills.ShadowSlash()
-            sleep 5
+    FullRotation(useDpsPhase)
+    {
+        if (Availability.IsInStanceChange()) {
+            Skills.NightReaver()
+            return
         }
 
-        ; ToDo: only use necro strike if not full stacked already or ultraviolet is available
-        if (Availability.IsNecroStrikeAvailable()) {
-            ; necro strike has casting time of 200 ms so we lock the script here until the skill is on cd
-            While (Utility.GameActive() && Availability.IsNecroStrikeAvailable() && (GetKeyState("F23","p") || GetKeyState("XButton1","p") || GetKeyState("XButton2","p"))) {
-                Skills.NecroStrike()
-                sleep 5
-            }
-
-            ; ToDo: add similar check for ultraviolet here
+        if (useDpsPhase && Availability.IsPhantomAvailable()) {
+            Rotations.DpsPhase()
         }
 
         if (Availability.IsNightReaverAvailable()) {
-            ; use up all stacks before trying to activate blue buff
-            While (Utility.GameActive() && Availability.IsNightReaverAvailable() && (GetKeyState("F23","p") || GetKeyState("XButton1","p") || GetKeyState("XButton2","p")))
-            {
-                Skills.NightReaver()
-                sleep 5
-            }
+            Skills.NightReaver()
+            sleep 5
         }
 
         ; always use phantom shuriken to trigger exhilaration badge effect
@@ -317,22 +291,7 @@ class Rotations
             sleep 5
         }
 
-        return
-    }
-
-    ; full rotation with situational checks
-    FullRotation(useDpsPhase)
-    {
         Rotations.Default()
-
-        if (useDpsPhase && (Availability.IsPhantomAvailable() && (!Availability.WaitForSoul() || Availability.IsSoulProced()))) {
-            ; dps phase is ready and soul active, use it
-            Rotations.DpsPhase()
-        }
-
-        if (useDpsPhase && Availability.IsAwakenAvailable()) {
-            Rotations.BlueBuff()
-        }
 
         return
     }
@@ -340,52 +299,34 @@ class Rotations
     ; activate bluebuff and talisman if it's ready
     DpsPhase()
     {
-        ; use talisman while no cd border and keys are pressed
-        While (Utility.GameActive() && Availability.IsTalismanAvailable() && GetKeyState("F23","p"))
-        {
-            Skills.Talisman()
+        ; properly prestack at least 2 stacks before entering stance
+        if (Availability.IsNecroStrikeAvailable()) {
+            ; necro strike has casting time of 200 ms so we lock the script here until the skill is on cd
+            While (Utility.GameActive() && Availability.IsNecroStrikeAvailable() && (GetKeyState("F23","p") || GetKeyState("XButton1","p") || GetKeyState("XButton2","p"))) {
+                Skills.NecroStrike()
+                sleep 50
+            }
+
+            While (Utility.GameActive() && Availability.IsUltraVioletAvailable() && (GetKeyState("F23","p") || GetKeyState("XButton1","p") || GetKeyState("XButton2","p"))) {
+                Skills.NecroStrike()
+                sleep 5
+            }
+        }
+
+        if (Availability.UseShadowSlash() && Availability.IsShadowSlashAvailable()) {
+            Skills.ShadowSlash()
             sleep 5
         }
 
         ; use up all stacks before trying to activate blue buff
         While (Utility.GameActive() && Availability.IsPhantomAvailable() && GetKeyState("F23","p"))
         {
+            Skills.Talisman()
+            sleep 5
             Skills.Phantom()
             sleep 5
         }
 
-        ; stance change, skill icons are just floating around
-        While (Utility.GameActive() && !Availability.IsAwakenAvailable() && GetKeyState("F23","p")) {
-            Rotations.Default()
-        }
-
-        ; use up all stacks before trying to activate blue buff
-        While (Utility.GameActive() && !Availability.IsNightReaverUnavailable() && GetKeyState("F23","p"))
-        {
-            ; use up all stacks before trying to activate blue buff
-            While (Utility.GameActive() && Availability.IsNightReaverAvailable() && GetKeyState("F23","p"))
-            {
-                Skills.NightReaver()
-                sleep 5
-            }
-
-            Rotations.Default()
-        }
-
-        ; if blue buff is available after activating the stance we instantly use
-        if (Availability.IsBlueBuffAvailable()) {
-            Rotations.BlueBuff()
-        }
-
         return
-    }
-
-    BlueBuff() {
-        ; loop while BlueBuff is not on cooldown or break if keys aren't pressed anymore
-        While (Utility.GameActive() && Availability.IsBlueBuffAvailable() && Availability.IsAwakenAvailable() && GetKeyState("F23","p"))
-        {    
-            Skills.BlueBuff()
-            sleep 5
-        }
     }
 }
