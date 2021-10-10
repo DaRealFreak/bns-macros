@@ -236,6 +236,18 @@ class Availability
         return Utility.GetColor(1035,887) == "0x51388F"
     }
 
+    IsSliceOnLmb()
+    {
+        col := Utility.GetColor(1095,887)
+        return col == "0x090A2C" || col == "0x0B0B19"
+    }
+
+    IsFallingStarOnLmb()
+    {
+        col := Utility.GetColor(1095,887)
+        return col == "0x11092A" || col == "0x0D0B18"
+    }
+
     IsBraceletCloseToExpiration()
     {
         Utility.GetColor(663,819, r, g, b)
@@ -244,9 +256,9 @@ class Availability
 
     IsInDpsPhase()
     {
-        col := Utility.GetColor(1147,887)
         ; check falling stars for off cd and on cd
-        return col == "0x1C1047" || col == "0x161328"
+        col := Utility.GetColor(1147,897)
+        return col == "0x150CA1" || col == "0x0D0B43"
     }
 
     IsBraceletActive()
@@ -369,8 +381,7 @@ class Rotations
 
         if (Availability.IsInDpsPhase()) {
             ; FS not visible on LMB so we're on the 3rd or 4th hit
-            col := Utility.GetColor(1095,887)
-            if (!(col == "0x1C1047" || col == "0x161328")) {
+            if (!Availability.IsFallingStarOnLmb()) {
                 if (spiritVortexAvailable && (!Availability.IsBadgeEffectActive() || weaponResetClose)) {
                     ; bracelet effect close to expiring, use it before it fully expired to avoid bracelet effect bug
                     Rotations.Bracelet()
@@ -397,8 +408,7 @@ class Rotations
             }
 
             ; Slice not visible on LMB so we're on the 3rd or 4th hit
-            col := Utility.GetColor(1095,887)
-            if (!(col == "0x10114B" || col == "0x121329")) {
+            if (!Availability.IsSliceOnLmb()) {
                 if (spiritVortexAvailable && ((Availability.KeepBadgeEffectUp() && !Availability.IsBadgeEffectActive()) || (!Availability.KeepBadgeEffectUp() && Availability.IsBraceletCloseToExpiration()) || weaponResetClose)) {
                     ; bracelet/badge effect close to expiring, use it before it fully expired to avoid bracelet effect bug
                     Rotations.Bracelet()

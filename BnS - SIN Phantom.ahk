@@ -125,8 +125,8 @@ class Availability
 
     IsInStanceChange()
     {
-        col := Utility.GetColor(824,887)
-        return col != "0xBF8C94" && col != "0x331F48"
+        col := Utility.GetColor(828,888)
+        return col != "0x756B92" && col != "0x8769D2" && col != "0xD6B1A0"
     }
 
     IsNecroStrikeAvailable()

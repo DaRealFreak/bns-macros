@@ -99,6 +99,11 @@ $XButton1::
 ; everything related to checking availability of skills or procs
 class Availability
 {
+    IsMacroButtonPressed()
+    {
+        return GetKeyState("F23","p") || GetKeyState("XButton1","p") || GetKeyState("XButton2","p")
+    }
+
     IsAwkCleaveAvailable()
     {
         color := Utility.GetColor(1146,887)
@@ -114,7 +119,7 @@ class Availability
     IsCleaveAvailable()
     {
         color := Utility.GetColor(1146,887)
-        return color == "0xB7602F" || color == "0xB05D2F"
+        return color == "0xA1542A" || color == "0x9B512A"
     }
 
     IsMightyCleaveAvailable()
@@ -278,12 +283,12 @@ class Rotations
             }
 
             if ((Availability.IsMightyCleaveAvailable() || !Availability.IsBraceletActive()) && Availability.IsSmashAvailable()) {
-                While (Availability.IsMightyCleaveAvailable()) {
+                While (Availability.IsMightyCleaveAvailable() && Availability.IsMacroButtonPressed()) {
                     Skills.MightyCleave()
                     sleep 10
                 }
 
-                While (Availability.IsSmashAvailable() && (!Availability.IsMightyCleaveAvailable())) {
+                While (Availability.IsSmashAvailable() && (!Availability.IsMightyCleaveAvailable()) && Availability.IsMacroButtonPressed()) {
                     Skills.Smash()
                     sleep 10
                 }
@@ -291,14 +296,14 @@ class Rotations
 
             if (Availability.IsWrath3Available()) {
                 ; wrath 3 actually has a higher duration until hit, so we cancel it with cleave after 70 ms
-                While (Availability.IsWrath3Available()) {
+                While (Availability.IsWrath3Available() && Availability.IsMacroButtonPressed()) {
                     Skills.Wrath3()
                     sleep 10
                 }
 
                 sleep 70
 
-                While (Availability.IsCleaveAvailable()) {
+                While (Availability.IsCleaveAvailable() && Availability.IsMacroButtonPressed()) {
                     Skills.Cleave()
                     sleep 10
                 }

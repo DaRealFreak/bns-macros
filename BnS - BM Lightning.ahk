@@ -83,9 +83,20 @@ $F23::
 
 #IfWinActive ahk_class UnrealWindow
 ~f23 & c::
-    while (Utility.GameActive() && GetKeyState("F23","p") && Utility.GetColor(987,951) == "0xC26F69")
+    while (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsBladeCallAvailable())
     {
+        send 9
+        sleep 5
         send c
+        sleep 5
+    }
+    return
+
+#IfWinActive ahk_class UnrealWindow
+~f23 & q::
+    while (Utility.GameActive() && GetKeyState("F23","p") && Utility.GetColor(695,887) == "0xCBB4A3")
+    {
+        send q
         sleep 5
     }
     return
@@ -100,10 +111,8 @@ $XButton2::
     
 #IfWinActive ahk_class UnrealWindow
 $XButton1::
-    while (Utility.GameActive() && GetKeyState("XButton1","p"))
-    {
-        Rotations.Default()
-    }
+    Camera.Spin(1587)
+
     return
 
 ; everything related to checking availability of skills or procs
@@ -111,7 +120,7 @@ class Availability
 {
     IsBladeCallAvailable()
     {
-        return Utility.GetColor(1035,951) == "0x989592"
+        return Utility.GetColor(1035,951) == "0x989592" || Utility.GetColor(987,950) == "0x5A5652"
     }
 
     IsLunarSlashAvailable()
@@ -174,7 +183,7 @@ class Availability
     IsInDrawStance()
     {
         col := Utility.GetColor(1146,887)
-        return col  == "0x492018" || col == "0xA62F17"
+        return col  == "0x922A14" || col == "0x411C15"
     }
 
     IsWeaponResetClose()
@@ -215,7 +224,7 @@ class Skills {
 
     SunderingSword()
     {
-        send z
+        send y
     }
 
     DragonFlash()
@@ -251,6 +260,20 @@ class Skills {
     Evade()
     {
         send ss
+    }
+}
+
+class Camera
+{
+    Spin(pxls)
+    {
+        ; you have to experiment a little with your settings here due to your DPI, ingame sensitivity etc
+        MouseGetPos, xp, yp
+        if (xp >= pxls) {
+            DllCall("mouse_event", "UInt", 0x0001, "UInt", -1 * pxls, "UInt", 0)
+        } else {
+            DllCall("mouse_event", "UInt", 0x0001, "UInt", pxls, "UInt", 0)
+        }
     }
 }
 
