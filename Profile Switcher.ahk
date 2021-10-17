@@ -7,6 +7,7 @@ Profiles.Insert("Astromancer Thunder", {ClassName: "AST", ClassIcon: "Profile Sw
 Profiles.Insert("BD 3rd", {ClassName: "BD", ClassIcon: "Profile Switcher Icons/BD.png", CheckBadge: false, ScriptPath: "BnS - BD Grim Blade.ahk"})
 Profiles.Insert("Burst 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM.png", CheckBadge: false, ScriptPath: "BnS - BM Spectral - Exhilaration Anicancel.ahk"})
 Profiles.Insert("Light BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM_Lightning.png", CheckBadge: false, ScriptPath: "BnS - BM Lightning.ahk"})
+Profiles.Insert("Wolf KFM", {ClassName: "KFM", ClassIcon: "Profile Switcher Icons/KFM.png", CheckBadge: false, ScriptPath: "BnS - KFM Wolf.ahk"})
 Profiles.Insert("Wind KFM", {ClassName: "KFM", ClassIcon: "Profile Switcher Icons/KFM_Wind.png", CheckBadge: false, ScriptPath: "BnS - KFM Wind.ahk"})
 Profiles.Insert("Light FM", {ClassName: "FM", ClassIcon: "Profile Switcher Icons/FM.png", CheckBadge: false, ScriptPath: "BnS - FM Lightning Rework.ahk"})
 Profiles.Insert("Phantom SIN", {ClassName: "SIN", ClassIcon: "Profile Switcher Icons/SIN.png", CheckBadge: false, ScriptPath: "BnS - SIN Phantom.ahk"})

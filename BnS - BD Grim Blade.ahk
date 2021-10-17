@@ -11,7 +11,7 @@ SetBatchLines, -1
 
 #Include %A_ScriptDir%\lib\utility.ahk
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 F1::
     MouseGetPos, mouseX, mouseY
     color := Utility.GetColor(mouseX, mouseY, r, g, b)
@@ -28,7 +28,7 @@ Return
 ^F11::Pause
 ^F12::ExitApp
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $F23::
     While (Utility.GameActive() && GetKeyState("F23","p"))
     {
@@ -36,7 +36,7 @@ $F23::
     }
     return
 
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton2::
     While (Utility.GameActive() && GetKeyState("XButton2","p"))
     {
@@ -44,7 +44,7 @@ $XButton2::
     }
     return
     
-#IfWinActive ahk_class LaunchUnrealUWindowsClient
+#IfWinActive ahk_class UnrealWindow
 $XButton1::
     While (Utility.GameActive() && GetKeyState("XButton1","p"))
     {
@@ -56,60 +56,51 @@ $XButton1::
 class Availability
 {
     IsGrimReaverAvailable() {
-        return Utility.GetColor(885,959) == "0x28585D"
+        return Utility.GetColor(892,951) == "0x6C716F"
     }
 
     IsCycloneAvailable() {
-        return Utility.GetColor(1035,959) == "0x358560"
+        return Utility.GetColor(1035,951) == "0x83AD9D"
     }
 
     IsDeathtollAvailable() {
-        return Utility.GetColor(985,959) == "0x4D7046"
+        return Utility.GetColor(987,951) == "0xACCBA8"
     }
 
     IsGraveyardShiftAvailable()
     {
-        return Utility.GetColor(935,959) == "0x0D1111"
+        return Utility.GetColor(940,951) == "0x6B6D6D"
     }
 
     IsEviscerateAvailable()
     {
-        return Utility.GetColor(1153,698) == "0xF3FFFE"
+        return Utility.GetColor(1144,702) == "0xADC9BF"
     }
 
     IsTwinSabersAvailable()
     {
-        return Utility.GetColor(1145,699) == "0x369798"
+        return Utility.GetColor(1144,702) == "0x5C756E"
     }
 
-    IsFuneralPyreAvailable()
+    IsContagionAvailable()
     {
-        return Utility.GetColor(1179,686) == "0x070C09"
+        return Utility.GetColor(1144,702) == "0x5B6965"
     }
 
     IsRaidAvailable()
     {
-        return Utility.GetColor(935,892) == "0x154454"
+        return Utility.GetColor(940,887) == "0x3B8FA8"
     }
 
     IsLmbUnavailable()
     {
-        return Utility.GetColor(1099,892) == "0xE46B14"
-    }
-
-    IsRmbUnavailable()
-    {
-        return Utility.GetColor(1147,892) == "0x161616"
-    }
-
-    HasRmbNoFocus()
-    {
-        return Utility.GetColor(1147,892) == "0x1F1F1F"
+        return Utility.GetColor(1110,891) == "0x688B7C"
     }
 
     IsBraceletCloseToExpiration()
     {
-        return Utility.GetColor(596,921) != "0x01C1FF"
+        Utility.GetColor(663,819, r, g, b)
+        return b < 240
     }
 
     IsBraceletActive()
@@ -120,19 +111,20 @@ class Availability
     IsWeaponResetClose()
     {
         ; check for weapon reset cooldown (slightly above and below to see if the reset is close)
-        return Utility.GetColor(558,921) == "0xFFBA01" && Utility.GetColor(556,909) != "0xFFBA01"
+        Utility.GetColor(620, 818, r, g)
+        if (r > 200 && g > 100 && g < 200) {
+            Utility.GetColor(602, 812, r2)
+            return r2 < 200
+        }
+
+        return false
     }
 
     IsSoulProced()
     {
         ; check for soul duration progress bar
-        return Utility.GetColor(543,915) == "0x01C1FF"
-    }
-
-    IsTalismanAvailable()
-    {
-        ; check for talisman cooldown border
-        return Utility.GetColor(557,635) != "0xE46B14"
+        Utility.GetColor(592,811, r, g, b)
+        return b > 240 && r < 20
     }
 }
 
@@ -206,18 +198,13 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
-        if (useDpsPhase && Availability.IsTalismanAvailable())
+        if (useDpsPhase)
         {
             Skills.Talisman()
             sleep 5
         }
 
-        if (Availability.HasRmbNoFocus() && Availability.IsRaidAvailable()) {
-            Skills.Raid()
-            sleep 5
-        }
-
-        if (Availability.IsFuneralPyreAvailable()) {
+        if (Availability.IsContagionAvailable()) {
             Skills.F()
             sleep 5
         }
@@ -234,6 +221,11 @@ class Rotations
             }
 
             While (!Availability.IsLmbUnavailable() && Utility.GameActive() && (GetKeyState("F23","p") || GetKeyState("XButton2","p"))) {
+                ; in case graveyard shift didn't go through due to blinking of the off cd UI effect
+                if (Availability.IsGraveyardShiftAvailable()) {
+                    Skills.GraveyardShift()
+                    sleep 5
+                }
                 Skills.LMB()
                 sleep 5
             }
