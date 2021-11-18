@@ -6,14 +6,15 @@ Profiles.Insert("Light Archer", {ClassName: "ARC", ClassIcon: "Profile Switcher 
 Profiles.Insert("Astromancer Thunder", {ClassName: "AST", ClassIcon: "Profile Switcher Icons/AST.png", CheckBadge: false, ScriptPath: "BnS - Astromancer Thunder.ahk"})
 Profiles.Insert("BD 3rd", {ClassName: "BD", ClassIcon: "Profile Switcher Icons/BD.png", CheckBadge: false, ScriptPath: "BnS - BD Grim Blade.ahk"})
 Profiles.Insert("Burst 3rd BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM.png", CheckBadge: false, ScriptPath: "BnS - BM Spectral - Exhilaration Anicancel.ahk"})
+Profiles.Insert("Fire BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM_Fire.png", CheckBadge: false, ScriptPath: "BnS - BM Fire.ahk"})
 Profiles.Insert("Light BM", {ClassName: "BM", ClassIcon: "Profile Switcher Icons/BM_Lightning.png", CheckBadge: false, ScriptPath: "BnS - BM Lightning.ahk"})
 Profiles.Insert("Wolf KFM", {ClassName: "KFM", ClassIcon: "Profile Switcher Icons/KFM.png", CheckBadge: false, ScriptPath: "BnS - KFM Wolf.ahk"})
 Profiles.Insert("Wind KFM", {ClassName: "KFM", ClassIcon: "Profile Switcher Icons/KFM_Wind.png", CheckBadge: false, ScriptPath: "BnS - KFM Wind.ahk"})
 Profiles.Insert("Light FM", {ClassName: "FM", ClassIcon: "Profile Switcher Icons/FM.png", CheckBadge: false, ScriptPath: "BnS - FM Lightning Rework.ahk"})
 Profiles.Insert("Phantom SIN", {ClassName: "SIN", ClassIcon: "Profile Switcher Icons/SIN.png", CheckBadge: false, ScriptPath: "BnS - SIN Phantom.ahk"})
 Profiles.Insert("Lightning WR", {ClassName: "WR", ClassIcon: "Profile Switcher Icons/WR.png", CheckBadge: false, ScriptPath: "BnS - WR Lightning.ahk"})
-Profiles.Insert("Ice WL", {ClassName: "WL", ClassIcon: "Profile Switcher Icons/WL.png", CheckBadge: false, ScriptPath: "BnS - WL Ice.ahk"})
 Profiles.Insert("WL 3rd", {ClassName: "WL", ClassIcon: "Profile Switcher Icons/WL_Reaver.png", CheckBadge: false, ScriptPath: "BnS - WL Reaver.ahk"})
+Profiles.Insert("Shadow WL", {ClassName: "WL", ClassIcon: "Profile Switcher Icons/WL_Scourge.png", CheckBadge: false, ScriptPath: "BnS - WL Scourge.ahk"})
 Profiles.Insert("Earth Summoner", {ClassName: "SUM", ClassIcon: "Profile Switcher Icons/SUM.png", CheckBadge: false, ScriptPath: "BnS - SUM Earth.ahk"})
 Profiles.Insert("Earth Destroyer", {ClassName: "DES", ClassIcon: "Profile Switcher Icons/DES_Earth.png", CheckBadge: false, ScriptPath: "BnS - DES Earth.ahk"})
 Profiles.Insert("Shadow Destroyer", {ClassName: "DES", ClassIcon: "Profile Switcher Icons/DES_Shadow.png", CheckBadge: false, ScriptPath: "BnS - DES Reaper.ahk"})
@@ -31,7 +32,7 @@ Profiles.Insert("Shifting DB", {ClassName: "DB", ClassIcon: "Profile Switcher Ic
 
 ^Numpad1::
     AHKPanic(1)
-    LoadScriptFullPath("H:\OneDrive\Games\Blade and Soul\eva\main.ahk")
+    LoadScriptFullPath("H:\OneDrive\Games\Blade and Soul\aerodrome\main.ahk")
     return
 ^Numpad2::LoadScriptFullPath("H:\OneDrive\Games\Blade and Soul\vacation\vacation.ahk")
 ^Numpad3::LoadScript("../Bots/BnS - Exp Charm Bot.ahk")
