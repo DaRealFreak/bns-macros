@@ -103,10 +103,44 @@ $F23::
 
 #IfWinActive ahk_class UnrealWindow
 $XButton2::
-    while (Utility.GameActive() && GetKeyState("F23","p"))
+    while (Utility.GameActive() && GetKeyState("XButton2","p"))
     {
-        Rotations.FullRotation(false)
+        while (Availability.IsFlashStepAvailable()) {
+            if (!GetKeyState("XButton2","p")) {
+                return
+            }
+
+            while (Availability.IsLightningDrawAvailable()) {
+                if (!GetKeyState("XButton2","p")) {
+                    return
+                }
+
+                Skills.LightningDraw()
+                sleep 5
+            }
+
+            while (Availability.IsFlashStepAvailable()) {
+                if (!GetKeyState("XButton2","p")) {
+                    return
+                }
+                send v
+                sleep 25
+            }
+
+            sleep 300
+
+            if (!GetKeyState("XButton2","p")) {
+                return
+            }
+
+            Camera.Spin(1587)
+            ; sleep for gcd
+            sleep 250
+        }
+
+        Rotations.FullRotation(true)
     }
+
     return
     
 #IfWinActive ahk_class UnrealWindow
