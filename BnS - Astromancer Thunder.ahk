@@ -60,7 +60,7 @@ class Availability
     }
 
     IsLMBAvailable() {
-        return Utility.GetColor(1095,887) == "0x5AAABB"
+        return Utility.GetColor(1095,887) == "0x36656F"
     }
 
     IsOrbitalStrikeAvailable() {
