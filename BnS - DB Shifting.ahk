@@ -160,6 +160,11 @@ $XButton1::
 ; everything related to checking availability of skills or procs
 class Availability
 {
+    MovedRmbToV()
+    {
+        return true
+    }
+
     IsIncarnateAvailable()
     {
         col := Utility.GetColor(825,887)
@@ -356,18 +361,23 @@ class Rotations
     ; default rotation without any logic for max counts
     Default()
     {
-        ; leftover from previous or manual 4 pressing
-        Skills.Decimator()
-        sleep 5
-
-        if (Availability.IsInStanceChange() || (Availability.IsDeepCutAvailable() && Availability.IsTurnStrikeAvailable())) {
+        if (Availability.MovedRmbToV()) {
             Skills.DeepCut()
-            sleep 15
-        }
+            sleep 5
+        } else {
+            ; leftover from previous or manual 4 pressing
+            Skills.Decimator()
+            sleep 5
 
-        if (!Availability.IsInStanceChange() && !Availability.IsTurnStrikeAvailable() && !Availability.IsBladeTurnVisible()) {
-            Skills.StormBlade()
-            sleep 15
+            if (Availability.IsInStanceChange() || (Availability.IsDeepCutAvailable() && Availability.IsTurnStrikeAvailable())) {
+                Skills.DeepCut()
+                sleep 15
+            }
+
+            if (!Availability.IsInStanceChange() && !Availability.IsTurnStrikeAvailable() && !Availability.IsBladeTurnVisible()) {
+                Skills.StormBlade()
+                sleep 15
+            }
         }
     }
 
