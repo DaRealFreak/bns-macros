@@ -148,6 +148,11 @@ class Availability
 
 ; skill bindings
 class Skills {
+    LMB()
+    {
+        send r
+    }
+
 	RMB()
     {
 		send t
@@ -209,7 +214,17 @@ class Rotations
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
-        if (Availability.IsDireWolfAvailable()) {
+        if (Availability.IsInWolf()) {
+            Skills.LMB()
+            return
+        }
+
+        if (useDpsPhase && Availability.IsDireWolfAvailable()) {
+            while (Availability.IsIncinerateAvailable()) {
+                Skills.Incinerate()
+                sleep 5
+            }
+
             loop, 5 {
                 Skills.Talisman()
                 sleep 5
@@ -237,9 +252,7 @@ class Rotations
             }
         }
 
-        if (!Availability.IsInWolf()) {
-            Rotations.Default()
-        }
+        Rotations.Default()
 
         return
     }
