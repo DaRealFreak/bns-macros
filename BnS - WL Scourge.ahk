@@ -70,6 +70,8 @@ class Rotations {
     ; default rotation without any logic for max counts
     Default()
     {
+        send r
+        sleep 5
         send t
         sleep 5
         send g

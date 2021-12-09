@@ -152,7 +152,7 @@ class Availability {
 class Skills {
     LMB()
     {
-        send r
+        send 0
     }
 
     RMB()

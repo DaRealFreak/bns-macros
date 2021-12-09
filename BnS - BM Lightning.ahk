@@ -75,7 +75,7 @@ $F23::
 
 #IfWinActive ahk_class UnrealWindow
 ~f23 & v::
-    send 9
+    Skills.Talisman()
     sleep 5
     send v
     sleep 5
@@ -83,10 +83,12 @@ $F23::
 
 #IfWinActive ahk_class UnrealWindow
 ~f23 & c::
-    while (Utility.GameActive() && GetKeyState("F23","p") && Availability.IsBladeCallAvailable())
+    while (Utility.GameActive() && GetKeyState("F23","p") && (Availability.IsBladeCallAvailable() || Availability.IsFatalBladeAvailable()))
     {
-        send 9
-        sleep 5
+        if (Availability.IsBladeCallAvailable()) {
+            Skills.Talisman()
+            sleep 5
+        }
         send c
         sleep 5
     }
@@ -108,15 +110,6 @@ $XButton2::
         while (Availability.IsFlashStepAvailable()) {
             if (!GetKeyState("XButton2","p")) {
                 return
-            }
-
-            while (Availability.IsLightningDrawAvailable()) {
-                if (!GetKeyState("XButton2","p")) {
-                    return
-                }
-
-                Skills.LightningDraw()
-                sleep 5
             }
 
             while (Availability.IsFlashStepAvailable()) {
@@ -142,7 +135,7 @@ $XButton2::
     }
 
     return
-    
+
 #IfWinActive ahk_class UnrealWindow
 $XButton1::
     Camera.Spin(1587)
@@ -201,7 +194,7 @@ class Availability
 
     IsFatalBladeAvailable()
     {
-        return Utility.GetColor(1143,700) == "0x897A89"
+        return Utility.GetColor(987,950) == "0x372437"
     }
 
     IsDragonFlashAvailable()
@@ -268,7 +261,7 @@ class Skills {
 
     FatalBlade()
     {
-        send f
+        send c
     }
 
     LightningDraw()
@@ -295,6 +288,11 @@ class Skills {
     {
         send ss
     }
+
+    Talisman()
+    {
+        send r
+    }
 }
 
 class Camera
@@ -318,12 +316,8 @@ class Rotations
 
     Default()
     {
-        if (Availability.IsInDrawStance()) {
-            send r
-            sleep 25
-            send t
-            sleep 25
-        }
+        send t
+        sleep 5
     }
 
     ; full rotation with situational checks

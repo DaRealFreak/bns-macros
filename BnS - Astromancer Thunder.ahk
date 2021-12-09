@@ -104,7 +104,7 @@ class Availability
 ; skill bindings
 class Skills {
     LMB() {
-        send r
+        send 0
     }
 
     RMB() {
@@ -136,7 +136,7 @@ class Skills {
     }
 
     Talisman() {
-        send 9
+        send r
     }
 }
 

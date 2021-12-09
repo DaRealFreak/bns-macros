@@ -34,9 +34,12 @@ Profiles.Insert("Shifting DB", {ClassName: "DB", ClassIcon: "Profile Switcher Ic
     AHKPanic(1)
     LoadScriptFullPath("H:\OneDrive\Games\Blade and Soul\aerodrome\main.ahk")
     return
-^Numpad2::LoadScriptFullPath("H:\OneDrive\Games\Blade and Soul\vacation\vacation.ahk")
+^Numpad2::
+    AHKPanic(1)
+    LoadScriptFullPath("H:\OneDrive\Games\Blade and Soul\aerodrome_exp\main.ahk")
+    return
 ^Numpad3::LoadScript("../Bots/BnS - Exp Charm Bot.ahk")
-^Numpad4::LoadScript("../Bots/BnS - Exp Soup.ahk")
+^Numpad4::LoadScriptFullPath("H:\OneDrive\Games\Blade and Soul\vacation\vacation.ahk")
 ^Numpad5::
 	AHKPanic(1)
     LoadScript("../Bots/BnS - ToI Tickets.ahk")

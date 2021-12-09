@@ -229,7 +229,7 @@ class Skills {
     }
 
     Talisman() {
-        send 9
+        send r
     }
 }
 

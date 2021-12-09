@@ -39,7 +39,7 @@ $F23::
 
 #IfWinActive ahk_class UnrealWindow
 $XButton2::
-    while (Utility.GameActive() && GetKeyState("F23","p"))
+    while (Utility.GameActive() && GetKeyState("XButton2","p"))
     {
         Rotations.FullRotation(false)
     }
@@ -47,17 +47,28 @@ $XButton2::
     
 #IfWinActive ahk_class UnrealWindow
 $XButton1::
-    Rotations.Default()
+    while (Utility.GameActive() && GetKeyState("XButton1","p"))
+    {
+        Rotations.Default()
+    }
 
     return
 
 ; everything related to checking availability of skills or procs
 class Availability
 {
+    IsPhoenixWingsAvailable()
+    {
+        return Utility.GetColor(1146,887) == "0x5E110F"
+    }
 }
 
 ; skill bindings
 class Skills {
+    Talisman()
+    {
+        send r
+    }
 }
 
 ; everything rotation related
@@ -67,13 +78,18 @@ class Rotations
     {
         send t
         sleep 5
-        send 9
-        sleep 5
     }
 
     ; full rotation with situational checks
     FullRotation(useDpsPhase)
     {
+        if (useDpsPhase && Availability.IsPhoenixWingsAvailable()) {
+            loop, 12 {
+                Skills.Talisman()
+                sleep 4
+            }
+        }
+
         Rotations.Default()
     }
 }

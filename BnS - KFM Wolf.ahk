@@ -150,7 +150,7 @@ class Availability
 class Skills {
     LMB()
     {
-        send r
+        send 0
     }
 
 	RMB()
@@ -195,7 +195,7 @@ class Skills {
 
     Talisman()
     {
-        send 9
+        send r
     }
 }
 
@@ -216,6 +216,7 @@ class Rotations
     {
         if (Availability.IsInWolf()) {
             Skills.LMB()
+            sleep 5
             return
         }
 
